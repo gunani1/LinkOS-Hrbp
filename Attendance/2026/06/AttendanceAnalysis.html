@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>6月考勤分析报告</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:#f0f2f5;width:1280px;padding:24px}
+.card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+
+/* 标题栏 */
+.card-header{background:#EDF1F7;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1.5px solid #dde3ed}
+.card-header h1{font-size:18px;font-weight:600;color:#1B2D4A;letter-spacing:.5px}
+.card-header span{font-size:11px;color:#64748B;background:#fff;padding:4px 10px;border-radius:4px;border:1px solid #dde3ed}
+.body{padding:18px 24px 16px}
+
+/* KPI行 */
+.kpi-row{display:flex;gap:10px;margin-bottom:16px}
+.kpi{flex:1;background:#f7f8fa;border-radius:8px;padding:10px 12px;text-align:center}
+.kpi-value{font-size:22px;font-weight:700;color:#1B2D4A;line-height:1.2}
+.kpi-value.warn{color:#D97706}
+.kpi-label{font-size:10px;color:#86909c;margin-top:2px}
+.kpi-sub{font-size:9px;color:#c9cdd4;margin-top:1px}
+
+/* 布局 */
+.main-grid{display:grid;grid-template-columns:1.15fr 0.85fr;gap:16px}
+
+/* 区块标题 */
+.sec-title{font-size:12px;font-weight:600;color:#1B2D4A;margin-bottom:10px;padding-bottom:6px;border-bottom:1.5px solid #e8eaf0}
+
+/* 整体堆积条 */
+.overall-bar{margin-bottom:16px}
+.bar-container{display:flex;height:30px;border-radius:5px;overflow:hidden;margin-bottom:6px}
+.bar-seg{display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:500}
+.bar-healthy{background:#CBD5E1}
+.bar-late5{background:#3B6EA5}
+.bar-late5p{background:#1B2D4A}
+.legend{display:flex;gap:14px;font-size:10px;color:#64748B}
+.legend-item{display:flex;align-items:center;gap:4px}
+.legend-dot{width:8px;height:8px;border-radius:2px}
+
+/* 个人堆积条 */
+.person-section{margin-bottom:14px}
+.person-row{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.person-name{font-size:11px;font-weight:500;color:#1B2D4A;width:48px;flex-shrink:0;text-align:right}
+.person-bar-wrap{flex:1;height:20px;background:#f2f3f5;border-radius:3px;overflow:hidden;display:flex}
+.person-bar{height:100%;display:flex;align-items:center;justify-content:center;font-size:9px;color:#fff;font-weight:500}
+.person-stats{font-size:10px;color:#86909c;width:72px;text-align:right;flex-shrink:0}
+.person-stats strong{color:#1B2D4A;font-size:11px}
+
+/* 加班表 */
+.mini-table{width:100%;border-collapse:collapse;font-size:11px}
+.mini-table th{text-align:left;padding:5px 8px;background:#f7f8fa;color:#64748B;font-weight:500;border-bottom:1px solid #e5e6eb}
+.mini-table td{padding:5px 8px;border-bottom:1px solid #f2f3f5}
+.mini-table tr:last-child td{border-bottom:none}
+.tag{display:inline-block;padding:1px 5px;border-radius:3px;font-size:10px;font-weight:500;background:#e8eaf0;color:#1B2D4A}
+
+/* 小结 */
+.insights{margin-top:14px;padding:10px 12px;background:#f7f8fa;border-left:3px solid #1B2D4A;border-radius:0 5px 5px 0;font-size:11px;color:#4e5969;line-height:1.6}
+.insights strong{color:#1B2D4A}
+
+/* 底部 */
+.footer{padding:8px 24px;text-align:right;font-size:9px;color:#c9cdd4;border-top:1px solid #f2f3f5}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="card-header">
+    <h1>6月考勤数据分析报告</h1>
+    <span>2026.6.1 — 6.30</span>
+  </div>
+  <div class="body">
+    <!-- KPI -->
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="kpi-value">88.7%</div>
+        <div class="kpi-label">出勤率</div>
+        <div class="kpi-sub">应出勤692天 · 实出勤614天</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-value warn">12.22%</div>
+        <div class="kpi-label">迟到率</div>
+        <div class="kpi-sub">迟到75次（≤5min 59次 · >5min 16次）</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-value warn">78.67%</div>
+        <div class="kpi-label">5min容错覆盖率</div>
+        <div class="kpi-sub">近八成迟到落在容错窗口内</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-value">¥900</div>
+        <div class="kpi-label">加班补贴</div>
+        <div class="kpi-sub">5人 · 30次</div>
+      </div>
+    </div>
+
+    <div class="main-grid">
+      <!-- 左列：迟到重点 -->
+      <div>
+        <!-- 整体构成 -->
+        <div class="overall-bar">
+          <div class="sec-title">整体出勤构成</div>
+          <div class="bar-container">
+            <div class="bar-seg bar-healthy" style="flex:87.78;color:#64748B">87.78%</div>
+            <div class="bar-seg bar-late5" style="flex:9.61">9.61%</div>
+            <div class="bar-seg bar-late5p" style="flex:2.61">2.61%</div>
+          </div>
+          <div class="legend">
+            <div class="legend-item"><span class="legend-dot bar-healthy"></span>正常出勤 537</div>
+            <div class="legend-item"><span class="legend-dot bar-late5"></span>迟到≤5min 59次</div>
+            <div class="legend-item"><span class="legend-dot bar-late5p"></span>迟到&gt;5min 16次</div>
+          </div>
+        </div>
+
+        <!-- 个人堆积条 -->
+        <div class="person-section">
+          <div class="sec-title">个人出勤构成（健康 / ≤5min / >5min）</div>
+          <!-- 董文昊 -->
+          <div class="person-row">
+            <span class="person-name">董文昊</span>
+            <div class="person-bar-wrap">
+              <div class="person-bar bar-healthy" style="flex:9.5;color:#64748B">9.5%</div>
+              <div class="person-bar bar-late5" style="flex:38.1">38.1%</div>
+              <div class="person-bar bar-late5p" style="flex:52.4">52.4%</div>
+            </div>
+            <span class="person-stats"><strong>19次</strong> · 90.5%</span>
+          </div>
+          <!-- 王璐璐 -->
+          <div class="person-row">
+            <span class="person-name">王璐璐</span>
+            <div class="person-bar-wrap">
+              <div class="person-bar bar-healthy" style="flex:26.1;color:#64748B">26.1%</div>
+              <div class="person-bar bar-late5" style="flex:73.9">73.9%</div>
+            </div>
+            <span class="person-stats"><strong>17次</strong> · 73.9%</span>
+          </div>
+          <!-- 杨晓燕 -->
+          <div class="person-row">
+            <span class="person-name">杨晓燕</span>
+            <div class="person-bar-wrap">
+              <div class="person-bar bar-healthy" style="flex:26.1;color:#64748B">26.1%</div>
+              <div class="person-bar bar-late5" style="flex:73.9">73.9%</div>
+            </div>
+            <span class="person-stats"><strong>17次</strong> · 73.9%</span>
+          </div>
+          <!-- 阮丹霞 -->
+          <div class="person-row">
+            <span class="person-name">阮丹霞</span>
+            <div class="person-bar-wrap">
+              <div class="person-bar bar-healthy" style="flex:66.7;color:#64748B">66.7%</div>
+              <div class="person-bar bar-late5" style="flex:19.0">19.0%</div>
+              <div class="person-bar bar-late5p" style="flex:14.3">14.3%</div>
+            </div>
+            <span class="person-stats"><strong>7次</strong> · 33.3%</span>
+          </div>
+          <!-- 黄晓红 -->
+          <div class="person-row">
+            <span class="person-name">黄晓红</span>
+            <div class="person-bar-wrap">
+              <div class="person-bar bar-healthy" style="flex:69.6;color:#64748B">69.6%</div>
+              <div class="person-bar bar-late5" style="flex:30.4">30.4%</div>
+            </div>
+            <span class="person-stats"><strong>7次</strong> · 30.4%</span>
+          </div>
+        </div>
+
+        <!-- 小结 -->
+        <div class="insights">
+          <strong>5min容错使用率 78.67%：</strong>迟到幅度多在5min内，员工整体守时意识尚可，但高频使用容错机制需关注是否形成"隐性迟到文化"<br>
+          <strong>董文昊迟到结构异常：</strong>52.4%的出勤日迟到超过5分钟，远超容错窗口，非偶发行为
+        </div>
+      </div>
+
+      <!-- 右列：加班 + 其他 -->
+      <div>
+        <div class="sec-title">加班补贴明细</div>
+        <table class="mini-table">
+          <tr><th>姓名</th><th>次数</th><th>金额</th><th>占比</th></tr>
+          <tr><td>建碧涛</td><td>12</td><td>¥360</td><td><span class="tag">40.0%</span></td></tr>
+          <tr><td>李雨婷</td><td>7</td><td>¥210</td><td><span class="tag">23.3%</span></td></tr>
+          <tr><td>毕石头</td><td>5</td><td>¥150</td><td><span class="tag">16.7%</span></td></tr>
+          <tr><td>陈科瑶</td><td>5</td><td>¥150</td><td><span class="tag">16.7%</span></td></tr>
+          <tr><td>周涛</td><td>1</td><td>¥30</td><td><span class="tag">3.3%</span></td></tr>
+        </table>
+
+        <div class="sec-title" style="margin-top:18px">迟到5min容错机制使用分布</div>
+        <div style="font-size:11px;color:#64748B;line-height:1.7">
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+            <span>迟到≤5min（容错内）</span><span style="color:#1B2D4A;font-weight:600">59次 · 78.67%</span>
+          </div>
+          <div style="height:8px;background:#e8eaf0;border-radius:4px;overflow:hidden;margin-bottom:10px">
+            <div style="width:78.67%;height:100%;background:#3B6EA5;border-radius:4px"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+            <span>迟到&gt;5min（超出容错）</span><span style="color:#1B2D4A;font-weight:600">16次 · 21.33%</span>
+          </div>
+          <div style="height:8px;background:#e8eaf0;border-radius:4px;overflow:hidden;margin-bottom:10px">
+            <div style="width:21.33%;height:100%;background:#1B2D4A;border-radius:4px"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">HR · 考勤分析报告 · 2026年6月</div>
+</div>
+</body>
+</html>
