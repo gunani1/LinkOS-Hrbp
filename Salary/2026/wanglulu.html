@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=1200, initial-scale=0.3, maximum-scale=3.0, user-scalable=yes">
+
 <title>王璐璐 薪资分析报告（2025.04 - 2026.06）</title>
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
 <style>
@@ -421,6 +421,32 @@ adjustForMobile();
   window.addEventListener('load', fit);
   setTimeout(fit, 100);
   fit();
+})();
+</script>
+
+<script>
+(function(){
+  var DESIRED=1248,CW=1200;
+  function resize(){
+    var c=document.querySelector('.container');
+    var vw=window.innerWidth;
+    if(vw<DESIRED){
+      var s=vw/DESIRED;
+      var sw=CW*s;
+      var ox=(vw-sw)/2;
+      c.style.transformOrigin='top left';
+      c.style.transform='translateX('+ox+'px) scale('+s+')';
+      c.style.marginBottom=-(c.scrollHeight*(1-s))+'px';
+      c.style.marginLeft='0';
+    }else{
+      c.style.transform='none';
+      c.style.marginBottom='0';
+      c.style.marginLeft=Math.max(0,(vw-CW)/2)+'px';
+    }
+  }
+  resize();
+  window.addEventListener('resize',resize);
+  window.addEventListener('load',resize);
 })();
 </script>
 </body>
