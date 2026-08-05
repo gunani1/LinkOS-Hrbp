@@ -202,7 +202,7 @@ body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;backgr
   <!-- 年龄分布 -->
   <div style="margin-bottom:17px;">
     <div style="font-size:12px;font-weight:700;color:var(--deep);margin-bottom:7px;">年龄分布 <span style="font-weight:400;color:var(--text-sub);font-size:11px;">（44人）</span></div>
-    <div style="display:flex;height:28px;overflow:hidden;">
+    <div class="stack-bar" style="display:flex;height:28px;overflow:hidden;">
       <div style="width:38.6%;background:#1B2D4A;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:600;white-space:nowrap;">17人（38.6%）</div>
       <div style="width:50.0%;background:#3B6EA5;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:600;white-space:nowrap;">22人（50.0%）</div>
       <div style="width:11.4%;background:#A8C4DC;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:600;white-space:nowrap;">5人（11.4%）</div>
@@ -218,7 +218,7 @@ body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;backgr
   <!-- 司龄分布 -->
   <div style="margin-bottom:17px;">
     <div style="font-size:12px;font-weight:700;color:var(--deep);margin-bottom:7px;">司龄分布 <span style="font-weight:400;color:var(--text-sub);font-size:11px;">（42人）</span></div>
-    <div style="display:flex;height:28px;overflow:hidden;">
+    <div class="stack-bar" style="display:flex;height:28px;overflow:hidden;">
       <div style="width:66.7%;background:#1B2D4A;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:600;white-space:nowrap;">28人（66.7%）</div>
       <div style="width:7.1%;background:#3B6EA5;display:flex;align-items:center;justify-content:center;color:#fff;font-size:9px;font-weight:600;white-space:nowrap;">3人（7.1%）</div>
       <div style="width:11.9%;background:#7BA0CC;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:600;white-space:nowrap;">5人（11.9%）</div>
@@ -236,7 +236,7 @@ body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;backgr
   <!-- 体系分布 -->
   <div style="margin-bottom:17px;">
     <div style="font-size:12px;font-weight:700;color:var(--deep);margin-bottom:7px;">体系分布 <span style="font-weight:400;color:var(--text-sub);font-size:11px;">（44人）</span></div>
-    <div style="display:flex;height:28px;overflow:hidden;">
+    <div class="stack-bar" style="display:flex;height:28px;overflow:hidden;">
       <div style="width:72.7%;background:#1B2D4A;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:600;white-space:nowrap;">32人（72.7%）</div>
       <div style="width:27.3%;background:#A8C4DC;display:flex;align-items:center;justify-content:center;color:var(--deep);font-size:12px;font-weight:600;white-space:nowrap;">12人（27.3%）</div>
     </div>
@@ -250,7 +250,7 @@ body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;backgr
   <!-- 职级分布 -->
   <div>
     <div style="font-size:12px;font-weight:700;color:var(--deep);margin-bottom:7px;">职级分布 <span style="font-weight:400;color:var(--text-sub);font-size:11px;">（44人）</span></div>
-    <div style="display:flex;height:28px;overflow:hidden;">
+    <div class="stack-bar" style="display:flex;height:28px;overflow:hidden;">
       <div style="width:6.8%;background:#1B2D4A;display:flex;align-items:center;justify-content:center;color:#fff;font-size:9px;font-weight:600;white-space:nowrap;">3人（6.8%）</div>
       <div style="width:4.5%;background:#2A4A6B;display:flex;align-items:center;justify-content:center;color:#fff;font-size:9px;font-weight:600;white-space:nowrap;">2人（4.5%）</div>
       <div style="width:86.4%;background:#7BA0CC;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:600;white-space:nowrap;">38人（86.4%）</div>
@@ -492,8 +492,25 @@ body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;backgr
   chart.setOption(option);
   window.addEventListener('resize', function(){ chart.resize(); });
 })();
-
-
+</script>
+<script>
+(function(){
+  var bars = document.querySelectorAll('.stack-bar');
+  bars.forEach(function(bar){
+    var segs = bar.children;
+    var targets = [];
+    for(var i=0;i<segs.length;i++){
+      targets.push(segs[i].style.width);
+      segs[i].style.width = '0%';
+      segs[i].style.transition = 'width 0.8s cubic-bezier(0.4,0,0.2,1)';
+    }
+    setTimeout(function(){
+      for(var i=0;i<segs.length;i++){
+        segs[i].style.width = targets[i];
+      }
+    },200);
+  });
+})();
 </script>
 <script>
 (function(){var D=1248,W=1200;function r(){var c=document.querySelector('.container'),vw=window.innerWidth;if(vw<D){var s=vw/D,sw=W*s,ox=(vw-sw)/2;c.style.transformOrigin='top left';c.style.transform='translateX('+ox+'px) scale('+s+')';c.style.marginBottom=-(c.scrollHeight*(1-s))+'px';c.style.marginLeft='0'}else{c.style.transform='none';c.style.marginBottom='0';c.style.marginLeft=Math.max(0,(vw-W)/2)+'px'}}r();window.addEventListener('resize',r)})();
