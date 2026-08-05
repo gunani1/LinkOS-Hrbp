@@ -1,2 +1,0 @@
-# LinkOS-Hrbp
-LINK OVERSEAS
