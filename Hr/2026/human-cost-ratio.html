@@ -449,8 +449,8 @@ obsReveal('scatter',s=>{
 
     if(hero){
       // hero label moved above the dot cluster with a thin connector
-      const labelY=y-92;
-      el(s,'line',{x1:x,y1:y-r-2,x2:x,y2:labelY+10,stroke:L[3],'stroke-width':.7,
+      const labelY=y+58;
+      el(s,'line',{x1:x,y1:y+r+2,x2:x,y2:labelY-12,stroke:L[3],'stroke-width':.7,
         'stroke-dasharray':'2 2',class:'fade',style:`animation-delay:${.7+i*.02}s`});
       txt(s,{x:x+4,y:labelY,'font-size':10.5,'font-weight':800,fill:INK,'text-anchor':'start',
         style:`paint-order:stroke;stroke:${PAPER};stroke-width:4px;animation-delay:${.9+i*.02}s`,
