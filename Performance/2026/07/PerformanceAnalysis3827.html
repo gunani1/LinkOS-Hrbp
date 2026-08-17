@@ -55,8 +55,8 @@
   <div class="grid2">
 
     <div class="card">
-      <h2>姚老师出分率 68.89% 居首，姜老师因场次不足未入排名</h2>
-      <div class="sub">达标前提：完考率 ≥95% 且考试场次 ≥40 · 发丝刻度每根 = 1% · 达标教师墨色，未达标教师灰色 · 奖金基数 ¥1,000</div>
+      <h2>姜老师出分率 75.00% 居首，全员未达 90% 奖金线</h2>
+      <div class="sub">奖金门槛：出分率 ≥90% · 发丝刻度每根 = 1% · 本期全员未达标，统一灰色显示 · 奖金基数 ¥1,000</div>
       <svg id="ch" viewBox="0 0 820 340"></svg>
       <div class="src">F5 TICK ROWS · 线下教师出分达标率排名 · 数据来源：教师绩效表</div>
     </div>
@@ -228,9 +228,9 @@
   //  第二部分：教师出分率数据
   // ────────────────────────────────────────────
   const TEACHERS=[
-    {name:'姚老师',rate:68.89,finish:100,sessions:46,qualified:true,rank:1},
-    {name:'苏老师',rate:65.00,finish:100,sessions:40,qualified:true,rank:2},
     {name:'姜老师',rate:75.00,finish:95, sessions:36,qualified:false,rank:null},
+    {name:'姚老师',rate:68.89,finish:100,sessions:46,qualified:false,rank:null},
+    {name:'苏老师',rate:65.00,finish:100,sessions:40,qualified:false,rank:null},
   ];
 
   function renderTeacher(s){
@@ -289,18 +289,15 @@
           'letter-spacing':.06,class:'fade',style:`animation-delay:${.5+i*.1}s`},
           d.rank===1?'达标 · 排名第 ①':'达标 · 排名第 ②');
       } else if(!d.qualified){
-        const reasons=[];
-        if(d.finish<95)reasons.push('完考率<95%');
-        if(d.sessions<40)reasons.push('场次<40');
         txt(s,{x:X0+ROW_W+16,y:y+24,'font-size':9,'font-weight':600,fill:L[4],
           'letter-spacing':.04,class:'fade',style:`animation-delay:${.5+i*.1}s`},
-          '未入排名 · '+reasons.join('、'));
+          '未达标 · 出分率<90%');
       }
     });
 
     txt(s,{x:W/2,y:H-20,'font-size':7.5,'font-weight':600,fill:FAINT,
       'text-anchor':'middle','letter-spacing':.12,class:'fade',style:'animation-delay:.9s'},
-      'ONE TICK = 1% · DOT MARKS EVERY 10 · INK = QUALIFIED, GREY = NOT QUALIFIED');
+      'ONE TICK = 1% · DOT MARKS EVERY 10 · BONUS THRESHOLD = 90% · ALL BELOW THRESHOLD');
   }
 
   // ────────────────────────────────────────────
