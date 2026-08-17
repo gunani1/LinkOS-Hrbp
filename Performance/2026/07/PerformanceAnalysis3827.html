@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Mono — 绩效与出分率可视化合集</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#F0EFEB;--ink:#1C1C1A;--muted:#8F8E88;--faint:#C6C5BF;--grid:#DEDDD6}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);font-family:'Inter','Noto Sans SC',sans-serif;color:var(--ink);padding:40px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:960px;margin:0 auto}
+  .section-label{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.15em;text-transform:uppercase;margin:28px 0 10px;padding-left:28px}
+  .section-label:first-child{margin-top:0}
+  .grid2{display:grid;grid-template-columns:1fr;gap:22px}
+  .card{background:var(--bg);border-radius:24px;padding:28px 28px 20px}
+  h2{font-weight:700;font-size:18px;letter-spacing:-.02em;margin-bottom:3px}
+  .sub{font-size:11.5px;color:var(--muted);margin-bottom:14px}
+  .src{font-size:9.5px;color:var(--faint);margin-top:14px;letter-spacing:.08em;font-weight:500}
+  svg text{font-family:'Inter','Noto Sans SC',sans-serif}
+  .fade{animation:fade .9s ease both}
+  .pop{transform-box:fill-box;transform-origin:center;animation:pop .5s cubic-bezier(.2,.7,.3,1.3) both}
+  @keyframes fade{from{opacity:0}}
+  @keyframes pop{from{transform:scale(0)}to{transform:none}}
+  @media (prefers-reduced-motion:reduce){.fade,.pop{animation:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ═══════ 第一部分：全员绩效得分 ═══════ -->
+  <div class="section-label">2026 全员绩效得分</div>
+  <div class="grid2">
+
+    <div class="card">
+      <h2>技术部均值 98.3 领跑，电商运营部仅 46 分垫底</h2>
+      <div class="sub">9 个部门按平均绩效降序排列 · 发丝刻度每根 = 1 分 · 行尾标注部门均值与人数 · 全公司均值 85.3 分</div>
+      <svg id="chart1" viewBox="0 0 900 420"></svg>
+      <div class="src">F5 TICK ROWS · 部门平均绩效得分排名 · 数据来源：2026年员工绩效表</div>
+    </div>
+
+    <div class="card">
+      <h2>32 人绩效一览：销售部两极分化最重，技术部全员高分</h2>
+      <div class="sub">每行一个部门，竖实线为部门均值位置，连线末端为个人得分 · 墨点 = 高于/等于部门均值，灰圈 = 低于部门均值 · 点旁标注姓名与分值</div>
+      <svg id="chart2" viewBox="0 0 920 540"></svg>
+      <div class="src">LOLLIPOP DEVIATION · 全员绩效得分与部门均值对比 · 数据来源：2026年员工绩效表</div>
+    </div>
+
+  </div>
+
+  <!-- ═══════ 第二部分：教师出分率达标对比 ═══════ -->
+  <div class="section-label">线下教师出分率达标对比</div>
+  <div class="grid2">
+
+    <div class="card">
+      <h2>姚老师出分率 68.29% 居首，姜老师因场次不足未入排名</h2>
+      <div class="sub">达标前提：完考率 ≥95% 且考试场次 ≥40 · 发丝刻度每根 = 1% · 达标教师墨色，未达标教师灰色 · 奖金基数 ¥1,000</div>
+      <svg id="ch" viewBox="0 0 820 340"></svg>
+      <div class="src">F5 TICK ROWS · 线下教师出分达标率排名 · 数据来源：教师绩效表</div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+(function(){
+  const INK='#1C1C1A',PAPER='#F0EFEB',MUTED='#8F8E88',FAINT='#C6C5BF',GRID='#DEDDD6';
+  const L=['#1C1C1A','#4A4944','#6A6963','#8F8E88','#B0AFA9','#C6C5BF','#D8D7D1'];
+  const NS='http://www.w3.org/2000/svg';
+  const el=(p,t,a)=>{const n=document.createElementNS(NS,t);for(const k in a)n.setAttribute(k,a[k]);p.appendChild(n);return n;};
+  const txt=(p,a,s)=>{const n=el(p,'text',a);n.textContent=s;return n;};
+  const rnd=(i,k)=>Math.abs(((i*73856093)^(k*19349663))%1000)/1000;
+
+  // ────────────────────────────────────────────
+  //  第一部分：全员绩效数据
+  // ────────────────────────────────────────────
+  const DEPTS=[
+    {name:'技术部',    mean:98.3, n:3, people:[{n:'王旭',s:100},{n:'建碧涛',s:100},{n:'周涛',s:95}]},
+    {name:'财务部',    mean:95.5, n:2, people:[{n:'陈颖',s:97},{n:'冯淑乐',s:94}]},
+    {name:'设计部',    mean:95.0, n:2, people:[{n:'张康宇',s:96},{n:'常晓阳',s:94}]},
+    {name:'人力资源部', mean:93.0, n:2, people:[{n:'毕石头',s:93},{n:'陈科瑶',s:93}]},
+    {name:'新媒体运营部',mean:88.5,n:4, people:[{n:'宋伟',s:94},{n:'王璐璐',s:88},{n:'杨晓燕',s:88},{n:'黄晓红',s:84}]},
+    {name:'社群运营部', mean:84.8, n:8, people:[{n:'苏桐彤',s:100},{n:'黄成',s:97},{n:'张美一',s:93},{n:'韩冰',s:91},{n:'叶文乐',s:88},{n:'胡亮',s:74},{n:'钱盛',s:74},{n:'孙晓丹',s:61}]},
+    {name:'教师部',    mean:83.0, n:6, people:[{n:'姚冯胜',s:100},{n:'苏大龙',s:95},{n:'宣佑桥',s:93},{n:'姜澎浩',s:75},{n:'李子晴',s:67.5},{n:'赵依蕊',s:67.5}]},
+    {name:'语培销售部', mean:73.2, n:4, people:[{n:'常艺凡',s:100},{n:'陈柯臻',s:100},{n:'李嘉琦',s:50},{n:'郭林旭',s:43}]},
+    {name:'电商运营部', mean:46.0, n:1, people:[{n:'陈奕恺',s:46}]},
+  ];
+  const COMPANY_MEAN=85.3;
+
+  // ── 图1：Tick Rows 部门均值 ──
+  function renderChart1(s){
+    const W=900,H=420;
+    const X0=130, ROW_W=620, PX=ROW_W/100;
+    const Y0=44, ROW_H=36, TICK_H=18;
+
+    const coX=X0+COMPANY_MEAN*PX;
+    el(s,'line',{x1:coX,y1:Y0-8,x2:coX,y2:Y0+DEPTS.length*ROW_H+4,
+      stroke:MUTED,'stroke-width':.7,'stroke-dasharray':'3,3',
+      class:'fade',style:'animation-delay:.8s'});
+    txt(s,{x:coX,y:Y0-12,'font-size':8,'font-weight':600,fill:MUTED,
+      'text-anchor':'middle','letter-spacing':.04,class:'fade',style:'animation-delay:.9s'},
+      '全公司均值 '+COMPANY_MEAN);
+
+    DEPTS.forEach((d,i)=>{
+      const y=Y0+i*ROW_H;
+      const ticks=Math.round(d.mean);
+
+      txt(s,{x:X0-14,y:y+4,'font-size':11,'font-weight':700,fill:INK,
+        'text-anchor':'end','letter-spacing':.01,class:'fade',
+        style:`animation-delay:${i*.07}s`},d.name);
+      txt(s,{x:X0-14,y:y+17,'font-size':7.5,'font-weight':500,fill:FAINT,
+        'text-anchor':'end','letter-spacing':.04,class:'fade',
+        style:`animation-delay:${i*.07+.04}s`},d.n+'人');
+
+      el(s,'line',{x1:X0,y1:y+TICK_H+4,x2:X0+ROW_W,y2:y+TICK_H+4,stroke:GRID,'stroke-width':.5,
+        class:'fade',style:`animation-delay:${i*.07}s`});
+
+      for(let k=0;k<100;k++){
+        const x=X0+k*PX+PX/2;
+        const isInk=k<ticks;
+        const h=TICK_H-rnd(k+1,i+2)*7;
+        el(s,'line',{x1:x,y1:y+TICK_H+4,x2:x,y2:y+TICK_H+4-h,
+          stroke:isInk?INK:L[5],'stroke-width':.85,
+          opacity:isInk?.55+rnd(k+3,i+5)*.45:.5,
+          class:'fade',style:`animation-delay:${i*.07+k*.006}s`});
+      }
+
+      txt(s,{x:X0+ROW_W+14,y:y+8,'font-size':13,'font-weight':800,fill:INK,
+        class:'fade',style:`animation-delay:${.4+i*.07}s`},d.mean.toFixed(1));
+    });
+
+    txt(s,{x:W/2,y:H-14,'font-size':7.5,'font-weight':600,fill:FAINT,
+      'text-anchor':'middle','letter-spacing':.1,class:'fade',style:'animation-delay:1s'},
+      'ONE TICK = 1 POINT · DASHED LINE = COMPANY AVERAGE 85.3');
+  }
+
+  // ── 图2：Lollipop Deviation 全员得分 vs 部门均值 ──
+  function renderChart2(s){
+    const W=920,H=540;
+    const X0=130, X1=830;
+    const VMIN=40, VMAX=102;
+    const mapX=v=>X0+(v-VMIN)/(VMAX-VMIN)*(X1-X0);
+    const Y0=52, ROW_H=48, LABEL_GAP=15;
+
+    for(let v=40;v<=100;v+=10){
+      const x=mapX(v);
+      el(s,'line',{x1:x,y1:Y0-10,x2:x,y2:Y0+DEPTS.length*ROW_H-2,
+        stroke:v%20===0?GRID:'#ECEAE3','stroke-width':.5,class:'fade'});
+      txt(s,{x,y:Y0+DEPTS.length*ROW_H+10,'font-size':8,'font-weight':600,
+        fill:FAINT,'text-anchor':'middle',class:'fade'},v);
+    }
+    el(s,'line',{x1:X0,y1:Y0-10,x2:X1,y2:Y0-10,stroke:GRID,'stroke-width':.6,class:'fade'});
+
+    const coX=mapX(COMPANY_MEAN);
+    el(s,'line',{x1:coX,y1:Y0-10,x2:coX,y2:Y0+DEPTS.length*ROW_H-2,
+      stroke:MUTED,'stroke-width':.7,'stroke-dasharray':'3,3',
+      class:'fade',style:'animation-delay:.9s'});
+    txt(s,{x:coX,y:Y0-14,'font-size':7.5,'font-weight':600,fill:MUTED,
+      'text-anchor':'middle','letter-spacing':.03,class:'fade',style:'animation-delay:1s'},
+      '全公司均值 '+COMPANY_MEAN);
+
+    DEPTS.forEach((d,i)=>{
+      const y=Y0+i*ROW_H;
+      const meanX=mapX(d.mean);
+
+      txt(s,{x:X0-14,y:y+1,'font-size':10.5,'font-weight':700,fill:INK,
+        'text-anchor':'end',class:'fade',style:`animation-delay:${i*.06}s`},d.name);
+      txt(s,{x:X0-14,y:y+13,'font-size':7.5,'font-weight':500,fill:FAINT,
+        'text-anchor':'end','letter-spacing':.03,class:'fade',
+        style:`animation-delay:${i*.06+.03}s`},d.n+'人');
+
+      el(s,'line',{x1:X0,y1:y,x2:X1,y2:y,stroke:'#E8E7E0','stroke-width':.5,
+        class:'fade',style:`animation-delay:${i*.06}s`});
+
+      el(s,'line',{x1:meanX,y1:y-16,x2:meanX,y2:y+16,
+        stroke:INK,'stroke-width':1.6,class:'fade',
+        style:`animation-delay:${.1+i*.06}s`});
+
+      txt(s,{x:meanX,y:y-20,'font-size':8,'font-weight':700,fill:INK,
+        'text-anchor':'middle',class:'fade',style:`animation-delay:${.12+i*.06}s`},
+        d.mean.toFixed(1));
+
+      const sorted=[...d.people].sort((a,b)=>a.s-b.s);
+      sorted.forEach((p,j)=>{ p._above=(j%2===0); });
+
+      d.people.forEach((p,j)=>{
+        const cx=mapX(p.s);
+        const isAbove=p.s>=d.mean;
+        const r=4.2;
+        const lineY=p._above?y-6:y+6;
+        const labelY=p._above?y-LABEL_GAP:y+LABEL_GAP+2;
+
+        if(Math.abs(p.s-d.mean)>0.3){
+          el(s,'line',{x1:meanX,y1:y,x2:cx,y2:lineY,
+            stroke:L[4],'stroke-width':.8,class:'fade',
+            style:`animation-delay:${.15+i*.06+j*.03}s`});
+        }
+
+        el(s,'circle',{cx,cy:lineY,r,
+          fill:isAbove?INK:PAPER,
+          stroke:isAbove?INK:L[3],'stroke-width':isAbove?0:1.4,
+          class:'pop',style:`animation-delay:${.25+i*.06+j*.03}s`});
+
+        const labelText=p.n+' '+(p.s%1===0?p.s:p.s.toFixed(1));
+        txt(s,{x:cx,y:labelY,'font-size':7.2,'font-weight':600,
+          fill:isAbove?INK:MUTED,'text-anchor':'middle',
+          class:'fade',style:`animation-delay:${.3+i*.06+j*.03}s`},labelText);
+      });
+    });
+
+    txt(s,{x:(X0+X1)/2,y:H-12,'font-size':7.5,'font-weight':600,fill:FAINT,
+      'text-anchor':'middle','letter-spacing':.08,class:'fade'},
+      'PERFORMANCE SCORE →');
+
+    const legY=H-34;
+    el(s,'line',{x1:X0+6,y1:legY,x2:X0+22,y2:legY,stroke:INK,'stroke-width':1.6,class:'fade'});
+    txt(s,{x:X0+28,y:legY+3,'font-size':8,'font-weight':500,fill:MUTED,class:'fade'},'部门均值');
+    el(s,'circle',{cx:X0+100,cy:legY,r:4,fill:INK,class:'fade'});
+    txt(s,{x:X0+110,y:legY+3,'font-size':8,'font-weight':500,fill:MUTED,class:'fade'},'高于/等于部门均值');
+    el(s,'circle',{cx:X0+225,cy:legY,r:4,fill:PAPER,stroke:L[3],'stroke-width':1.4,class:'fade'});
+    txt(s,{x:X0+235,y:legY+3,'font-size':8,'font-weight':500,fill:MUTED,class:'fade'},'低于部门均值');
+  }
+
+  // ────────────────────────────────────────────
+  //  第二部分：教师出分率数据
+  // ────────────────────────────────────────────
+  const TEACHERS=[
+    {name:'姚老师',rate:68.29,finish:100,sessions:42,qualified:true,rank:1},
+    {name:'苏老师',rate:65.00,finish:100,sessions:40,qualified:true,rank:2},
+    {name:'姜老师',rate:75.00,finish:95, sessions:36,qualified:false,rank:null},
+  ];
+
+  function renderTeacher(s){
+    const W=820,H=340;
+    s.setAttribute('viewBox',`0 0 ${W} ${H}`);
+
+    const X0=120;
+    const ROW_W=560;
+    const PX=ROW_W/100;
+    const Y0=60;
+    const ROW_H=72;
+    const TICK_H=22;
+
+    TEACHERS.forEach((d,i)=>{
+      const y=Y0+i*ROW_H;
+      const ticks=Math.round(d.rate);
+      const inkColor=d.qualified?INK:L[3];
+      const faintColor=L[5];
+
+      const nameWeight=d.qualified?700:500;
+      const nameColor=d.qualified?INK:MUTED;
+      txt(s,{x:X0-14,y:y+4,'font-size':13,'font-weight':nameWeight,fill:nameColor,
+        'text-anchor':'end','letter-spacing':.02,class:'fade',
+        style:`animation-delay:${i*.1}s`},(d.rank===1?'👑':'')+d.name);
+
+      const metaColor=d.qualified?MUTED:L[4];
+      txt(s,{x:X0-14,y:y+20,'font-size':8.5,'font-weight':500,fill:metaColor,
+        'text-anchor':'end','letter-spacing':.04,class:'fade',
+        style:`animation-delay:${i*.1+.05}s`},
+        `完考率 ${d.finish}% · ${d.sessions}场`);
+
+      el(s,'line',{x1:X0,y1:y+TICK_H+6,x2:X0+ROW_W,y2:y+TICK_H+6,stroke:GRID,'stroke-width':.6,
+        class:'fade',style:`animation-delay:${i*.1}s`});
+
+      for(let k=0;k<100;k++){
+        const x=X0+k*PX+PX/2;
+        const isInk=k<ticks;
+        const h=TICK_H-(d.qualified?rnd(k+1,i+2)*8:rnd(k+1,i+4)*6);
+        const color=isInk?inkColor:faintColor;
+        const op=isInk?(d.qualified?.55+rnd(k+3,i+5)*.45:.35+rnd(k+3,i+6)*.3):.5;
+        el(s,'line',{x1:x,y1:y+TICK_H+6,x2:x,y2:y+TICK_H+6-h,stroke:color,'stroke-width':.9,
+          opacity:op,class:'fade',style:`animation-delay:${i*.1+k*.008}s`});
+        if(k%10===9){
+          el(s,'circle',{cx:x,cy:y+TICK_H+10,r:.8,fill:FAINT,
+            class:'fade',style:`animation-delay:${i*.1+k*.008}s`});
+        }
+      }
+
+      const rateColor=d.qualified?INK:MUTED;
+      txt(s,{x:X0+ROW_W+16,y:y+8,'font-size':15,'font-weight':800,fill:rateColor,
+        class:'fade',style:`animation-delay:${.4+i*.1}s`},
+        d.rate.toFixed(2)+'%');
+
+      if(d.qualified && d.rank){
+        txt(s,{x:X0+ROW_W+16,y:y+24,'font-size':9,'font-weight':600,fill:MUTED,
+          'letter-spacing':.06,class:'fade',style:`animation-delay:${.5+i*.1}s`},
+          d.rank===1?'达标 · 排名第 ①':'达标 · 排名第 ②');
+      } else if(!d.qualified){
+        const reasons=[];
+        if(d.finish<95)reasons.push('完考率<95%');
+        if(d.sessions<40)reasons.push('场次<40');
+        txt(s,{x:X0+ROW_W+16,y:y+24,'font-size':9,'font-weight':600,fill:L[4],
+          'letter-spacing':.04,class:'fade',style:`animation-delay:${.5+i*.1}s`},
+          '未入排名 · '+reasons.join('、'));
+      }
+    });
+
+    txt(s,{x:W/2,y:H-20,'font-size':7.5,'font-weight':600,fill:FAINT,
+      'text-anchor':'middle','letter-spacing':.12,class:'fade',style:'animation-delay:.9s'},
+      'ONE TICK = 1% · DOT MARKS EVERY 10 · INK = QUALIFIED, GREY = NOT QUALIFIED');
+  }
+
+  // ────────────────────────────────────────────
+  //  Reveal
+  // ────────────────────────────────────────────
+  function mount(id,fn){
+    const n=document.getElementById(id);
+    const go=()=>{n.innerHTML='';fn(n);};
+    const io=new IntersectionObserver(es=>{
+      if(es[0].isIntersecting){go();io.disconnect();}
+    },{threshold:.2});
+    io.observe(n);
+    n.style.cursor='pointer';
+    n.addEventListener('click',go);
+  }
+
+  mount('chart1',renderChart1);
+  mount('chart2',renderChart2);
+  mount('ch',renderTeacher);
+})();
+</script>
+</body>
+</html>
