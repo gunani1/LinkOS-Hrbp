@@ -55,8 +55,8 @@
   <div class="grid2">
 
     <div class="card">
-      <h2>姜老师出分率 75.00% 居首，全员未达 90% 奖金线</h2>
-      <div class="sub">奖金门槛：出分率 ≥90% · 发丝刻度每根 = 1% · 本期全员未达标，统一灰色显示 · 奖金基数 ¥1,000</div>
+      <h2>本期无人达标：姜老师出分率 75% 最高，距 90% 奖金线仍差 15 个百分点</h2>
+      <div class="sub">达标前提：完考率 ≥95% · 考试场次 ≥40 · 出分率 ≥90% · 发丝刻度每根 = 1% · 全部教师未达奖金标准 · 奖金基数 ¥1,000</div>
       <svg id="ch" viewBox="0 0 820 340"></svg>
       <div class="src">F5 TICK ROWS · 线下教师出分达标率排名 · 数据来源：教师绩效表</div>
     </div>
@@ -228,9 +228,9 @@
   //  第二部分：教师出分率数据
   // ────────────────────────────────────────────
   const TEACHERS=[
-    {name:'姜老师',rate:75.00,finish:95, sessions:36,qualified:false,rank:null},
-    {name:'姚老师',rate:68.89,finish:100,sessions:46,qualified:false,rank:null},
-    {name:'苏老师',rate:65.00,finish:100,sessions:40,qualified:false,rank:null},
+    {name:'姜老师',rate:75.00,finish:95, sessions:36,qualified:false},
+    {name:'姚老师',rate:68.89,finish:100,sessions:46,qualified:false},
+    {name:'苏老师',rate:65.00,finish:100,sessions:40,qualified:false},
   ];
 
   function renderTeacher(s){
@@ -247,17 +247,12 @@
     TEACHERS.forEach((d,i)=>{
       const y=Y0+i*ROW_H;
       const ticks=Math.round(d.rate);
-      const inkColor=d.qualified?INK:L[3];
-      const faintColor=L[5];
 
-      const nameWeight=d.qualified?700:500;
-      const nameColor=d.qualified?INK:MUTED;
-      txt(s,{x:X0-14,y:y+4,'font-size':13,'font-weight':nameWeight,fill:nameColor,
+      txt(s,{x:X0-14,y:y+4,'font-size':13,'font-weight':600,fill:MUTED,
         'text-anchor':'end','letter-spacing':.02,class:'fade',
-        style:`animation-delay:${i*.1}s`},(d.rank===1?'👑':'')+d.name);
+        style:`animation-delay:${i*.1}s`},d.name);
 
-      const metaColor=d.qualified?MUTED:L[4];
-      txt(s,{x:X0-14,y:y+20,'font-size':8.5,'font-weight':500,fill:metaColor,
+      txt(s,{x:X0-14,y:y+20,'font-size':8.5,'font-weight':500,fill:L[4],
         'text-anchor':'end','letter-spacing':.04,class:'fade',
         style:`animation-delay:${i*.1+.05}s`},
         `完考率 ${d.finish}% · ${d.sessions}场`);
@@ -268,9 +263,9 @@
       for(let k=0;k<100;k++){
         const x=X0+k*PX+PX/2;
         const isInk=k<ticks;
-        const h=TICK_H-(d.qualified?rnd(k+1,i+2)*8:rnd(k+1,i+4)*6);
-        const color=isInk?inkColor:faintColor;
-        const op=isInk?(d.qualified?.55+rnd(k+3,i+5)*.45:.35+rnd(k+3,i+6)*.3):.5;
+        const h=TICK_H-rnd(k+1,i+4)*6;
+        const color=isInk?L[3]:L[5];
+        const op=isInk?.35+rnd(k+3,i+6)*.3:.5;
         el(s,'line',{x1:x,y1:y+TICK_H+6,x2:x,y2:y+TICK_H+6-h,stroke:color,'stroke-width':.9,
           opacity:op,class:'fade',style:`animation-delay:${i*.1+k*.008}s`});
         if(k%10===9){
@@ -279,25 +274,30 @@
         }
       }
 
-      const rateColor=d.qualified?INK:MUTED;
-      txt(s,{x:X0+ROW_W+16,y:y+8,'font-size':15,'font-weight':800,fill:rateColor,
+      txt(s,{x:X0+ROW_W+16,y:y+8,'font-size':15,'font-weight':800,fill:MUTED,
         class:'fade',style:`animation-delay:${.4+i*.1}s`},
         d.rate.toFixed(2)+'%');
 
-      if(d.qualified && d.rank){
-        txt(s,{x:X0+ROW_W+16,y:y+24,'font-size':9,'font-weight':600,fill:MUTED,
-          'letter-spacing':.06,class:'fade',style:`animation-delay:${.5+i*.1}s`},
-          d.rank===1?'达标 · 排名第 ①':'达标 · 排名第 ②');
-      } else if(!d.qualified){
-        txt(s,{x:X0+ROW_W+16,y:y+24,'font-size':9,'font-weight':600,fill:L[4],
-          'letter-spacing':.04,class:'fade',style:`animation-delay:${.5+i*.1}s`},
-          '未达标 · 出分率<90%');
-      }
+      const reasons=[];
+      if(d.rate<90)reasons.push('出分率<90%');
+      if(d.finish<95)reasons.push('完考率<95%');
+      if(d.sessions<40)reasons.push('场次<40');
+      txt(s,{x:X0+ROW_W+16,y:y+24,'font-size':9,'font-weight':600,fill:L[4],
+        'letter-spacing':.04,class:'fade',style:`animation-delay:${.5+i*.1}s`},
+        '未达标 · '+reasons.join('、'));
     });
+
+    const bonusX=X0+90*PX+PX/2;
+    el(s,'line',{x1:bonusX,y1:Y0-14,x2:bonusX,y2:Y0+TEACHERS.length*ROW_H-10,
+      stroke:MUTED,'stroke-width':.8,'stroke-dasharray':'4,3',
+      class:'fade',style:'animation-delay:.8s'});
+    txt(s,{x:bonusX,y:Y0-20,'font-size':8,'font-weight':700,fill:MUTED,
+      'text-anchor':'middle','letter-spacing':.03,class:'fade',style:'animation-delay:.9s'},
+      '90% 奖金线');
 
     txt(s,{x:W/2,y:H-20,'font-size':7.5,'font-weight':600,fill:FAINT,
       'text-anchor':'middle','letter-spacing':.12,class:'fade',style:'animation-delay:.9s'},
-      'ONE TICK = 1% · DOT MARKS EVERY 10 · BONUS THRESHOLD = 90% · ALL BELOW THRESHOLD');
+      'ONE TICK = 1% · DOT MARKS EVERY 10 · DASHED LINE = 90% BONUS THRESHOLD · ALL TEACHERS NOT QUALIFIED');
   }
 
   // ────────────────────────────────────────────
