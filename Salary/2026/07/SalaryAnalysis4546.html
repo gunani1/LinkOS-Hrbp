@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>领客教育2023.07薪资分析（实发口径）·v4.3</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<style>
+:root{
+  --bg-0:#0a0e1a; --bg-1:#0f172a; --bg-2:#1e293b; --bg-3:#334155;
+  --line:#334155; --line-2:#475569;
+  --text-0:#f1f5f9; --text-1:#cbd5e1; --text-2:#94a3b8; --text-3:#64748b;
+  --accent:#3b82f6; --accent-2:#60a5fa; --accent-3:#93c5fd;
+  --ok:#10b981; --warn:#f59e0b; --bad:#ef4444; --info:#8b5cf6; --gold:#fbbf24;
+  --pink:#f472b6; --cyan:#06b6d4;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg-0);color:var(--text-0);padding:20px;min-height:100vh}
+.wrap{max-width:1480px;margin:0 auto}
+header{display:flex;justify-content:space-between;align-items:flex-end;padding:18px 22px;background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);border:1px solid var(--line);border-radius:10px;margin-bottom:18px;position:relative;overflow:hidden}
+header::before{content:"";position:absolute;top:-50%;right:-10%;width:300px;height:300px;background:radial-gradient(circle,rgba(59,130,246,.15) 0%,transparent 70%);pointer-events:none}
+header h1{font-size:22px;font-weight:600;background:linear-gradient(90deg,#60a5fa,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+header .sub{color:var(--text-2);font-size:12px;margin-top:6px}
+header .badge{display:inline-block;padding:3px 9px;border-radius:4px;background:rgba(16,185,129,.15);color:var(--ok);font-size:11px;margin-left:6px;border:1px solid rgba(16,185,129,.3)}
+
+.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:18px}
+.kpi{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid var(--line);border-radius:8px;padding:14px 16px;position:relative;overflow:hidden}
+.kpi::after{content:"";position:absolute;top:0;right:0;width:60px;height:60px;background:radial-gradient(circle,rgba(59,130,246,.1) 0%,transparent 70%);pointer-events:none}
+.kpi .label{font-size:11px;color:var(--text-2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.kpi .val{font-size:24px;font-weight:600;color:var(--text-0);line-height:1.1}
+.kpi .val small{font-size:13px;color:var(--text-2);font-weight:400;margin-left:3px}
+.kpi .delta{font-size:11px;color:var(--text-2);margin-top:4px}
+.kpi.accent .val{background:linear-gradient(90deg,#60a5fa,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+.update-bar{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.3);border-radius:6px;padding:10px 16px;margin-bottom:12px;display:flex;align-items:center;gap:10px;font-size:12px;color:var(--text-1)}
+.update-bar .ico{color:var(--ok);font-size:14px}
+
+.exclude-bar{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);border-radius:6px;padding:10px 16px;margin-bottom:18px;display:flex;align-items:center;gap:10px;font-size:12px;color:var(--text-1)}
+.exclude-bar .ico{color:var(--warn);font-size:14px}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px}
+.card{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid var(--line);border-radius:10px;padding:18px;position:relative;overflow:hidden}
+.card.full{grid-column:1/-1}
+.card-title{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px}
+.card-title h2{font-size:15px;font-weight:600;color:var(--text-0)}
+.card-title h2 .num{display:inline-block;width:20px;height:20px;line-height:20px;text-align:center;background:var(--accent);color:#fff;border-radius:4px;font-size:11px;margin-right:8px}
+.card-title .meta{font-size:11px;color:var(--text-3)}
+.card-desc{font-size:11px;color:var(--text-2);margin-bottom:12px}
+.card canvas{width:100%!important;max-height:340px}
+
+.legend-bar{display:flex;gap:14px;font-size:11px;color:var(--text-2);margin-top:8px;flex-wrap:wrap;justify-content:flex-end}
+.legend-bar .dot{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:middle}
+
+footer{text-align:center;color:var(--text-3);font-size:11px;padding:16px 0 6px;border-top:1px solid var(--line);margin-top:18px}
+footer .src{color:var(--text-2)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>领客教育2023.07薪资分析看板 <span class="badge">v4.3 · 实发工资口径</span></h1>
+      <div class="sub">源数据：<code style="color:var(--text-1)">工资发放明细表_2023.07.xlsx（更新版）</code> · 维度：11个部门 + 个人TOP20 · 口径：<strong style="color:var(--ok)">实发工资</strong>（扣除社保个人部分+个税后）</div>
+    </div>
+    <div style="text-align:right;font-size:11px;color:var(--text-3)">生成于 2026-08-17<br>HRBP·佑安出品</div>
+  </header>
+
+  <div class="kpi-row">
+    <div class="kpi accent"><div class="label">总人数</div><div class="val">40<small>人</small></div><div class="delta">剔除3位经理</div></div>
+    <div class="kpi"><div class="label">实发总额</div><div class="val">¥35.16<small>万</small></div><div class="delta">应发¥37.07万</div></div>
+    <div class="kpi"><div class="label">实发人均</div><div class="val">¥8,789</div><div class="delta">↓较应发 -¥479</div></div>
+    <div class="kpi"><div class="label">实发占比</div><div class="val">94.83<small>%</small></div><div class="delta">扣社保个税</div></div>
+    <div class="kpi"><div class="label">五险一金+个税</div><div class="val">¥1.92<small>万</small></div><div class="delta">人均¥479</div></div>
+  </div>
+
+  <div class="grid">
+    <!-- 图1：部门实发占比饼图 -->
+    <div class="card">
+      <div class="card-title">
+        <h2><span class="num">1</span>各部门实发占比饼图</h2>
+        <div class="meta">按部门实发合计 · 11个部门</div>
+      </div>
+      <div class="card-desc">11个部门（含"未分类"）· 颜色：≥10%主色蓝/紫，<10%灰系</div>
+      <canvas id="c1"></canvas>
+      <div class="legend-bar">
+        <span><span class="dot" style="background:var(--accent)"></span>主部门（≥10%）</span>
+        <span><span class="dot" style="background:var(--bg-3)"></span>次部门（<10%）</span>
+      </div>
+    </div>
+
+    <!-- 图2：部门总实发vs人均实发对比柱状图 -->
+    <div class="card">
+      <div class="card-title">
+        <h2><span class="num">2</span>部门总实发vs人均实发对比柱状图</h2>
+        <div class="meta">双轴：部门总实发（左）+ 部门人均实发（右）· 11个部门</div>
+      </div>
+      <div class="card-desc">左轴：部门实发总额（蓝）· 右轴：部门人均实发（紫）· 红色虚线：全员人均实发¥8,789</div>
+      <canvas id="c2"></canvas>
+      <div class="legend-bar">
+        <span><span class="dot" style="background:var(--accent)"></span>部门实发总额（左轴）</span>
+        <span><span class="dot" style="background:var(--info)"></span>部门人均实发（右轴）</span>
+        <span><span class="dot" style="background:var(--bad)"></span>全员人均实发 ¥8,789</span>
+      </div>
+    </div>
+
+    <!-- 图3：个人实发前20柱状图 -->
+    <div class="card full">
+      <div class="card-title">
+        <h2><span class="num">3</span>个人实发前20柱状图（基层员工主导）</h2>
+        <div class="meta">按个人实发降序 · TOP20/40人</div>
+      </div>
+      <div class="card-desc">横轴：人员姓名（岗位）· 竖轴：实发金额 · 红色虚线：全员人均实发¥8,789 · 颜色：教师部=蓝/销售部=紫/研发部=金/其他=灰</div>
+      <canvas id="c3"></canvas>
+      <div class="legend-bar">
+        <span><span class="dot" style="background:var(--accent)"></span>教师部</span>
+        <span><span class="dot" style="background:var(--info)"></span>销售部</span>
+        <span><span class="dot" style="background:var(--gold)"></span>研发部</span>
+        <span><span class="dot" style="background:var(--cyan)"></span>运营/淘宝/技术</span>
+        <span><span class="dot" style="background:var(--bg-3)"></span>其他</span>
+        <span><span class="dot" style="background:var(--bad)"></span>全员人均实发 ¥8,789</span>
+      </div>
+    </div>
+
+    <!-- 图4：部门平均实发柱状图（按平均降序） -->
+    <div class="card full">
+      <div class="card-title">
+        <h2><span class="num">4</span>各部门平均实发柱状图</h2>
+        <div class="meta">按部门平均实发降序 · 11个部门</div>
+      </div>
+      <div class="card-desc">横轴部门 · 竖轴平均实发金额 · 红色虚线=全员人均实发¥8,789 · ≥人均=蓝紫，&lt;人均=灰</div>
+      <canvas id="c4"></canvas>
+      <div class="legend-bar">
+        <span><span class="dot" style="background:var(--accent)"></span>部门平均实发</span>
+        <span><span class="dot" style="background:var(--bad)"></span>全员人均实发 ¥8,789</span>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="src">源：2023.07工资发放明细表（更新版）· 口径：实发工资（扣社保个人部分+个税）· 排除：谢蓉/谢超/张朋（3位经理）</div>
+    <div style="margin-top:4px">仅供参考不构成法律意见 · 实发=应发-社保个人部分-个税 · 公式：占比=部门实发合计÷40人实发总额 · 均=部门实发合计÷部门人数</div>
+  </footer>
+
+  <div class="exclude-bar" style="margin-top:12px">
+    <span class="ico">⚠</span>
+    <span>排除规则：已剔除<strong style="color:var(--warn)">谢蓉（产品部经理¥5,450）、谢超（总经办经理¥10,450）、张朋（产品部经理¥8,417）</strong>3位管理层，<strong>经理岗位仅保留陈天琪（总经办¥4,778实发）</strong>。TOP20中<strong style="color:var(--ok)">18/20为基层员工</strong>。</span>
+  </div>
+</div>
+
+<script>
+Chart.register(ChartDataLabels);
+
+// ===== 数据（v4.3 · 实发口径） =====
+const totalCnt = 40, totalSum = 351566.92, avg = 8789.17;
+
+// 部门聚合（按实发总额降序）
+const deptNames = ["教师部", "社群运营部", "销售部", "运营部", "研发部", "总经办", "技术部", "设计部", "财务部", "淘宝运营部", "未分类"];
+const deptSums  = [113077.50, 56760.23, 39534.16, 34800.65, 30692.94, 17688.41, 16576.47, 16029.41, 14612.94, 11294.21, 500.00];
+const deptAvgs  = [14134.69, 6306.69, 9883.54, 6960.13, 10230.98, 5896.14, 16576.47, 5343.14, 7306.47, 11294.21, 500.00];
+const deptCnts  = [8, 9, 4, 5, 3, 3, 1, 3, 2, 1, 1];
+const deptPcts  = [32.2, 16.1, 11.2, 9.9, 8.7, 5.0, 4.7, 4.6, 4.2, 3.2, 0.1];
+
+// TOP20个人（按实发降序）+ 所属部门（用于配色）
+const top20 = [
+  {name:"姚冯胜", pos:"线下老师",   dept:"教师部",     yf:26176.47},
+  {name:"姜澎浩", pos:"线下老师",   dept:"教师部",     yf:24576.47},
+  {name:"苏大龙", pos:"线下老师",   dept:"教师部",     yf:22926.47},
+  {name:"建碧涛", pos:"技术主管",   dept:"研发部",     yf:17446.47},
+  {name:"王旭",   pos:"考试技术",   dept:"技术部",     yf:16576.47},
+  {name:"宣佑桥", pos:"后期老师",   dept:"教师部",     yf:16571.47},
+  {name:"陈柯臻", pos:"销售",       dept:"销售部",     yf:14316.60},
+  {name:"常艺凡", pos:"销售",       dept:"销售部",     yf:14209.18},
+  {name:"陈奕恺", pos:"淘宝运营",   dept:"淘宝运营部", yf:11294.21},
+  {name:"黄成",   pos:"社群运营",   dept:"社群运营部", yf:10623.92},
+  {name:"阮丹霞", pos:"小红书主管", dept:"运营部",     yf:10372.46},
+  {name:"周涛",   pos:"AI技术专员", dept:"研发部",     yf:9346.47},
+  {name:"陈昱冰", pos:"口写老师",   dept:"教师部",     yf:8526.47},
+  {name:"冯淑乐", pos:"财务",       dept:"财务部",     yf:8506.47},
+  {name:"韩冰",   pos:"社群运营",   dept:"社群运营部", yf:8355.89},
+  {name:"李雨婷", pos:"总助",       dept:"总经办",     yf:8156.47},
+  {name:"李子晴", pos:"产品助理",   dept:"教师部",     yf:7695.88},
+  {name:"叶文乐", pos:"社群运营",   dept:"社群运营部", yf:7430.00},
+  {name:"孙晓丹", pos:"社群运营",   dept:"社群运营部", yf:6938.11},
+  {name:"董文昊", pos:"美工",       dept:"设计部",     yf:6756.47},
+];
+const top20Names = top20.map(p => `${p.name}(${p.pos})`);
+const top20Yf = top20.map(p => p.yf);
+
+// 部门配色映射
+const deptColor = {
+  '教师部':     '#3b82f6',
+  '销售部':     '#8b5cf6',
+  '研发部':     '#fbbf24',
+  '社群运营部': '#06b6d4',
+  '运营部':     '#06b6d4',
+  '淘宝运营部': '#06b6d4',
+  '技术部':     '#06b6d4',
+  '财务部':     '#475569',
+  '设计部':     '#475569',
+  '总经办':     '#475569',
+  '未分类':     '#475569',
+};
+const top20Colors = top20.map(p => deptColor[p.dept] || '#475569');
+
+// ===== 公共样式 =====
+const commonOpts = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: { labels: { color: '#cbd5e1', font: { size: 11 } } },
+    tooltip: {
+      backgroundColor: 'rgba(15,23,42,0.95)', borderColor: '#334155', borderWidth: 1,
+      titleColor: '#f1f5f9', bodyColor: '#cbd5e1', padding: 10, cornerRadius: 6, displayColors: true
+    },
+    datalabels: { color: '#f1f5f9', font: { weight: '600', size: 10 }, anchor: 'end', align: 'end', offset: 2, formatter: (v) => v }
+  }
+};
+
+// ===== 图1：部门实发占比饼图 =====
+new Chart(document.getElementById('c1'), {
+  type: 'doughnut',
+  data: {
+    labels: deptNames.map((n,i) => `${n} (n=${deptCnts[i]})`),
+    datasets: [{
+      data: deptPcts,
+      backgroundColor: ['#3b82f6','#60a5fa','#8b5cf6','#a78bfa','#06b6d4','#f59e0b','#0ea5e9','#475569','#64748b','#64748b','#94a3b8'],
+      borderColor: '#0a0e1a',
+      borderWidth: 2,
+      hoverOffset: 10
+    }]
+  },
+  options: {
+    ...commonOpts,
+    cutout: '55%',
+    plugins: {
+      ...commonOpts.plugins,
+      legend: { position: 'right', labels: { color: '#cbd5e1', font: { size: 11 }, padding: 8, boxWidth: 12, boxHeight: 12 } },
+      datalabels: {
+        color: '#f1f5f9', font: { weight: '700', size: 11 },
+        formatter: (v, ctx) => v >= 4 ? v.toFixed(1) + '%' : '',
+        anchor: 'center', align: 'center'
+      }
+    }
+  }
+});
+
+// ===== 图2：部门总实发vs人均实发对比柱状图 =====
+const maxSum = Math.max(...deptSums) * 1.15;
+new Chart(document.getElementById('c2'), {
+  type: 'bar',
+  data: {
+    labels: deptNames.map((n,i) => `${n}\n(n=${deptCnts[i]})`),
+    datasets: [
+      {
+        label: '部门实发总额',
+        data: deptSums,
+        backgroundColor: 'rgba(59,130,246,0.85)',
+        borderColor: '#3b82f6',
+        borderWidth: 1,
+        borderRadius: 3,
+        yAxisID: 'y',
+        order: 2
+      },
+      {
+        label: '部门人均实发',
+        data: deptAvgs,
+        backgroundColor: 'rgba(139,92,246,0.85)',
+        borderColor: '#8b5cf6',
+        borderWidth: 1,
+        borderRadius: 3,
+        yAxisID: 'y1',
+        order: 2
+      },
+      {
+        label: '全员人均实发 ¥8,789',
+        data: Array(deptNames.length).fill(avg),
+        type: 'line',
+        borderColor: '#ef4444',
+        borderWidth: 1.5,
+        borderDash: [6,4],
+        pointRadius: 0,
+        yAxisID: 'y1',
+        order: 1,
+        datalabels: { display: false }
+      }
+    ]
+  },
+  options: {
+    ...commonOpts,
+    scales: {
+      x: { ticks: { color: '#94a3b8', font: { size: 10 }, maxRotation: 30, minRotation: 0 }, grid: { display: false }, border: { color: '#334155' } },
+      y: { position: 'left', beginAtZero: true, max: maxSum, ticks: { color: '#60a5fa', font: { size: 10 }, callback: v => '¥' + (v/10000).toFixed(1) + '万' }, grid: { color: 'rgba(51,65,85,0.4)' }, border: { color: '#334155' }, title: { display: true, text: '部门实发总额', color: '#60a5fa', font: { size: 11, weight: '600' } } },
+      y1: { position: 'right', beginAtZero: true, max: 20000, ticks: { color: '#a78bfa', font: { size: 10 }, callback: v => '¥' + (v/1000).toFixed(0) + 'K' }, grid: { display: false }, border: { color: '#334155' }, title: { display: true, text: '部门人均实发', color: '#a78bfa', font: { size: 11, weight: '600' } } }
+    },
+    plugins: {
+      ...commonOpts.plugins,
+      legend: { position: 'top', labels: { color: '#cbd5e1', font: { size: 11 }, padding: 10, boxWidth: 14 } },
+      datalabels: {
+        display: (ctx) => ctx.datasetIndex < 2,
+        color: (ctx) => ctx.datasetIndex === 0 ? '#60a5fa' : '#a78bfa',
+        font: { weight: '600', size: 9 },
+        anchor: 'end', align: 'end', offset: 2,
+        formatter: (v) => '¥' + (v/1000).toFixed(1) + 'K'
+      }
+    }
+  }
+});
+
+// ===== 图3：个人实发前20柱状图 =====
+new Chart(document.getElementById('c3'), {
+  type: 'bar',
+  data: {
+    labels: top20Names,
+    datasets: [
+      {
+        label: '实发工资',
+        data: top20Yf,
+        backgroundColor: top20Colors,
+        borderColor: top20Colors,
+        borderWidth: 1,
+        borderRadius: 3,
+        order: 2
+      },
+      {
+        label: '全员人均实发 ¥8,789',
+        data: Array(top20Names.length).fill(avg),
+        type: 'line',
+        borderColor: '#ef4444',
+        borderWidth: 1.5,
+        borderDash: [6,4],
+        pointRadius: 0,
+        order: 1,
+        datalabels: { display: false }
+      }
+    ]
+  },
+  options: {
+    ...commonOpts,
+    indexAxis: 'x',
+    scales: {
+      x: { ticks: { color: '#cbd5e1', font: { size: 9 }, maxRotation: 45, minRotation: 30 }, grid: { display: false }, border: { color: '#334155' } },
+      y: { beginAtZero: true, max: 30000, ticks: { color: '#94a3b8', font: { size: 10 }, callback: v => '¥' + (v/1000).toFixed(0) + 'K' }, grid: { color: 'rgba(51,65,85,0.4)' }, border: { color: '#334155' }, title: { display: true, text: '个人实发金额', color: '#cbd5e1', font: { size: 11, weight: '600' } } }
+    },
+    plugins: {
+      ...commonOpts.plugins,
+      legend: { position: 'top', labels: { color: '#cbd5e1', font: { size: 11 }, padding: 10, boxWidth: 14 } },
+      datalabels: {
+        display: (ctx) => ctx.datasetIndex === 0,
+        color: (ctx) => deptColor[top20[ctx.dataIndex].dept] || '#cbd5e1',
+        font: { weight: '600', size: 9 },
+        anchor: 'end', align: 'end', offset: 2,
+        formatter: (v) => '¥' + (v/1000).toFixed(1) + 'K'
+      },
+      tooltip: {
+        ...commonOpts.plugins.tooltip,
+        callbacks: {
+          title: (items) => top20[items[0].dataIndex].name,
+          label: (ctx) => {
+            const p = top20[ctx.dataIndex];
+            return [
+              `岗位: ${p.pos}`,
+              `部门: ${p.dept}`,
+              `实发: ¥${p.yf.toLocaleString()}`
+            ];
+          }
+        }
+      }
+    }
+  }
+});
+
+// ===== 图4：部门平均实发柱状图 =====
+const avgColors = deptAvgs.map(v => v >= avg ? '#3b82f6' : '#475569');
+const avgBorders = deptAvgs.map(v => v >= avg ? '#60a5fa' : '#64748b');
+new Chart(document.getElementById('c4'), {
+  type: 'bar',
+  data: {
+    labels: deptNames.map((n,i) => `${n} (n=${deptCnts[i]})`),
+    datasets: [
+      {
+        label: '部门平均实发',
+        data: deptAvgs,
+        backgroundColor: avgColors,
+        borderColor: avgBorders,
+        borderWidth: 1,
+        borderRadius: 3,
+        order: 2
+      },
+      {
+        label: '全员人均实发 ¥8,789',
+        data: Array(deptNames.length).fill(avg),
+        type: 'line',
+        borderColor: '#ef4444',
+        borderWidth: 1.5,
+        borderDash: [6,4],
+        pointRadius: 0,
+        order: 1,
+        datalabels: { display: false }
+      }
+    ]
+  },
+  options: {
+    ...commonOpts,
+    scales: {
+      x: { ticks: { color: '#94a3b8', font: { size: 10 }, maxRotation: 30, minRotation: 0 }, grid: { display: false }, border: { color: '#334155' } },
+      y: { beginAtZero: true, max: 20000, ticks: { color: '#94a3b8', font: { size: 10 }, callback: v => '¥' + (v/1000).toFixed(0) + 'K' }, grid: { color: 'rgba(51,65,85,0.4)' }, border: { color: '#334155' }, title: { display: true, text: '部门平均实发金额', color: '#cbd5e1', font: { size: 11, weight: '600' } } }
+    },
+    plugins: {
+      ...commonOpts.plugins,
+      legend: { position: 'top', labels: { color: '#cbd5e1', font: { size: 11 }, padding: 10, boxWidth: 14 } },
+      datalabels: {
+        display: (ctx) => ctx.datasetIndex === 0,
+        color: (ctx) => deptAvgs[ctx.dataIndex] >= avg ? '#60a5fa' : '#94a3b8',
+        font: { weight: '600', size: 10 },
+        anchor: 'end', align: 'end', offset: 2,
+        formatter: (v) => '¥' + (v/1000).toFixed(1) + 'K'
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>
