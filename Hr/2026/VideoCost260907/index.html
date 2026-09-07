@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Presentation</title>
+    <script type="module" crossorigin src="./assets/index-CHuFfPNK.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-D-wUWcb_.css">
+  <style>
+#gate{position:fixed;inset:0;background:#0a0a0a;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;z-index:9999;font-family:-apple-system,"Noto Sans SC",sans-serif}
+#gate p{color:#a8a8a8;font-size:18px;letter-spacing:.1em;margin:0}
+#gate input{background:transparent;border:none;border-bottom:2px solid #002fa7;color:#fafaf8;font-size:32px;text-align:center;outline:none;width:260px;padding:8px;letter-spacing:.3em}
+#gate input::placeholder{color:#555}
+#gate b{color:#c0392b;font-size:15px;font-weight:400;min-height:20px}
+</style>
+<div id="gate"><p>视频成本演示 · 输入访问密码</p><input id="gk" type="password" placeholder="PASSWORD" autocomplete="off"/><b id="gerr"></b></div>
+<script>
+(function(){var P="260907";var g=document.getElementById("gate"),k=document.getElementById("gk"),e=document.getElementById("gerr");
+function tryUnlock(){if(k.value===P){g.remove();sessionStorage.setItem("vc_ok","1")}else{e.textContent="密码不对"}}
+k.addEventListener("keydown",function(ev){if(ev.key==="Enter")tryUnlock()});
+if(sessionStorage.getItem("vc_ok")==="1"){g.remove()}else{k.focus()}})();
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
