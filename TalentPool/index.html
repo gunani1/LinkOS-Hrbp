@@ -262,19 +262,20 @@ function renderPosTabs(){
 }
 
 /* shade badge by fit */
-function fitLightness(f){ if(f>=8.5)return INK; if(f>=8)return '#3D3C37'; return '#6A6963'; }
+function fitLightness(f){ if(f==null)return '#B0AFA9'; if(f>=8.5)return INK; if(f>=8)return '#3D3C37'; return '#6A6963'; }
 
 /* ── KPI ── */
 function renderKPI(){
-  const n=CANDS.length, avg=n?CANDS.reduce((a,c)=>a+c.fit,0)/n:0;
+  const n=CANDS.length, rated=CANDS.filter(c=>c.fit!=null);
+  const avg=rated.length?rated.reduce((a,c)=>a+c.fit,0)/rated.length:0;
   const high=CANDS.filter(c=>c.fit>=8.5).length;
   const inStage=CANDS.filter(c=>!['淘汰','已入职'].includes(c.status)).length;
-  const firsts=CANDS.filter(c=>c.interviewOrder<=3).length;
+  const passTwo=CANDS.filter(c=>c.status==='技术二筛').length;
   const items=[
-    [n,'','在库候选人'],
+    [n,'','初筛总人数'],
     [avg.toFixed(1),'','平均适配分'],
     [high,'人','高适配 ≥8.5'],
-    [inStage,'人','在流程中'],
+    [passTwo,'人','进入技术二筛'],
     [POSITIONS.length,'个','招聘岗位'],
   ];
   document.getElementById('kpis').innerHTML=items.map(([v,u,l])=>
@@ -323,17 +324,20 @@ function renderFunnel(){
 /* ── distribution chart ── */
 function renderDist(){
   const s=document.getElementById('distChart'); s.innerHTML='';
-  const bins=[['7.0–7.5',c=>c.fit>=7&&c.fit<7.5],['7.5–8.0',c=>c.fit>=7.5&&c.fit<8],
-              ['8.0–8.5',c=>c.fit>=8&&c.fit<8.5],['8.5–9.0',c=>c.fit>=8.5&&c.fit<9],['9.0–10',c=>c.fit>=9]];
-  const X0=44,base=118,top=26,bw=48,gap=12;
-  const fitCounts=bins.map(([l,f])=>CANDS.filter(f).length);
-  const fmax=Math.max(2,...fitCounts);
-  txt(s,{x:X0,y:14,'font-size':8.5,'font-weight':800,fill:MUTED},'适配分');
-  fitCounts.forEach((v,i)=>{
-    const x=X0+i*(bw+gap), h=v/fmax*(base-top);
-    el(s,'rect',{x,y:base-h,width:bw,height:h,rx:5,fill: i>=3?INK:'#84837C'});
-    if(v)txt(s,{x:x+bw/2,y:base-h-4,'font-size':10,'font-weight':800,fill:INK,'text-anchor':'middle'},v);
-    txt(s,{x:x+bw/2,y:base+12,'font-size':7.5,'font-weight':600,fill:MUTED,'text-anchor':'middle'},bins[i][0]);
+  const buckets=[['<8 分',c=>c.fit!=null&&c.fit<8,'#84837C'],
+                 ['8.0–8.4',c=>c.fit>=8&&c.fit<8.5,'#5A5953'],
+                 ['8.5–8.9',c=>c.fit>=8.5&&c.fit<9,INK],
+                 ['9 分+',c=>c.fit>=9,INK],
+                 ['无法评估',c=>c.fit==null,'#C6C5BF']];
+  const X0=34,base=118,top=26,bw=52,gap=10;
+  const counts=buckets.map(([l,f])=>CANDS.filter(f).length);
+  const fmax=Math.max(2,...counts);
+  txt(s,{x:X0,y:14,'font-size':8.5,'font-weight':800,fill:MUTED},'适配分档位（人数）');
+  counts.forEach((v,i)=>{
+    const x=X0+i*(bw+gap), hh=v/fmax*(base-top);
+    el(s,'rect',{x,y:base-hh,width:bw,height:hh,rx:5,fill:buckets[i][2]});
+    if(v)txt(s,{x:x+bw/2,y:base-hh-4,'font-size':10,'font-weight':800,fill:INK,'text-anchor':'middle'},v);
+    txt(s,{x:x+bw/2,y:base+12,'font-size':7.5,'font-weight':600,fill:MUTED,'text-anchor':'middle'},buckets[i][0]);
   });
   el(s,'line',{x1:X0-6,y1:base,x2:X0+5*(bw+gap),y2:base,stroke:GRID,'stroke-width':1});
   const ybins=[['1–3年',c=>c.years<=3],['4–7年',c=>c.years>=4&&c.years<=7],['8年+',c=>c.years>=8]];
@@ -342,9 +346,9 @@ function renderDist(){
   const ymax=Math.max(2,...yCounts);
   txt(s,{x:yX0,y:142,'font-size':8.5,'font-weight':800,fill:MUTED},'经验年限');
   yCounts.forEach((v,i)=>{
-    const x=yX0+i*(ybw+ygap),h=v/ymax*(ybase-ytop);
-    el(s,'rect',{x,y:ybase-h,width:ybw,height:h,rx:5,fill:'#6A6963'});
-    if(v)txt(s,{x:x+ybw/2,y:ybase-h-4,'font-size':10,'font-weight':800,fill:INK,'text-anchor':'middle'},v);
+    const x=yX0+i*(ybw+ygap),hh=v/ymax*(ybase-ytop);
+    el(s,'rect',{x,y:ybase-hh,width:ybw,height:hh,rx:5,fill:'#6A6963'});
+    if(v)txt(s,{x:x+ybw/2,y:ybase-hh-4,'font-size':10,'font-weight':800,fill:INK,'text-anchor':'middle'},v);
     txt(s,{x:x+ybw/2,y:ybase+12,'font-size':8,'font-weight':600,fill:MUTED,'text-anchor':'middle'},ybins[i][0]);
   });
   el(s,'line',{x1:yX0-6,y1:ybase,x2:yX0+3*(ybw+ygap),y2:ybase,stroke:GRID,'stroke-width':1});
@@ -370,7 +374,8 @@ function filtered(){
   if(state.tags.size)a=a.filter(c=>[...state.tags].every(t=>c.tags.includes(t)));
   if(state.search){const q=state.search.toLowerCase();
     a=a.filter(c=>(c.name+c.company+c.highlight+c.tags.join('')).toLowerCase().includes(q));}
-  a.sort((x,y)=>state.sort==='fit'?y.fit-x.fit:state.sort==='years'?y.years-x.years:x.interviewOrder-y.interviewOrder);
+  const fv=x=>x.fit==null?-1:x.fit;
+  a.sort((x,y)=>state.sort==='fit'?fv(y)-fv(x):state.sort==='years'?y.years-x.years:x.interviewOrder-y.interviewOrder);
   return a;
 }
 
@@ -386,12 +391,12 @@ function renderGrid(){
       <div class="pickbox">${state.picked.has(c.id)?'✓':''}</div>
       <div class="top">
         <div class="avatar">${c.name[0]}</div>
-        <div class="fit-badge"><div class="num" style="color:${fitLightness(c.fit)}">${c.fit.toFixed(1)}</div><div class="lb">适配分</div></div>
+        <div class="fit-badge"><div class="num" style="color:${fitLightness(c.fit)}">${c.fit==null?"—":c.fit.toFixed(1)}</div><div class="lb">适配分</div></div>
       </div>
       <h4>${c.name}</h4>
       <div class="yr">${c.yearsText}经验</div>
       ${state.pos==='__all__'?`<span class="pchip">${plabel.short||plabel.title}</span>`:''}
-      <div class="co">${c.company}</div>
+      <div class="co">${c.company||'待核实'}</div>
       <div class="mini-tags">${c.tags.slice(0,3).map(t=>`<span class="mt">${t}</span>`).join('')}</div>
     </div>`;}).join('');
   document.querySelectorAll('.ccard').forEach(card=>{
@@ -410,6 +415,7 @@ function togglePick(id){
     if(state.picked.size>=4){alert('最多对比 4 人');return;}
     // 跨岗位不允许雷达对比
     const c=ALL_CANDS.find(x=>x.id===id);
+    if(!c.scores){alert('该候选人暂无六维评分，无法对比');return;}
     if(state.picked.size){
       const first=ALL_CANDS.find(x=>x.id===[...state.picked][0]);
       if(first.positionKey!==c.positionKey){alert('六维口径按岗位定义，请在同一岗位内对比');return;}
@@ -503,19 +509,19 @@ function openDrawer(id){
     <button class="d-close" id="dClose">✕</button>
     <div class="d-head">
       <div class="avatar">${c.name[0]}</div>
-      <div><h2>${c.name}</h2><div class="yr">${c.yearsText}经验 · ${c.company.split('·')[0]}</div></div>
+      <div><h2>${c.name}</h2><div class="yr">${c.yearsText}经验 · ${(c.company||'待核实').split('·')[0]}</div></div>
     </div>
     <div style="margin:2px 0 12px"><span class="pchip">${pobj.short||pobj.title}</span></div>
     <div class="d-status"><span class="st">${c.status}</span>${c.note?` · <span style="font-size:11px;color:#8F8E88;font-weight:600">${c.note}</span>`:''}</div>
     <div class="d-actions">
-      <a class="btn primary" href="${cdnBase(c)}${encodeURIComponent(c.resume)}" target="_blank" rel="noopener">📄 打开完整简历</a>
-      <button class="btn outline" id="dPick">${state.picked.has(c.id)?'✓ 已加入对比':'+ 加入对比'}</button>
+      ${c.resume?`<a class="btn primary" href="${cdnBase(c)}${encodeURIComponent(c.resume)}" target="_blank" rel="noopener">📄 打开完整简历</a>`:`<span class="btn" style="background:#ECEAE3;color:#8F8E88;cursor:default">📄 简历待补</span>`}
+      <button class="btn outline" id="dPick" ${c.scores?'':'style="opacity:.45"'}>${state.picked.has(c.id)?'✓ 已加入对比':(c.scores?'+ 加入对比':'暂无六维评分')}</button>
     </div>
     <div class="d-block">
       <h5>核心亮点</h5><p>${c.highlight}</p>
     </div>
     <div class="d-block">
-      <h5>JD 六维评分</h5>${radarSVG([c.id],300)}
+      <h5>JD 六维评分</h5>${c.scores?radarSVG([c.id],300):'<div class="risk">该候选人暂未完成六维评估</div>'}
     </div>
     <div class="d-block">
       <h5>技能标签</h5><div class="d-tags">${c.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
@@ -524,9 +530,9 @@ function openDrawer(id){
       <h5>基本信息</h5>
       <div class="info-grid">
         <div class="info"><div class="k">原任 / 方向</div><div class="val" style="font-size:12px">${c.company}</div></div>
-        <div class="info"><div class="k">教育背景</div><div class="val" style="font-size:12px">${c.education}</div></div>
-        <div class="info"><div class="k">适配分</div><div class="val">${c.fit.toFixed(1)} / 10</div></div>
-        <div class="info"><div class="k">建议面试顺序</div><div class="val">第 ${c.interviewOrder} 位</div></div>
+        <div class="info"><div class="k">教育背景</div><div class="val" style="font-size:12px">${c.education||'待核实'}</div></div>
+        <div class="info"><div class="k">适配分</div><div class="val">${c.fit==null?'无法评估':c.fit.toFixed(1)+' / 10'}</div></div>
+        <div class="info"><div class="k">建议面试顺序</div><div class="val">${c.interviewOrder?'第 '+c.interviewOrder+' 位':'待二筛后排序'}</div></div>
       </div>
     </div>
     <div class="d-block">
