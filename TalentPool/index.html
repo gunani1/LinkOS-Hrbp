@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>FDE 人才库 · LinkOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F0EFEB;--ink:#1C1C1A;--muted:#8F8E88;--faint:#C6C5BF;--grid:#DEDDD6;--card:#FFFFFF}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);font-family:'Inter','Noto Sans SC',sans-serif;color:var(--ink);
+  -webkit-font-smoothing:antialiased;line-height:1.5}
+.wrap{max-width:1180px;margin:0 auto;padding:32px 24px 80px}
+/* header */
+header.masthead{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;margin-bottom:24px}
+.masthead .kicker{font-size:10px;font-weight:700;letter-spacing:.18em;color:var(--muted);text-transform:uppercase}
+.masthead h1{font-size:26px;font-weight:800;letter-spacing:-.02em;margin-top:4px}
+.masthead .meta{font-size:11.5px;color:var(--muted);text-align:right;line-height:1.7}
+/* KPI row */
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:26px}
+.kpi{background:#fff;border-radius:18px;padding:18px 18px 16px}
+.kpi .v{font-size:28px;font-weight:800;letter-spacing:-.02em}
+.kpi .v small{font-size:14px;font-weight:700;color:var(--muted)}
+.kpi .l{font-size:10.5px;font-weight:600;color:var(--muted);margin-top:3px;letter-spacing:.02em}
+/* section titles */
+.sec-title{font-size:13px;font-weight:800;letter-spacing:.02em;margin:6px 0 12px;display:flex;align-items:center;gap:8px}
+.sec-title::before{content:'';width:14px;height:2px;background:var(--ink)}
+/* charts row (pipeline + distribution) */
+.charts-row{display:grid;grid-template-columns:1.35fr 1fr;gap:14px;margin-bottom:28px}
+.panel{background:#fff;border-radius:18px;padding:20px}
+.panel h3{font-size:12.5px;font-weight:800;margin-bottom:2px}
+.panel .psub{font-size:10px;color:var(--muted);margin-bottom:14px}
+svg{display:block}
+svg text{font-family:'Inter','Noto Sans SC',sans-serif}
+/* pipeline funnel */
+.funnel{display:flex;flex-direction:column;gap:9px}
+.frow{display:grid;grid-template-columns:78px 1fr 26px;align-items:center;gap:10px;cursor:pointer}
+.frow .fl{font-size:11px;font-weight:700;color:#55554F}
+.frow .track{height:18px;background:#F4F3EE;border-radius:99px;overflow:hidden}
+.frow .fill{height:100%;background:var(--ink);border-radius:99px;min-width:3px;transition:width .5s cubic-bezier(.2,.7,.2,1)}
+.frow .fn{font-size:11px;font-weight:800;text-align:right}
+.frow.active .fl{color:var(--ink)}
+.frow.active .fill{background:#000}
+/* toolbar */
+.toolbar{background:#fff;border-radius:18px;padding:16px 18px;margin-bottom:16px}
+.tb-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.tb-row + .tb-row{margin-top:12px}
+.search{flex:1;min-width:200px;position:relative}
+.search input{width:100%;border:1px solid var(--grid);background:#FAFAF7;border-radius:99px;
+  padding:9px 16px 9px 36px;font:600 12.5px 'Inter','Noto Sans SC',sans-serif;outline:none;color:var(--ink)}
+.search input:focus{border-color:var(--ink)}
+.search svg{position:absolute;left:13px;top:50%;transform:translateY(-50%)}
+.seg{display:flex;border:1px solid var(--grid);border-radius:99px;overflow:hidden}
+.seg button{border:0;background:transparent;padding:8px 15px;font:700 11.5px 'Inter','Noto Sans SC',sans-serif;color:var(--muted);cursor:pointer}
+.seg button.on{background:var(--ink);color:#fff}
+.tagcloud{display:flex;flex-wrap:wrap;gap:6px}
+.tag{border:1px solid var(--grid);background:#FAFAF7;border-radius:99px;padding:5px 12px;
+  font:700 10.5px 'Inter','Noto Sans SC',sans-serif;color:#6A6963;cursor:pointer;user-select:none}
+.tag.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.tb-label{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.06em;margin-right:2px}
+.clear-btn{border:0;background:none;font:700 10.5px 'Inter','Noto Sans SC',sans-serif;color:var(--muted);cursor:pointer;text-decoration:underline}
+/* candidate grid */
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.ccard{background:#fff;border-radius:18px;padding:18px;cursor:pointer;position:relative;
+  transition:transform .15s ease;display:flex;flex-direction:column}
+.ccard:hover{transform:translateY(-3px)}
+.ccard .top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.ccard .avatar{width:40px;height:40px;border-radius:12px;background:var(--ink);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800}
+.ccard .fit-badge{text-align:right}
+.ccard .fit-badge .num{font-size:22px;font-weight:800;letter-spacing:-.02em}
+.ccard .fit-badge .lb{font-size:8.5px;font-weight:700;color:var(--muted);letter-spacing:.04em}
+.ccard h4{font-size:15px;font-weight:800}
+.ccard .yr{font-size:10.5px;color:var(--muted);font-weight:600;margin-bottom:8px}
+.ccard .co{font-size:11px;color:#55554F;font-weight:600;margin-bottom:10px;min-height:30px}
+.ccard .mini-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:auto}
+.ccard .mt{font-size:9px;font-weight:700;color:#84837C;background:#F4F3EE;border-radius:5px;padding:2px 7px}
+.st{display:inline-flex;align-items:center;gap:5px;font-size:9.5px;font-weight:700;color:#6A6963}
+.st::before{content:'';width:6px;height:6px;border-radius:50%;background:#8F8E88}
+.pickbox{position:absolute;top:14px;right:14px;width:20px;height:20px;border:1.5px solid var(--faint);border-radius:6px;
+  display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff}
+.ccard.picked .pickbox{background:var(--ink);border-color:var(--ink)}
+.empty{grid-column:1/-1;text-align:center;color:var(--muted);font-size:13px;padding:50px 0}
+/* compare bar */
+.compare-bar{position:fixed;bottom:0;left:0;right:0;background:#1C1C1A;color:#fff;
+  transform:translateY(110%);transition:transform .3s ease;z-index:60}
+.compare-bar.in{transform:none}
+.cb-inner{max-width:1180px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.cb-names{display:flex;gap:8px;flex-wrap:wrap}
+.cb-chip{background:#33332F;border-radius:99px;padding:5px 12px;font-size:11px;font-weight:700}
+.cb-btn{border:0;background:#fff;color:var(--ink);border-radius:99px;padding:9px 20px;font:800 12px 'Inter','Noto Sans SC',sans-serif;cursor:pointer}
+.cb-btn.ghost{background:transparent;color:#aaa;text-decoration:underline;padding:9px 8px}
+/* drawer */
+.overlay{position:fixed;inset:0;background:rgba(28,28,26,.4);opacity:0;pointer-events:none;transition:opacity .25s;z-index:70}
+.overlay.in{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;height:100%;width:min(560px,94vw);background:#fff;z-index:80;
+  transform:translateX(102%);transition:transform .32s cubic-bezier(.3,.8,.3,1);overflow-y:auto}
+.drawer.in{transform:none}
+.d-inner{padding:30px 30px 60px}
+.d-close{position:sticky;top:0;float:right;border:0;background:#F4F3EE;width:36px;height:36px;border-radius:50%;
+  font-size:18px;cursor:pointer;color:#555;z-index:5}
+.d-head{display:flex;gap:16px;align-items:center;margin-bottom:6px}
+.d-head .avatar{width:60px;height:60px;border-radius:16px;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800}
+.d-head h2{font-size:23px;font-weight:800;letter-spacing:-.01em}
+.d-head .yr{font-size:12px;color:var(--muted);font-weight:700}
+.d-status{margin:14px 0 18px}
+.d-status .st{font-size:11px}
+.d-actions{display:flex;gap:10px;margin-bottom:22px}
+.btn{border-radius:99px;padding:11px 20px;font:800 12px 'Inter','Noto Sans SC',sans-serif;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;border:0}
+.btn.primary{background:var(--ink);color:#fff}
+.btn.outline{background:#fff;color:var(--ink);border:1.5px solid var(--ink)}
+.d-block{margin-bottom:22px}
+.d-block h5{font-size:10px;font-weight:800;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin-bottom:8px}
+.d-block p{font-size:13px;line-height:1.7;color:#33332F}
+.d-tags{display:flex;flex-wrap:wrap;gap:6px}
+.d-tags .tag{cursor:default}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.info{background:#F7F6F1;border-radius:12px;padding:12px 14px}
+.info .k{font-size:9.5px;font-weight:700;color:var(--muted);letter-spacing:.04em}
+.info .val{font-size:13px;font-weight:700;margin-top:2px}
+.risk{background:#F7F6F1;border-left:3px solid var(--ink);border-radius:0 12px 12px 0;padding:12px 14px;font-size:12.5px;line-height:1.7;color:#333}
+footer.foot{margin-top:40px;text-align:center;font-size:10px;color:var(--faint);letter-spacing:.08em}
+/* responsive */
+@media(max-width:980px){.kpis{grid-template-columns:repeat(3,1fr)}.grid{grid-template-columns:repeat(2,1fr)}.charts-row{grid-template-columns:1fr}}
+@media(max-width:560px){.wrap{padding:20px 14px 70px}.kpis{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.masthead .meta{text-align:left}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <div>
+      <div class="kicker">LinkOS · Talent Pipeline</div>
+      <h1 id="posTitle">FDE 人才库</h1>
+    </div>
+    <div class="meta" id="posMeta"></div>
+  </header>
+
+  <!-- KPI -->
+  <div class="kpis" id="kpis"></div>
+
+  <!-- pipeline + distribution -->
+  <div class="charts-row">
+    <div class="panel">
+      <h3>招聘进度 Pipeline</h3>
+      <div class="psub">点某一环可筛选该状态候选人 · 共 <span id="pipeTotal">0</span> 人在库</div>
+      <div class="funnel" id="funnel"></div>
+    </div>
+    <div class="panel">
+      <h3>人才结构分布</h3>
+      <div class="psub">上：适配分（0–10）· 下：经验年限</div>
+      <svg id="distChart" viewBox="0 0 360 250" width="100%"></svg>
+    </div>
+  </div>
+
+  <!-- toolbar -->
+  <div class="sec-title">候选人 <span id="resultCount" style="font-weight:600;color:var(--muted);font-size:11px"></span></div>
+  <div class="toolbar">
+    <div class="tb-row">
+      <div class="search">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8F8E88" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+        <input id="searchInput" placeholder="搜索姓名 / 公司 / 技能…" />
+      </div>
+      <div class="tb-label">排序</div>
+      <div class="seg" id="sortSeg">
+        <button data-sort="fit" class="on">适配分</button>
+        <button data-sort="order">面试顺序</button>
+        <button data-sort="years">年限</button>
+      </div>
+    </div>
+    <div class="tb-row">
+      <div class="tb-label">技能</div>
+      <div class="tagcloud" id="tagCloud"></div>
+      <button class="clear-btn" id="clearFilter">清除筛选</button>
+    </div>
+  </div>
+
+  <!-- candidate grid -->
+  <div class="grid" id="grid"></div>
+
+  <footer class="foot">FDE TALENT POOL · LINKOS HRBP · CHENKEYAO · 数据更新 2026-09-20</footer>
+</div>
+
+<!-- compare bar -->
+<div class="compare-bar" id="compareBar">
+  <div class="cb-inner">
+    <span style="font-size:12px;font-weight:800">六维对比</span>
+    <div class="cb-names" id="cbNames"></div>
+    <button class="cb-btn" id="compareGo">开始对比</button>
+    <button class="cb-btn ghost" id="compareClear">清空</button>
+  </div>
+</div>
+
+<!-- drawer -->
+<div class="overlay" id="overlay"></div>
+<div class="drawer" id="drawer"><div class="d-inner" id="dInner"></div></div>
+
+<script src="data/talent.js"></script>
+<script>
+const DATA = window.TALENT;
+const POS = DATA.position, CANDS = DATA.candidates;
+const INK='#1C1C1A',MUTED='#8F8E88',GRID='#DEDDD6',FAINT='#C6C5BF';
+const NS='http://www.w3.org/2000/svg';
+const el=(p,t,a)=>{const n=document.createElementNS(NS,t);for(const k in a)n.setAttribute(k,a[k]);p.appendChild(n);return n};
+const txt=(p,a,s)=>{const n=el(p,'text',a);n.textContent=s;return n};
+
+/* state */
+const state={sort:'fit',search:'',tags:new Set(),status:'',picked:new Set()};
+
+/* shade avatar by fit */
+function fitColor(f){
+  // high fit dark, low fit lighter
+  const t=(f-7)/2.5; // 7→0 9.5→1
+  const c=Math.max(0,Math.min(1,t));
+  const g=Math.round(28+c*0); // keep ink-ish; use opacity ladder
+  return INK;
+}
+function fitLightness(f){
+  // map 7.2..9 → weight class for badge color
+  if(f>=8.5)return INK; if(f>=8)return '#3D3C37'; return '#6A6963';
+}
+
+/* KPI */
+function renderKPI(){
+  const n=CANDS.length, avg=CANDS.reduce((a,c)=>a+c.fit,0)/n;
+  const high=CANDS.filter(c=>c.fit>=8.5).length;
+  const inStage=CANDS.filter(c=>!['淘汰','已入职'].includes(c.status)).length;
+  const firsts=CANDS.filter(c=>c.interviewOrder<=3).length;
+  const items=[
+    [n,'','人才库总数'],
+    [avg.toFixed(1),'', '平均适配分'],
+    [high,'人','高适配 ≥8.5'],
+    [inStage,'人','在流程中'],
+    [firsts,'人','建议首面 Top3'],
+  ];
+  document.getElementById('kpis').innerHTML=items.map(([v,u,l])=>
+    `<div class="kpi"><div class="v">${v}<small>${u}</small></div><div class="l">${l}</div></div>`).join('');
+}
+
+/* pipeline funnel */
+function renderFunnel(){
+  const counts={};
+  POS.statusFlow.forEach(s=>counts[s]=0);
+  CANDS.forEach(c=>{if(counts[c.status]!=null)counts[c.status]++});
+  const max=Math.max(1,...Object.values(counts));
+  const html=POS.statusFlow.map(s=>{
+    const v=counts[s];
+    return `<div class="frow ${state.status===s?'active':''}" data-status="${s}">
+      <div class="fl">${s}</div>
+      <div class="track"><div class="fill" style="width:${v/max*100}%"></div></div>
+      <div class="fn">${v}</div></div>`;
+  }).join('');
+  document.getElementById('funnel').innerHTML=html;
+  document.getElementById('pipeTotal').textContent=CANDS.length;
+  document.querySelectorAll('.frow').forEach(r=>r.addEventListener('click',()=>{
+    state.status = state.status===r.dataset.status ? '' : r.dataset.status;
+    renderFunnel(); renderGrid();
+  }));
+}
+
+/* distribution chart */
+function renderDist(){
+  const s=document.getElementById('distChart'); s.innerHTML='';
+  // fit histogram bins: [7-7.5),[7.5-8),[8-8.5),[8.5-9),[9-9.5)
+  const bins=[['7.0–7.5',c=>c.fit>=7&&c.fit<7.5],['7.5–8.0',c=>c.fit>=7.5&&c.fit<8],
+              ['8.0–8.5',c=>c.fit>=8&&c.fit<8.5],['8.5–9.0',c=>c.fit>=8.5&&c.fit<9],['9.0–10',c=>c.fit>=9]];
+  const X0=44,base=118,top=26,bw=48,gap=12;
+  const fitCounts=bins.map(([l,f])=>CANDS.filter(f).length);
+  const fmax=Math.max(2,...fitCounts);
+  txt(s,{x:X0,y:14,'font-size':8.5,'font-weight':800,fill:MUTED},'适配分');
+  fitCounts.forEach((v,i)=>{
+    const x=X0+i*(bw+gap), h=v/fmax*(base-top);
+    el(s,'rect',{x,y:base-h,width:bw,height:h,rx:5,fill: i>=3?INK:'#84837C'});
+    if(v)txt(s,{x:x+bw/2,y:base-h-4,'font-size':10,'font-weight':800,fill:INK,'text-anchor':'middle'},v);
+    txt(s,{x:x+bw/2,y:base+12,'font-size':7.5,'font-weight':600,fill:MUTED,'text-anchor':'middle'},bins[i][0]);
+  });
+  el(s,'line',{x1:X0-6,y1:base,x2:X0+5*(bw+gap),y2:base,stroke:GRID,'stroke-width':1});
+  // years
+  const ybins=[['1–3年',c=>c.years<=3],['4–7年',c=>c.years>=4&&c.years<=7],['8年+',c=>c.years>=8]];
+  const yX0=44,ybase=232,ytop=150,ybw=80,ygap=18;
+  const yCounts=ybins.map(([l,f])=>CANDS.filter(f).length);
+  const ymax=Math.max(2,...yCounts);
+  txt(s,{x:yX0,y:142,'font-size':8.5,'font-weight':800,fill:MUTED},'经验年限');
+  yCounts.forEach((v,i)=>{
+    const x=yX0+i*(ybw+ygap),h=v/ymax*(ybase-ytop);
+    el(s,'rect',{x,y:ybase-h,width:ybw,height:h,rx:5,fill:'#6A6963'});
+    if(v)txt(s,{x:x+ybw/2,y:ybase-h-4,'font-size':10,'font-weight':800,fill:INK,'text-anchor':'middle'},v);
+    txt(s,{x:x+ybw/2,y:ybase+12,'font-size':8,'font-weight':600,fill:MUTED,'text-anchor':'middle'},ybins[i][0]);
+  });
+  el(s,'line',{x1:yX0-6,y1:ybase,x2:yX0+3*(ybw+ygap),y2:ybase,stroke:GRID,'stroke-width':1});
+}
+
+/* tag cloud */
+function renderTags(){
+  const count={};
+  CANDS.forEach(c=>c.tags.forEach(t=>count[t]=(count[t]||0)+1));
+  const top=Object.entries(count).sort((a,b)=>b[1]-a[1]).slice(0,16).map(x=>x[0]);
+  document.getElementById('tagCloud').innerHTML=top.map(t=>
+    `<div class="tag ${state.tags.has(t)?'on':''}" data-tag="${t}">${t} · ${count[t]}</div>`).join('');
+  document.querySelectorAll('.tag[data-tag]').forEach(t=>t.addEventListener('click',()=>{
+    const v=t.dataset.tag; state.tags.has(v)?state.tags.delete(v):state.tags.add(v);
+    renderTags(); renderGrid();
+  }));
+}
+
+/* filtering */
+function filtered(){
+  let a=CANDS.slice();
+  if(state.status)a=a.filter(c=>c.status===state.status);
+  if(state.tags.size)a=a.filter(c=>[...state.tags].every(t=>c.tags.includes(t)));
+  if(state.search){const q=state.search.toLowerCase();
+    a=a.filter(c=>(c.name+c.company+c.highlight+c.tags.join('')).toLowerCase().includes(q));}
+  a.sort((x,y)=>state.sort==='fit'?y.fit-x.fit:state.sort==='years'?y.years-x.years:x.interviewOrder-y.interviewOrder);
+  return a;
+}
+
+/* grid */
+function renderGrid(){
+  const a=filtered();
+  document.getElementById('resultCount').textContent=`· ${a.length} 人`;
+  if(!a.length){document.getElementById('grid').innerHTML='<div class="empty">没有符合条件的候选人，试试清除筛选</div>';return;}
+  document.getElementById('grid').innerHTML=a.map(c=>`
+    <div class="ccard ${state.picked.has(c.id)?'picked':''}" data-id="${c.id}">
+      <div class="pickbox">${state.picked.has(c.id)?'✓':''}</div>
+      <div class="top">
+        <div class="avatar">${c.name[0]}</div>
+        <div class="fit-badge"><div class="num" style="color:${fitLightness(c.fit)}">${c.fit.toFixed(1)}</div><div class="lb">适配分</div></div>
+      </div>
+      <h4>${c.name}</h4>
+      <div class="yr">${c.yearsText}经验</div>
+      <div class="co">${c.company}</div>
+      <div class="mini-tags">${c.tags.slice(0,3).map(t=>`<span class="mt">${t}</span>`).join('')}</div>
+    </div>`).join('');
+  document.querySelectorAll('.ccard').forEach(card=>{
+    card.addEventListener('click',e=>{
+      const id=+card.dataset.id;
+      if(e.target.closest('.pickbox')){ togglePick(id); e.stopPropagation(); return; }
+      openDrawer(id);
+    });
+  });
+}
+
+/* pick / compare */
+function togglePick(id){
+  if(state.picked.has(id))state.picked.delete(id);
+  else{ if(state.picked.size>=4){alert('最多对比 4 人');return;} state.picked.add(id);}
+  renderGrid(); updateCompareBar();
+}
+function updateCompareBar(){
+  const bar=document.getElementById('compareBar');
+  if(!state.picked.size){bar.classList.remove('in');return;}
+  bar.classList.add('in');
+  document.getElementById('cbNames').innerHTML=[...state.picked].map(id=>{
+    const c=CANDS.find(x=>x.id===id);return `<span class="cb-chip">${c.name}</span>`;}).join('');
+}
+
+/* radar */
+function radarSVG(names, size){
+  const dims=POS.dimensions.map(d=>d.name);
+  const keys=POS.dimensions.map(d=>d.key);
+  const cx=size/2,cy=size/2,R=size/2-46;
+  const ang=i=>(-90+i*(360/dims.length))*Math.PI/180;
+  const pt=(r,i)=>[cx+r*Math.cos(ang(i)),cy+r*Math.sin(ang(i))];
+  let out='';
+  // grid rings
+  [0.25,0.5,0.75,1].forEach(f=>{
+    out+=`<polygon points="${keys.map((k,i)=>pt(R*f,i).join(',')).join(' ')}" fill="none" stroke="${GRID}" stroke-width=".8"/>`;
+  });
+  // axes + labels
+  keys.forEach((k,i)=>{
+    out+=`<line x1="${cx}" y1="${cy}" x2="${pt(R,i)[0]}" y2="${pt(R,i)[1]}" stroke="${GRID}" stroke-width=".7"/>`;
+    const lp=pt(R+22,i),anchor=Math.abs(Math.cos(ang(i)))<.3?'middle':Math.cos(ang(i))>0?'start':'end';
+    out+=`<text x="${lp[0]}" y="${lp[1]+3}" font-size="9" font-weight="700" fill="#55554F" text-anchor="${anchor}">${dims[i]}</text>`;
+  });
+  // series
+  const palette=[INK,'#5A5953','#84837C','#B0AFA9'];
+  names.forEach((nm,si)=>{
+    const c=CANDS.find(x=>x.name===nm), col=palette[si];
+    const poly=keys.map((k,i)=>pt(R*c.scores[k]/10,i).join(',')).join(' ');
+    out+=`<polygon points="${poly}" fill="${col}" fill-opacity="${si===0?.12:.05}" stroke="${col}" stroke-width="1.6"/>`;
+    keys.forEach((k,i)=>{out+=`<circle cx="${pt(R*c.scores[k]/10,i)[0]}" cy="${pt(R*c.scores[k]/10,i)[1]}" r="2.4" fill="${col}"/>`;});
+  });
+  // legend
+  names.forEach((nm,si)=>{
+    out+=`<rect x="${size-150}" y="${14+si*18}" width="10" height="10" rx="2" fill="${palette[si]}"/>`;
+    out+=`<text x="${size-134}" y="${23+si*18}" font-size="10" font-weight="700" fill="#333">${nm}</text>`;
+  });
+  return `<svg viewBox="0 0 ${size} ${size}" width="100%">${out}</svg>`;
+}
+
+/* compare modal → reuse drawer */
+function openCompare(){
+  const names=[...state.picked].map(id=>CANDS.find(x=>x.id===id).name);
+  const inner=document.getElementById('dInner');
+  inner.innerHTML=`
+    <button class="d-close" id="dClose2">✕</button>
+    <div style="margin-bottom:18px">
+      <div style="font-size:10px;font-weight:800;letter-spacing:.16em;color:${MUTED}">六维对比</div>
+      <h2 style="font-size:21px;font-weight:800;margin-top:4px">${names.join(' × ')}</h2>
+    </div>
+    ${radarSVG(names,460)}
+    <div style="margin-top:20px">
+      <h5 style="font-size:10px;font-weight:800;letter-spacing:.1em;color:${MUTED};margin-bottom:8px">逐项对比</h5>
+      ${POS.dimensions.map(d=>{
+        const vals=names.map(nm=>CANDS.find(x=>x.name===nm).scores[d.key]);
+        return `<div style="margin-bottom:10px">
+          <div style="font-size:11px;font-weight:700;margin-bottom:4px">${d.name}</div>
+          ${names.map((nm,i)=>`<div style="display:grid;grid-template-columns:48px 1fr 24px;gap:8px;align-items:center;margin-bottom:3px">
+            <span style="font-size:10.5px;font-weight:700;color:#666">${nm}</span>
+            <div style="height:7px;background:#F0EFEB;border-radius:99px;overflow:hidden"><div style="height:100%;width:${vals[i]*10}%;background:${[INK,'#5A5953','#84837C','#B0AFA9'][i]}"></div></div>
+            <span style="font-size:10.5px;font-weight:800">${vals[i]}</span></div>`).join('')}
+        </div>`;
+      }).join('')}
+    </div>`;
+  document.getElementById('drawer').classList.add('in');
+  document.getElementById('overlay').classList.add('in');
+  document.getElementById('dClose2').addEventListener('click',closeDrawer);
+}
+
+/* drawer detail */
+function openDrawer(id){
+  const c=CANDS.find(x=>x.id===id);
+  const dims=POS.dimensions;
+  const single={}; dims.forEach(d=>single[d.key]=c.scores[d.key]);
+  const inner=document.getElementById('dInner');
+  inner.innerHTML=`
+    <button class="d-close" id="dClose">✕</button>
+    <div class="d-head">
+      <div class="avatar">${c.name[0]}</div>
+      <div><h2>${c.name}</h2><div class="yr">${c.yearsText}经验 · ${c.company.split('·')[0]}</div></div>
+    </div>
+    <div class="d-status"><span class="st">${c.status}</span>${c.note?` · <span style="font-size:11px;color:#8F8E88;font-weight:600">${c.note}</span>`:''}</div>
+    <div class="d-actions">
+      <a class="btn primary" href="resumes/${encodeURIComponent(c.resume)}" target="_blank">📄 打开完整简历</a>
+      <button class="btn outline" id="dPick">${state.picked.has(c.id)?'✓ 已加入对比':'+ 加入对比'}</button>
+    </div>
+    <div class="d-block">
+      <h5>核心亮点</h5><p>${c.highlight}</p>
+    </div>
+    <div class="d-block">
+      <h5>JD 六维评分</h5>${radarSVG([c.name],300)}
+    </div>
+    <div class="d-block">
+      <h5>技能标签</h5><div class="d-tags">${c.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+    </div>
+    <div class="d-block">
+      <h5>基本信息</h5>
+      <div class="info-grid">
+        <div class="info"><div class="k">原任 / 方向</div><div class="val" style="font-size:12px">${c.company}</div></div>
+        <div class="info"><div class="k">教育背景</div><div class="val" style="font-size:12px">${c.education}</div></div>
+        <div class="info"><div class="k">适配分</div><div class="val">${c.fit.toFixed(1)} / 10</div></div>
+        <div class="info"><div class="k">建议面试顺序</div><div class="val">第 ${c.interviewOrder} 位</div></div>
+      </div>
+    </div>
+    <div class="d-block">
+      <h5>风险 / 短板</h5><div class="risk">${c.risk}</div>
+    </div>`;
+  document.getElementById('drawer').classList.add('in');
+  document.getElementById('overlay').classList.add('in');
+  document.getElementById('dClose').addEventListener('click',closeDrawer);
+  document.getElementById('dPick').addEventListener('click',()=>{togglePick(c.id);openDrawer(c.id);});
+}
+function closeDrawer(){
+  document.getElementById('drawer').classList.remove('in');
+  document.getElementById('overlay').classList.remove('in');
+}
+
+/* events */
+document.getElementById('searchInput').addEventListener('input',e=>{state.search=e.target.value;renderGrid();});
+document.getElementById('sortSeg').addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  document.querySelectorAll('#sortSeg button').forEach(x=>x.classList.toggle('on',x===b));
+  state.sort=b.dataset.sort;renderGrid();
+});
+document.getElementById('clearFilter').addEventListener('click',()=>{
+  state.tags.clear();state.status='';state.search='';
+  document.getElementById('searchInput').value='';
+  renderTags();renderFunnel();renderGrid();
+});
+document.getElementById('overlay').addEventListener('click',closeDrawer);
+document.getElementById('compareGo').addEventListener('click',openCompare);
+document.getElementById('compareClear').addEventListener('click',()=>{state.picked.clear();renderGrid();updateCompareBar();});
+
+/* header meta */
+document.getElementById('posTitle').textContent=POS.title+' 人才库';
+document.getElementById('posMeta').innerHTML=`${POS.location} · ${POS.salary}<br>更新 ${POS.updated} · 共 ${CANDS.length} 位候选人`;
+
+/* init */
+renderKPI();renderFunnel();renderDist();renderTags();renderGrid();
+</script>
+</body>
+</html>

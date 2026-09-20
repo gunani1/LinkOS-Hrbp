@@ -1,0 +1,306 @@
+{
+ "position": {
+  "title": "前沿部署工程师（FDE）",
+  "location": "杭州",
+  "salary": "18-30K",
+  "updated": "2026-09-20",
+  "dimensions": [
+   {
+    "key": "ai",
+    "name": "1-3年AI研发经验"
+   },
+   {
+    "key": "tech",
+    "name": "全栈+Agent技术深度"
+   },
+   {
+    "key": "insight",
+    "name": "业务洞察/挖痛点"
+   },
+   {
+    "key": "client",
+    "name": "客户对接/跨角色沟通"
+   },
+   {
+    "key": "prototype",
+    "name": "原型验证与落地"
+   },
+   {
+    "key": "value",
+    "name": "业务价值聚焦"
+   }
+  ],
+  "statusFlow": [
+   "初筛",
+   "技术二筛",
+   "邀约中",
+   "面试中",
+   "复试",
+   "Offer",
+   "已入职",
+   "暂缓入库",
+   "淘汰"
+  ]
+ },
+ "candidates": [
+  {
+   "id": 1,
+   "name": "占恒",
+   "years": 11,
+   "yearsText": "11年",
+   "company": "微医控股·全栈工程师",
+   "education": "普高/全栈名校",
+   "contact": "",
+   "highlight": "自我定位即 FDE；11 年全栈+近2年AI落地，PoC→生产端到端交付、需求澄清、方案宣讲、运维交付全能",
+   "fit": 9.0,
+   "risk": "无专职客户项目管理 title；深度模型训练偏弱",
+   "status": "技术二筛",
+   "interviewOrder": 1,
+   "note": "建议首面",
+   "tags": [
+    "全栈",
+    "AI落地",
+    "PoC到生产",
+    "端到端交付",
+    "需求澄清",
+    "方案宣讲",
+    "运维",
+    "客户沟通"
+   ],
+   "scores": {
+    "ai": 8,
+    "tech": 8,
+    "insight": 10,
+    "client": 10,
+    "prototype": 9,
+    "value": 9
+   },
+   "resume": "占恒.pdf"
+  },
+  {
+   "id": 2,
+   "name": "张岳",
+   "years": 4,
+   "yearsText": "4年",
+   "company": "深圳腾辉·AI应用开发工程师",
+   "education": "本科",
+   "contact": "",
+   "highlight": "技术深度最强之一：全栈+模型微调(SFT/DPO)+MCP 共享服务，兼做需求对接与 AI 培训",
+   "fit": 8.5,
+   "risk": "多为内部/电商场景，客户驻场证据偏弱",
+   "status": "技术二筛",
+   "interviewOrder": 2,
+   "note": "建议首面",
+   "tags": [
+    "全栈",
+    "模型微调",
+    "SFT/DPO",
+    "MCP",
+    "需求对接",
+    "AI培训"
+   ],
+   "scores": {
+    "ai": 9,
+    "tech": 10,
+    "insight": 7,
+    "client": 7,
+    "prototype": 8,
+    "value": 8
+   },
+   "resume": "张岳.pdf"
+  },
+  {
+   "id": 3,
+   "name": "周鹏",
+   "years": 15,
+   "yearsText": "15年",
+   "company": "零跑汽车·网络安全(AI落地)",
+   "education": "本科",
+   "contact": "",
+   "highlight": "明确 FDE 方向、在考 FDE 认证；AI 落地端到端(场景→方案→部署→培训→运营)，政企客户沟通极强",
+   "fit": 8.5,
+   "risk": "技术偏低代码平台，深度 Python/大模型编码弱",
+   "status": "技术二筛",
+   "interviewOrder": 3,
+   "note": "建议首面",
+   "tags": [
+    "AI落地",
+    "端到端交付",
+    "政企客户",
+    "方案设计",
+    "部署培训",
+    "低代码平台",
+    "网络安全"
+   ],
+   "scores": {
+    "ai": 7,
+    "tech": 6,
+    "insight": 9,
+    "client": 10,
+    "prototype": 8,
+    "value": 9
+   },
+   "resume": "周鹏.pdf"
+  },
+  {
+   "id": 4,
+   "name": "仵明雨",
+   "years": 1,
+   "yearsText": "1年",
+   "company": "天翼云·全栈工程师",
+   "education": "本科",
+   "contact": "",
+   "highlight": "天翼云真实生产级多 Agent/RAG 项目落地，Agent、LangGraph、全栈、SQL 安全链路成熟",
+   "fit": 8.0,
+   "risk": "年限短，客户直接驻场经历尚浅",
+   "status": "技术二筛",
+   "interviewOrder": 4,
+   "note": "",
+   "tags": [
+    "多Agent",
+    "RAG",
+    "LangGraph",
+    "全栈",
+    "SQL",
+    "生产落地"
+   ],
+   "scores": {
+    "ai": 8,
+    "tech": 9,
+    "insight": 7,
+    "client": 7,
+    "prototype": 8,
+    "value": 8
+   },
+   "resume": "仵明雨.pdf"
+  },
+  {
+   "id": 5,
+   "name": "谢若瑜",
+   "years": 7,
+   "yearsText": "7年",
+   "company": "航民实业·AI产品项目负责人",
+   "education": "本科(英语)",
+   "contact": "",
+   "highlight": "政企客户洞察/需求翻译/方案/交付/商业闭环极强，方法论直击 FDE(做过 FDE Kit 交付工具)",
+   "fit": 8.0,
+   "risk": "非技术背景，深度开发能力需验证",
+   "status": "技术二筛",
+   "interviewOrder": 5,
+   "note": "",
+   "tags": [
+    "政企客户",
+    "需求翻译",
+    "方案设计",
+    "商业闭环",
+    "AI产品",
+    "FDE方法论",
+    "交付工具"
+   ],
+   "scores": {
+    "ai": 7,
+    "tech": 6,
+    "insight": 10,
+    "client": 10,
+    "prototype": 8,
+    "value": 9
+   },
+   "resume": "谢若瑜.pdf"
+  },
+  {
+   "id": 6,
+   "name": "周谊华",
+   "years": 3,
+   "yearsText": "3年",
+   "company": "知几智能·AI垂类大模型开发",
+   "education": "本科",
+   "contact": "",
+   "highlight": "3 年多场景 AI/Agent 落地丰富，MCP/A2A/LangChain，宠物医疗、金融多智能体生产上线",
+   "fit": 8.0,
+   "risk": "客户驻场/一线挖掘证据一般",
+   "status": "技术二筛",
+   "interviewOrder": 6,
+   "note": "",
+   "tags": [
+    "AI落地",
+    "多Agent",
+    "MCP",
+    "A2A",
+    "LangChain",
+    "垂类大模型",
+    "多行业"
+   ],
+   "scores": {
+    "ai": 8,
+    "tech": 9,
+    "insight": 7,
+    "client": 7,
+    "prototype": 8,
+    "value": 7
+   },
+   "resume": "周谊华.pdf"
+  },
+  {
+   "id": 7,
+   "name": "祁源",
+   "years": 2,
+   "yearsText": "2年",
+   "company": "天津安捷物联·AI应用开发",
+   "education": "本科",
+   "contact": "",
+   "highlight": "电力多 Agent 落地扎实、量化成果可信(意图92%、答题+22.9%)，Vibe coding 熟练",
+   "fit": 8.0,
+   "risk": "客户对接/驻场证据偏弱",
+   "status": "技术二筛",
+   "interviewOrder": 7,
+   "note": "",
+   "tags": [
+    "多Agent",
+    "VibeCoding",
+    "电力行业",
+    "量化成果",
+    "AI应用"
+   ],
+   "scores": {
+    "ai": 8,
+    "tech": 9,
+    "insight": 7,
+    "client": 6,
+    "prototype": 8,
+    "value": 7
+   },
+   "resume": "祁源.pdf"
+  },
+  {
+   "id": 8,
+   "name": "徐福洋",
+   "years": 8,
+   "yearsText": "8年",
+   "company": "外企德科·软件工程师",
+   "education": "985本科",
+   "contact": "",
+   "highlight": "LLM 预训练/推理/昇腾生态功底深，有运营商客户迁移交付经验",
+   "fit": 7.5,
+   "risk": "偏研发型，业务/商业交付宽度一般",
+   "status": "技术二筛",
+   "interviewOrder": 8,
+   "note": "",
+   "tags": [
+    "LLM预训练",
+    "推理优化",
+    "昇腾生态",
+    "运营商客户",
+    "迁移交付"
+   ],
+   "scores": {
+    "ai": 8,
+    "tech": 8,
+    "insight": 6,
+    "client": 7,
+    "prototype": 7,
+    "value": 7
+   },
+   "resume": "徐福洋.pdf"
+  }
+ ]
+}
