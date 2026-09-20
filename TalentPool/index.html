@@ -203,6 +203,7 @@ footer.foot{margin-top:40px;text-align:center;font-size:10px;color:var(--faint);
 <script>
 const DATA = window.TALENT;
 const POS = DATA.position, CANDS = DATA.candidates;
+const CDN_BASE = 'https://cdn.jsdelivr.net/gh/gunani1/LinkOS-Hrbp@main/TalentPool/resumes/';
 const INK='#1C1C1A',MUTED='#8F8E88',GRID='#DEDDD6',FAINT='#C6C5BF';
 const NS='http://www.w3.org/2000/svg';
 const el=(p,t,a)=>{const n=document.createElementNS(NS,t);for(const k in a)n.setAttribute(k,a[k]);p.appendChild(n);return n};
@@ -435,7 +436,7 @@ function openDrawer(id){
     </div>
     <div class="d-status"><span class="st">${c.status}</span>${c.note?` · <span style="font-size:11px;color:#8F8E88;font-weight:600">${c.note}</span>`:''}</div>
     <div class="d-actions">
-      <a class="btn primary" href="resumes/${encodeURIComponent(c.resume)}" target="_blank">📄 打开完整简历</a>
+      <a class="btn primary" href="${CDN_BASE}${encodeURIComponent(c.resume)}" target="_blank" rel="noopener">📄 打开完整简历</a>
       <button class="btn outline" id="dPick">${state.picked.has(c.id)?'✓ 已加入对比':'+ 加入对比'}</button>
     </div>
     <div class="d-block">
