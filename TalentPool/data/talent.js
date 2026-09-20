@@ -1,47 +1,51 @@
 window.TALENT = {
- "position": {
-  "title": "前沿部署工程师（FDE）",
-  "location": "杭州",
-  "salary": "18-30K",
-  "updated": "2026-09-20",
-  "dimensions": [
-   {
-    "key": "ai",
-    "name": "1-3年AI研发经验"
-   },
-   {
-    "key": "tech",
-    "name": "全栈+Agent技术深度"
-   },
-   {
-    "key": "insight",
-    "name": "业务洞察/挖痛点"
-   },
-   {
-    "key": "client",
-    "name": "客户对接/跨角色沟通"
-   },
-   {
-    "key": "prototype",
-    "name": "原型验证与落地"
-   },
-   {
-    "key": "value",
-    "name": "业务价值聚焦"
-   }
-  ],
-  "statusFlow": [
-   "初筛",
-   "技术二筛",
-   "邀约中",
-   "面试中",
-   "复试",
-   "Offer",
-   "已入职",
-   "暂缓入库",
-   "淘汰"
-  ]
- },
+ "positions": [
+  {
+   "title": "前沿部署工程师（FDE）",
+   "location": "杭州",
+   "salary": "18-30K",
+   "updated": "2026-09-20",
+   "dimensions": [
+    {
+     "key": "ai",
+     "name": "1-3年AI研发经验"
+    },
+    {
+     "key": "tech",
+     "name": "全栈+Agent技术深度"
+    },
+    {
+     "key": "insight",
+     "name": "业务洞察/挖痛点"
+    },
+    {
+     "key": "client",
+     "name": "客户对接/跨角色沟通"
+    },
+    {
+     "key": "prototype",
+     "name": "原型验证与落地"
+    },
+    {
+     "key": "value",
+     "name": "业务价值聚焦"
+    }
+   ],
+   "statusFlow": [
+    "初筛",
+    "技术二筛",
+    "邀约中",
+    "面试中",
+    "复试",
+    "Offer",
+    "已入职",
+    "暂缓入库",
+    "淘汰"
+   ],
+   "key": "fde",
+   "short": "FDE"
+  }
+ ],
  "candidates": [
   {
    "id": 1,
@@ -75,7 +79,8 @@ window.TALENT = {
     "prototype": 9,
     "value": 9
    },
-   "resume": "占恒.pdf"
+   "resume": "占恒.pdf",
+   "positionKey": "fde"
   },
   {
    "id": 2,
@@ -107,7 +112,8 @@ window.TALENT = {
     "prototype": 8,
     "value": 8
    },
-   "resume": "张岳.pdf"
+   "resume": "张岳.pdf",
+   "positionKey": "fde"
   },
   {
    "id": 3,
@@ -140,7 +146,8 @@ window.TALENT = {
     "prototype": 8,
     "value": 9
    },
-   "resume": "周鹏.pdf"
+   "resume": "周鹏.pdf",
+   "positionKey": "fde"
   },
   {
    "id": 4,
@@ -172,7 +179,8 @@ window.TALENT = {
     "prototype": 8,
     "value": 8
    },
-   "resume": "仵明雨.pdf"
+   "resume": "仵明雨.pdf",
+   "positionKey": "fde"
   },
   {
    "id": 5,
@@ -205,7 +213,8 @@ window.TALENT = {
     "prototype": 8,
     "value": 9
    },
-   "resume": "谢若瑜.pdf"
+   "resume": "谢若瑜.pdf",
+   "positionKey": "fde"
   },
   {
    "id": 6,
@@ -238,7 +247,8 @@ window.TALENT = {
     "prototype": 8,
     "value": 7
    },
-   "resume": "周谊华.pdf"
+   "resume": "周谊华.pdf",
+   "positionKey": "fde"
   },
   {
    "id": 7,
@@ -269,7 +279,8 @@ window.TALENT = {
     "prototype": 8,
     "value": 7
    },
-   "resume": "祁源.pdf"
+   "resume": "祁源.pdf",
+   "positionKey": "fde"
   },
   {
    "id": 8,
@@ -300,7 +311,8 @@ window.TALENT = {
     "prototype": 7,
     "value": 7
    },
-   "resume": "徐福洋.pdf"
+   "resume": "徐福洋.pdf",
+   "positionKey": "fde"
   }
  ]
 };

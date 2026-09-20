@@ -3,12 +3,24 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>FDE 人才库 · LinkOS</title>
+<title>LinkOS 人才库</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#F0EFEB;--ink:#1C1C1A;--muted:#8F8E88;--faint:#C6C5BF;--grid:#DEDDD6;--card:#FFFFFF}
+
+/* position switcher */
+.postabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.ptab{border:1.5px solid var(--grid);background:#fff;border-radius:99px;padding:9px 18px;
+  font:800 12px 'Inter','Noto Sans SC',sans-serif;color:#6A6963;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.ptab .pn{font-size:9.5px;font-weight:700;color:#A8A7A1}
+.ptab.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.ptab.on .pn{color:#B8B7B1}
+/* position chip on card */
+.pchip{display:inline-block;font-size:8.5px;font-weight:800;letter-spacing:.05em;color:#84837C;
+  background:#F4F3EE;border-radius:5px;padding:2px 7px;margin-bottom:8px}
+.sec-hint{font-size:10.5px;color:var(--muted);font-weight:600}
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{background:var(--bg);font-family:'Inter','Noto Sans SC',sans-serif;color:var(--ink);
@@ -140,6 +152,10 @@ footer.foot{margin-top:40px;text-align:center;font-size:10px;color:var(--faint);
     <div class="meta" id="posMeta"></div>
   </header>
 
+
+  <!-- position switcher -->
+  <div class="postabs" id="posTabs"></div>
+
   <!-- KPI -->
   <div class="kpis" id="kpis"></div>
 
@@ -201,72 +217,112 @@ footer.foot{margin-top:40px;text-align:center;font-size:10px;color:var(--faint);
 
 <script src="data/talent.js"></script>
 <script>
-const DATA = window.TALENT;
-const POS = DATA.position, CANDS = DATA.candidates;
-const CDN_BASE = 'https://cdn.jsdelivr.net/gh/gunani1/LinkOS-Hrbp@main/TalentPool/resumes/';
+const DB = window.TALENT;
+const POSITIONS = DB.positions;
+const ALL_CANDS = DB.candidates;
+const REPO = 'gunani1/LinkOS-Hrbp';
 const INK='#1C1C1A',MUTED='#8F8E88',GRID='#DEDDD6',FAINT='#C6C5BF';
 const NS='http://www.w3.org/2000/svg';
 const el=(p,t,a)=>{const n=document.createElementNS(NS,t);for(const k in a)n.setAttribute(k,a[k]);p.appendChild(n);return n};
 const txt=(p,a,s)=>{const n=el(p,'text',a);n.textContent=s;return n};
 
-/* state */
-const state={sort:'fit',search:'',tags:new Set(),status:'',picked:new Set()};
+/* state: pos = position key or '__all__' */
+const state={pos:'__all__',sort:'fit',search:'',tags:new Set(),status:'',picked:new Set()};
 
-/* shade avatar by fit */
-function fitColor(f){
-  // high fit dark, low fit lighter
-  const t=(f-7)/2.5; // 7→0 9.5→1
-  const c=Math.max(0,Math.min(1,t));
-  const g=Math.round(28+c*0); // keep ink-ish; use opacity ladder
-  return INK;
+/* current position object or null */
+function curPos(){ return state.pos==='__all__' ? null : POSITIONS.find(p=>p.key===state.pos); }
+/* candidates in current scope */
+function scopeCands(){ return state.pos==='__all__' ? ALL_CANDS : ALL_CANDS.filter(c=>c.positionKey===state.pos); }
+let CANDS=scopeCands(), POS=curPos();
+function refreshScope(){ CANDS=scopeCands(); POS=curPos(); }
+/* CDN base depends on position (resumes/<key> when migrated; flat for fde legacy) */
+function cdnBase(c){
+  const k=c.positionKey;
+  if(k==='fde') return `https://cdn.jsdelivr.net/gh/${REPO}@main/TalentPool/resumes/`;
+  return `https://cdn.jsdelivr.net/gh/${REPO}@main/TalentPool/resumes/${k}/`;
 }
-function fitLightness(f){
-  // map 7.2..9 → weight class for badge color
-  if(f>=8.5)return INK; if(f>=8)return '#3D3C37'; return '#6A6963';
+function posByKey(k){ return POSITIONS.find(p=>p.key===k); }
+
+/* ── position tabs ── */
+function renderPosTabs(){
+  const counts={}; POSITIONS.forEach(p=>counts[p.key]=ALL_CANDS.filter(c=>c.positionKey===p.key).length);
+  const tabs=[['__all__','全部岗位',ALL_CANDS.length],
+              ...POSITIONS.map(p=>[p.key,p.short||p.title,counts[p.key]])];
+  document.getElementById('posTabs').innerHTML=tabs.map(([k,label,n])=>
+    `<button class="ptab ${state.pos===k?'on':''}" data-pos="${k}">${label}<span class="pn">${n}</span></button>`).join('');
+  document.querySelectorAll('.ptab').forEach(b=>b.addEventListener('click',()=>{
+    if(state.pos===b.dataset.pos)return;
+    state.pos=b.dataset.pos;
+    // reset filters & picks on switch
+    state.tags.clear();state.status='';state.search='';state.picked.clear();
+    document.getElementById('searchInput').value='';
+    refreshScope(); hideCompare();
+    renderAll();
+  }));
 }
 
-/* KPI */
+/* shade badge by fit */
+function fitLightness(f){ if(f>=8.5)return INK; if(f>=8)return '#3D3C37'; return '#6A6963'; }
+
+/* ── KPI ── */
 function renderKPI(){
-  const n=CANDS.length, avg=CANDS.reduce((a,c)=>a+c.fit,0)/n;
+  const n=CANDS.length, avg=n?CANDS.reduce((a,c)=>a+c.fit,0)/n:0;
   const high=CANDS.filter(c=>c.fit>=8.5).length;
   const inStage=CANDS.filter(c=>!['淘汰','已入职'].includes(c.status)).length;
   const firsts=CANDS.filter(c=>c.interviewOrder<=3).length;
   const items=[
-    [n,'','人才库总数'],
-    [avg.toFixed(1),'', '平均适配分'],
+    [n,'','在库候选人'],
+    [avg.toFixed(1),'','平均适配分'],
     [high,'人','高适配 ≥8.5'],
     [inStage,'人','在流程中'],
-    [firsts,'人','建议首面 Top3'],
+    [POSITIONS.length,'个','招聘岗位'],
   ];
   document.getElementById('kpis').innerHTML=items.map(([v,u,l])=>
     `<div class="kpi"><div class="v">${v}<small>${u}</small></div><div class="l">${l}</div></div>`).join('');
 }
 
-/* pipeline funnel */
+/* ── pipeline funnel ── */
 function renderFunnel(){
+  const panel=document.querySelector('.charts-row .panel:first-child .funnel').parentElement;
+  if(state.pos==='__all__'){
+    // 汇总：按岗位分组的状态计数，呈现每岗位在库数横向条
+    const max=Math.max(1,...POSITIONS.map(p=>ALL_CANDS.filter(c=>c.positionKey===p.key).length));
+    document.getElementById('funnel').innerHTML=POSITIONS.map(p=>{
+      const v=ALL_CANDS.filter(c=>c.positionKey===p.key).length;
+      return `<div class="frow" data-jump="${p.key}">
+        <div class="fl">${p.short||p.title}</div>
+        <div class="track"><div class="fill" style="width:${v/max*100}%"></div></div>
+        <div class="fn">${v}</div></div>`;
+    }).join('');
+    document.querySelectorAll('.frow[data-jump]').forEach(r=>r.addEventListener('click',()=>{
+      state.pos=r.dataset.jump; refreshScope();
+      state.tags.clear();state.status='';state.search='';
+      document.getElementById('searchInput').value='';
+      renderAll();
+    }));
+    return;
+  }
   const counts={};
   POS.statusFlow.forEach(s=>counts[s]=0);
   CANDS.forEach(c=>{if(counts[c.status]!=null)counts[c.status]++});
   const max=Math.max(1,...Object.values(counts));
-  const html=POS.statusFlow.map(s=>{
+  document.getElementById('funnel').innerHTML=POS.statusFlow.map(s=>{
     const v=counts[s];
     return `<div class="frow ${state.status===s?'active':''}" data-status="${s}">
       <div class="fl">${s}</div>
       <div class="track"><div class="fill" style="width:${v/max*100}%"></div></div>
       <div class="fn">${v}</div></div>`;
   }).join('');
-  document.getElementById('funnel').innerHTML=html;
-  document.getElementById('pipeTotal').textContent=CANDS.length;
+  const _pt=document.getElementById('pipeTotal'); if(_pt)_pt.textContent=CANDS.length;
   document.querySelectorAll('.frow').forEach(r=>r.addEventListener('click',()=>{
     state.status = state.status===r.dataset.status ? '' : r.dataset.status;
     renderFunnel(); renderGrid();
   }));
 }
 
-/* distribution chart */
+/* ── distribution chart ── */
 function renderDist(){
   const s=document.getElementById('distChart'); s.innerHTML='';
-  // fit histogram bins: [7-7.5),[7.5-8),[8-8.5),[8.5-9),[9-9.5)
   const bins=[['7.0–7.5',c=>c.fit>=7&&c.fit<7.5],['7.5–8.0',c=>c.fit>=7.5&&c.fit<8],
               ['8.0–8.5',c=>c.fit>=8&&c.fit<8.5],['8.5–9.0',c=>c.fit>=8.5&&c.fit<9],['9.0–10',c=>c.fit>=9]];
   const X0=44,base=118,top=26,bw=48,gap=12;
@@ -280,7 +336,6 @@ function renderDist(){
     txt(s,{x:x+bw/2,y:base+12,'font-size':7.5,'font-weight':600,fill:MUTED,'text-anchor':'middle'},bins[i][0]);
   });
   el(s,'line',{x1:X0-6,y1:base,x2:X0+5*(bw+gap),y2:base,stroke:GRID,'stroke-width':1});
-  // years
   const ybins=[['1–3年',c=>c.years<=3],['4–7年',c=>c.years>=4&&c.years<=7],['8年+',c=>c.years>=8]];
   const yX0=44,ybase=232,ytop=150,ybw=80,ygap=18;
   const yCounts=ybins.map(([l,f])=>CANDS.filter(f).length);
@@ -295,7 +350,7 @@ function renderDist(){
   el(s,'line',{x1:yX0-6,y1:ybase,x2:yX0+3*(ybw+ygap),y2:ybase,stroke:GRID,'stroke-width':1});
 }
 
-/* tag cloud */
+/* ── tag cloud ── */
 function renderTags(){
   const count={};
   CANDS.forEach(c=>c.tags.forEach(t=>count[t]=(count[t]||0)+1));
@@ -308,7 +363,7 @@ function renderTags(){
   }));
 }
 
-/* filtering */
+/* ── filtering ── */
 function filtered(){
   let a=CANDS.slice();
   if(state.status)a=a.filter(c=>c.status===state.status);
@@ -319,12 +374,14 @@ function filtered(){
   return a;
 }
 
-/* grid */
+/* ── grid ── */
 function renderGrid(){
   const a=filtered();
   document.getElementById('resultCount').textContent=`· ${a.length} 人`;
   if(!a.length){document.getElementById('grid').innerHTML='<div class="empty">没有符合条件的候选人，试试清除筛选</div>';return;}
-  document.getElementById('grid').innerHTML=a.map(c=>`
+  document.getElementById('grid').innerHTML=a.map(c=>{
+    const plabel=posByKey(c.positionKey);
+    return `
     <div class="ccard ${state.picked.has(c.id)?'picked':''}" data-id="${c.id}">
       <div class="pickbox">${state.picked.has(c.id)?'✓':''}</div>
       <div class="top">
@@ -333,9 +390,10 @@ function renderGrid(){
       </div>
       <h4>${c.name}</h4>
       <div class="yr">${c.yearsText}经验</div>
+      ${state.pos==='__all__'?`<span class="pchip">${plabel.short||plabel.title}</span>`:''}
       <div class="co">${c.company}</div>
       <div class="mini-tags">${c.tags.slice(0,3).map(t=>`<span class="mt">${t}</span>`).join('')}</div>
-    </div>`).join('');
+    </div>`;}).join('');
   document.querySelectorAll('.ccard').forEach(card=>{
     card.addEventListener('click',e=>{
       const id=+card.dataset.id;
@@ -345,10 +403,19 @@ function renderGrid(){
   });
 }
 
-/* pick / compare */
+/* ── pick / compare ── */
 function togglePick(id){
   if(state.picked.has(id))state.picked.delete(id);
-  else{ if(state.picked.size>=4){alert('最多对比 4 人');return;} state.picked.add(id);}
+  else{
+    if(state.picked.size>=4){alert('最多对比 4 人');return;}
+    // 跨岗位不允许雷达对比
+    const c=ALL_CANDS.find(x=>x.id===id);
+    if(state.picked.size){
+      const first=ALL_CANDS.find(x=>x.id===[...state.picked][0]);
+      if(first.positionKey!==c.positionKey){alert('六维口径按岗位定义，请在同一岗位内对比');return;}
+    }
+    state.picked.add(id);
+  }
   renderGrid(); updateCompareBar();
 }
 function updateCompareBar(){
@@ -356,62 +423,66 @@ function updateCompareBar(){
   if(!state.picked.size){bar.classList.remove('in');return;}
   bar.classList.add('in');
   document.getElementById('cbNames').innerHTML=[...state.picked].map(id=>{
-    const c=CANDS.find(x=>x.id===id);return `<span class="cb-chip">${c.name}</span>`;}).join('');
+    const c=ALL_CANDS.find(x=>x.id===id);return `<span class="cb-chip">${c.name}</span>`;}).join('');
 }
+function hideCompare(){ document.getElementById('compareBar').classList.remove('in'); }
 
-/* radar */
-function radarSVG(names, size){
-  const dims=POS.dimensions.map(d=>d.name);
-  const keys=POS.dimensions.map(d=>d.key);
+/* ── radar (uses the position of the compared candidates) ── */
+function radarDimsFor(cands){
+  const k=cands[0].positionKey;
+  return posByKey(k).dimensions;
+}
+function radarSVG(candIds, size){
+  const cands=candIds.map(id=>ALL_CANDS.find(x=>x.id===id));
+  const dims=radarDimsFor(cands);
+  const names=dims.map(d=>d.name), keys=dims.map(d=>d.key);
   const cx=size/2,cy=size/2,R=size/2-46;
   const ang=i=>(-90+i*(360/dims.length))*Math.PI/180;
   const pt=(r,i)=>[cx+r*Math.cos(ang(i)),cy+r*Math.sin(ang(i))];
   let out='';
-  // grid rings
   [0.25,0.5,0.75,1].forEach(f=>{
     out+=`<polygon points="${keys.map((k,i)=>pt(R*f,i).join(',')).join(' ')}" fill="none" stroke="${GRID}" stroke-width=".8"/>`;
   });
-  // axes + labels
   keys.forEach((k,i)=>{
     out+=`<line x1="${cx}" y1="${cy}" x2="${pt(R,i)[0]}" y2="${pt(R,i)[1]}" stroke="${GRID}" stroke-width=".7"/>`;
     const lp=pt(R+22,i),anchor=Math.abs(Math.cos(ang(i)))<.3?'middle':Math.cos(ang(i))>0?'start':'end';
-    out+=`<text x="${lp[0]}" y="${lp[1]+3}" font-size="9" font-weight="700" fill="#55554F" text-anchor="${anchor}">${dims[i]}</text>`;
+    out+=`<text x="${lp[0]}" y="${lp[1]+3}" font-size="9" font-weight="700" fill="#55554F" text-anchor="${anchor}">${names[i]}</text>`;
   });
-  // series
   const palette=[INK,'#5A5953','#84837C','#B0AFA9'];
-  names.forEach((nm,si)=>{
-    const c=CANDS.find(x=>x.name===nm), col=palette[si];
+  cands.forEach((c,si)=>{
+    const col=palette[si];
     const poly=keys.map((k,i)=>pt(R*c.scores[k]/10,i).join(',')).join(' ');
     out+=`<polygon points="${poly}" fill="${col}" fill-opacity="${si===0?.12:.05}" stroke="${col}" stroke-width="1.6"/>`;
     keys.forEach((k,i)=>{out+=`<circle cx="${pt(R*c.scores[k]/10,i)[0]}" cy="${pt(R*c.scores[k]/10,i)[1]}" r="2.4" fill="${col}"/>`;});
   });
-  // legend
-  names.forEach((nm,si)=>{
+  cands.forEach((c,si)=>{
     out+=`<rect x="${size-150}" y="${14+si*18}" width="10" height="10" rx="2" fill="${palette[si]}"/>`;
-    out+=`<text x="${size-134}" y="${23+si*18}" font-size="10" font-weight="700" fill="#333">${nm}</text>`;
+    out+=`<text x="${size-134}" y="${23+si*18}" font-size="10" font-weight="700" fill="#333">${c.name}</text>`;
   });
   return `<svg viewBox="0 0 ${size} ${size}" width="100%">${out}</svg>`;
 }
 
-/* compare modal → reuse drawer */
+/* ── compare modal ── */
 function openCompare(){
-  const names=[...state.picked].map(id=>CANDS.find(x=>x.id===id).name);
+  const ids=[...state.picked];
+  const cands=ids.map(id=>ALL_CANDS.find(x=>x.id===id));
+  const dims=radarDimsFor(cands);
   const inner=document.getElementById('dInner');
   inner.innerHTML=`
     <button class="d-close" id="dClose2">✕</button>
     <div style="margin-bottom:18px">
-      <div style="font-size:10px;font-weight:800;letter-spacing:.16em;color:${MUTED}">六维对比</div>
-      <h2 style="font-size:21px;font-weight:800;margin-top:4px">${names.join(' × ')}</h2>
+      <div style="font-size:10px;font-weight:800;letter-spacing:.16em;color:${MUTED}">六维对比 · ${posByKey(cands[0].positionKey).short||posByKey(cands[0].positionKey).title}</div>
+      <h2 style="font-size:21px;font-weight:800;margin-top:4px">${cands.map(c=>c.name).join(' × ')}</h2>
     </div>
-    ${radarSVG(names,460)}
+    ${radarSVG(ids,460)}
     <div style="margin-top:20px">
       <h5 style="font-size:10px;font-weight:800;letter-spacing:.1em;color:${MUTED};margin-bottom:8px">逐项对比</h5>
-      ${POS.dimensions.map(d=>{
-        const vals=names.map(nm=>CANDS.find(x=>x.name===nm).scores[d.key]);
+      ${dims.map(d=>{
+        const vals=cands.map(c=>c.scores[d.key]);
         return `<div style="margin-bottom:10px">
           <div style="font-size:11px;font-weight:700;margin-bottom:4px">${d.name}</div>
-          ${names.map((nm,i)=>`<div style="display:grid;grid-template-columns:48px 1fr 24px;gap:8px;align-items:center;margin-bottom:3px">
-            <span style="font-size:10.5px;font-weight:700;color:#666">${nm}</span>
+          ${cands.map((c,i)=>`<div style="display:grid;grid-template-columns:48px 1fr 24px;gap:8px;align-items:center;margin-bottom:3px">
+            <span style="font-size:10.5px;font-weight:700;color:#666">${c.name}</span>
             <div style="height:7px;background:#F0EFEB;border-radius:99px;overflow:hidden"><div style="height:100%;width:${vals[i]*10}%;background:${[INK,'#5A5953','#84837C','#B0AFA9'][i]}"></div></div>
             <span style="font-size:10.5px;font-weight:800">${vals[i]}</span></div>`).join('')}
         </div>`;
@@ -422,11 +493,11 @@ function openCompare(){
   document.getElementById('dClose2').addEventListener('click',closeDrawer);
 }
 
-/* drawer detail */
+/* ── drawer detail ── */
 function openDrawer(id){
-  const c=CANDS.find(x=>x.id===id);
-  const dims=POS.dimensions;
-  const single={}; dims.forEach(d=>single[d.key]=c.scores[d.key]);
+  const c=ALL_CANDS.find(x=>x.id===id);
+  const pobj=posByKey(c.positionKey);
+  const dims=pobj.dimensions;
   const inner=document.getElementById('dInner');
   inner.innerHTML=`
     <button class="d-close" id="dClose">✕</button>
@@ -434,16 +505,17 @@ function openDrawer(id){
       <div class="avatar">${c.name[0]}</div>
       <div><h2>${c.name}</h2><div class="yr">${c.yearsText}经验 · ${c.company.split('·')[0]}</div></div>
     </div>
+    <div style="margin:2px 0 12px"><span class="pchip">${pobj.short||pobj.title}</span></div>
     <div class="d-status"><span class="st">${c.status}</span>${c.note?` · <span style="font-size:11px;color:#8F8E88;font-weight:600">${c.note}</span>`:''}</div>
     <div class="d-actions">
-      <a class="btn primary" href="${CDN_BASE}${encodeURIComponent(c.resume)}" target="_blank" rel="noopener">📄 打开完整简历</a>
+      <a class="btn primary" href="${cdnBase(c)}${encodeURIComponent(c.resume)}" target="_blank" rel="noopener">📄 打开完整简历</a>
       <button class="btn outline" id="dPick">${state.picked.has(c.id)?'✓ 已加入对比':'+ 加入对比'}</button>
     </div>
     <div class="d-block">
       <h5>核心亮点</h5><p>${c.highlight}</p>
     </div>
     <div class="d-block">
-      <h5>JD 六维评分</h5>${radarSVG([c.name],300)}
+      <h5>JD 六维评分</h5>${radarSVG([c.id],300)}
     </div>
     <div class="d-block">
       <h5>技能标签</h5><div class="d-tags">${c.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
@@ -470,7 +542,20 @@ function closeDrawer(){
   document.getElementById('overlay').classList.remove('in');
 }
 
-/* events */
+/* ── header meta ── */
+function renderHeader(){
+  if(state.pos==='__all__'){
+    document.getElementById('posTitle').textContent='LinkOS 人才库';
+    document.getElementById('posMeta').innerHTML=`全部岗位汇总 · ${POSITIONS.length} 个岗位<br>共 ${ALL_CANDS.length} 位候选人`;
+  }else{
+    document.getElementById('posTitle').textContent=POS.title+' 人才库';
+    document.getElementById('posMeta').innerHTML=`${POS.location} · ${POS.salary}<br>更新 ${POS.updated} · 共 ${CANDS.length} 位候选人`;
+  }
+  document.querySelector('footer.foot').textContent=
+    `LINKOS TALENT POOL · ${POSITIONS.length} POSITIONS · ${ALL_CANDS.length} CANDIDATES`;
+}
+
+/* ── events ── */
 document.getElementById('searchInput').addEventListener('input',e=>{state.search=e.target.value;renderGrid();});
 document.getElementById('sortSeg').addEventListener('click',e=>{
   const b=e.target.closest('button');if(!b)return;
@@ -486,12 +571,23 @@ document.getElementById('overlay').addEventListener('click',closeDrawer);
 document.getElementById('compareGo').addEventListener('click',openCompare);
 document.getElementById('compareClear').addEventListener('click',()=>{state.picked.clear();renderGrid();updateCompareBar();});
 
-/* header meta */
-document.getElementById('posTitle').textContent=POS.title+' 人才库';
-document.getElementById('posMeta').innerHTML=`${POS.location} · ${POS.salary}<br>更新 ${POS.updated} · 共 ${CANDS.length} 位候选人`;
+/* ── render all ── */
+function renderAll(){
+  renderHeader(); renderPosTabs(); renderKPI();
+  // panel titles adapt
+  const h3s=document.querySelectorAll('.charts-row .panel h3');
+  const psubs=document.querySelectorAll('.charts-row .panel .psub');
+  if(state.pos==='__all__'){
+    h3s[0].textContent='各岗位人才分布';
+    psubs[0].innerHTML='点击某岗位可直接跳转查看';
+  }else{
+    h3s[0].textContent='招聘进度 Pipeline';
+    psubs[0].innerHTML='点某一环可筛选该状态候选人 · 共 <span id="pipeTotal">0</span> 人在库';
+  }
+  renderFunnel(); renderDist(); renderTags(); renderGrid();
+}
+renderAll();
 
-/* init */
-renderKPI();renderFunnel();renderDist();renderTags();renderGrid();
 </script>
 </body>
 </html>
