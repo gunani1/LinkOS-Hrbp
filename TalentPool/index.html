@@ -160,6 +160,16 @@ svg text{font-family:'Inter','Noto Sans SC',sans-serif}
 .ccard .stage-chip{display:inline-flex;font-size:9px;font-weight:800;color:#fff;background:#3A3935;
   border-radius:5px;padding:2px 7px;margin-bottom:5px}
 .ccard .stage-chip.muted{background:#9B9A93}
+.ccard .iv-chip{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:800;color:#fff;background:#1C1C1A;
+  border-radius:6px;padding:4px 9px;margin-bottom:6px;width:fit-content}
+.ccard .iv-chip .cal{font-size:10px}
+.ccard .iv-chip .dt{font-size:9px;font-weight:700;color:#C9C8C0}
+.iv-banner{display:flex;align-items:center;gap:10px;background:#1C1C1A;color:#fff;border-radius:12px;
+  padding:12px 15px;margin:8px 0 4px}
+.iv-banner .cal{font-size:18px}
+.iv-banner .iv-main{font-size:13px;font-weight:800;line-height:1.4}
+.iv-banner .iv-sub{font-size:10.5px;font-weight:600;color:#C9C8C0;margin-top:2px}
+.iv-banner .iv-badge{margin-left:auto;font-size:9px;font-weight:800;background:#fff;color:#1C1C1A;border-radius:99px;padding:4px 11px}
 
 /* ── 面试邀约话术 ── */
 .invite-box{background:#F7F6F1;border:1px solid #ECEAE2;border-radius:12px;padding:14px;margin-top:6px}
@@ -488,7 +498,8 @@ function fitLightness(f){ if(f==null)return '#B0AFA9'; if(f>=8.5)return INK; if(
 function renderKPI(){
   const nPos = state.pos==='__all__' ? POSITIONS.length : 1;
   const nInit=CANDS.length;
-  const two=CANDS.filter(c=>c.status==='技术二筛');
+  // 二筛口径：已通过技术二筛（含当前在二筛 + 已推进到邀约）
+  const two=CANDS.filter(c=>c.status==='技术二筛'||c.status==='邀约中');
   const nTwo=two.length;
   const twoRated=two.filter(c=>c.fit!=null);
   const avgTwo=twoRated.length?twoRated.reduce((a,c)=>a+c.fit,0)/twoRated.length:0;
@@ -671,7 +682,9 @@ function renderGrid(){
       </div>
       <div class="yr">${c.yearsText}经验</div>
       ${state.pos==='__all__'?`<span class="pchip" style="margin-bottom:5px">${plabel.short||plabel.title}</span>`:''}
-      <span class="stage-chip ${['暂缓入库','淘汰','待补简历'].includes(c.status)?'muted':''}">${c.status==='待补简历'?'初筛':c.status}</span>
+      ${c.interviewDate
+        ? `<span class="iv-chip"><span class="cal">📅</span>面试 ${c.interviewDate.slice(5).replace('-','/')} ${c.interviewTime}<span class="dt">已确认</span></span>`
+        : `<span class="stage-chip ${['暂缓入库','淘汰','待补简历'].includes(c.status)?'muted':''}">${c.status==='待补简历'?'初筛':c.status}</span>`}
       <div class="co">${coLabel(c)}</div>
       <div class="mini-tags">${c.tags.slice(0,3).map(t=>`<span class="mt">${t}</span>`).join('')}</div>
     </div>`;}).join('');
@@ -814,6 +827,15 @@ function openDrawer(id){
     </div>
     <div style="margin:2px 0 4px"><span class="pchip">${pobj.short||pobj.title}</span></div>
     ${stepPath(c)}
+    ${c.interviewDate?`
+    <div class="iv-banner">
+      <span class="cal">📅</span>
+      <div>
+        <div class="iv-main">面试已安排 · ${c.interviewDate} ${c.interviewTime}</div>
+        <div class="iv-sub">线上视频面试（BOSS 直聘平台）· 二筛已通过</div>
+      </div>
+      <span class="iv-badge">已确认</span>
+    </div>`:''}
     ${c.note?`<div style="font-size:11px;color:#8F8E88;font-weight:600;margin:6px 0 2px">${c.note}</div>`:''}
     <div class="d-actions">
       ${c.resume?`<a class="btn primary" href="${cdnBase(c)}${encodeURIComponent(c.resume)}" target="_blank" rel="noopener">📄 打开完整简历</a><button class="btn outline" id="dDl">⬇ 下载简历</button>`:`<span class="btn" style="background:#ECEAE3;color:#8F8E88;cursor:default">📄 简历待补</span>`}

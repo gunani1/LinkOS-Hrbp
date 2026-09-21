@@ -61,7 +61,7 @@
       "highlight": "FDE理念完全契合、跨团队交付与运维、技术+业务+交付全能",
       "fit": 9.0,
       "risk": "无专职客户项目管理title；深度模型训练偏弱",
-      "status": "技术二筛",
+      "status": "邀约中",
       "interviewOrder": 2,
       "note": "建议首面",
       "tags": [
@@ -85,7 +85,9 @@
       },
       "resume": "占恒_9.0分_11年.pdf",
       "source": "昨日",
-      "basis": "自我定位即FDE；11年全栈+近2年AI落地，PoC→生产端到端交付、需求澄清、方案宣讲、运维交付全能"
+      "basis": "自我定位即FDE；11年全栈+近2年AI落地，PoC→生产端到端交付、需求澄清、方案宣讲、运维交付全能",
+      "interviewDate": "2026-09-22",
+      "interviewTime": "10:00"
     },
     {
       "id": 3,
@@ -134,7 +136,7 @@
       "highlight": "FAE现场/全栈多端/Agent/RAG/Workflow/MCP/Dify/大量上线AI产品",
       "fit": 9.0,
       "risk": "技术栈偏PHP/传统Web出身",
-      "status": "技术二筛",
+      "status": "邀约中",
       "interviewOrder": 3,
       "note": "",
       "tags": [
@@ -153,7 +155,9 @@
       },
       "resume": "赵扬_9.0分_10年以上.pdf",
       "source": "今日",
-      "basis": "资深FDE，客户现场到交付全链路独立承担，AI快速交付+PMP认证"
+      "basis": "资深FDE，客户现场到交付全链路独立承担，AI快速交付+PMP认证",
+      "interviewDate": "2026-09-22",
+      "interviewTime": "13:00"
     },
     {
       "id": 5,
@@ -166,7 +170,7 @@
       "highlight": "技术全栈+微调+MCP、落地数据详实",
       "fit": 8.5,
       "risk": "多为内部/电商场景，客户驻场证据偏弱",
-      "status": "技术二筛",
+      "status": "邀约中",
       "interviewOrder": 10,
       "note": "建议首面",
       "tags": [
@@ -189,7 +193,9 @@
       },
       "resume": "张岳_8.5分_4年.pdf",
       "source": "昨日",
-      "basis": "技术深度最强之一：全栈+模型微调(SFT/DPO)+MCP共享服务，兼需求对接与AI培训"
+      "basis": "技术深度最强之一：全栈+模型微调(SFT/DPO)+MCP共享服务，兼需求对接与AI培训",
+      "interviewDate": "2026-09-22",
+      "interviewTime": "15:45"
     },
     {
       "id": 6,
@@ -269,7 +275,7 @@
       "highlight": "客户交付/商务闭环强；小B低成本AI提效方法论；独立全栈",
       "fit": 8.5,
       "risk": "技术非顶尖(脚本级)；Agent/RAG自研深度有限",
-      "status": "技术二筛",
+      "status": "邀约中",
       "interviewOrder": 9,
       "note": "",
       "tags": [
@@ -287,7 +293,9 @@
       },
       "resume": "奉武平_8.5分_6年.pdf",
       "source": "今日",
-      "basis": "4年半B端售前交付+企业级FDE落地，完整“问题发现-方案-落地-反馈”闭环"
+      "basis": "4年半B端售前交付+企业级FDE落地，完整“问题发现-方案-落地-反馈”闭环",
+      "interviewDate": "2026-09-22",
+      "interviewTime": "17:15"
     },
     {
       "id": 9,
@@ -300,7 +308,7 @@
       "highlight": "现职FDE工程师；技术全栈+售前交付复合，两份简历已核实为同一人",
       "fit": 8.8,
       "risk": "同一人曾投两份不同侧重简历，已合并；售前与技术兼具",
-      "status": "技术二筛",
+      "status": "邀约中",
       "interviewOrder": 5,
       "note": "孙浩1(9.0)为同一人另一版本简历，2026-09-21去重合并",
       "tags": [
@@ -325,7 +333,9 @@
       },
       "resume": "孙浩_8.5分_5年.pdf",
       "source": "今日",
-      "basis": "现职FDE工程师(杭州交子时代)；Python/Go全栈+LangGraph多智能体+MCP/RAG/K8s，独立负责售前方案/POC/交付闭环，金融电力电商多行业"
+      "basis": "现职FDE工程师(杭州交子时代)；Python/Go全栈+LangGraph多智能体+MCP/RAG/K8s，独立负责售前方案/POC/交付闭环，金融电力电商多行业",
+      "interviewDate": "2026-09-22",
+      "interviewTime": "15:00"
     },
     {
       "id": 10,
