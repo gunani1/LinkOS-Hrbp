@@ -386,17 +386,19 @@ function fitLightness(f){ if(f==null)return '#B0AFA9'; if(f>=8.5)return INK; if(
 
 /* ── KPI ── */
 function renderKPI(){
-  const n=CANDS.length, rated=CANDS.filter(c=>c.fit!=null);
-  const avg=rated.length?rated.reduce((a,c)=>a+c.fit,0)/rated.length:0;
-  const high=CANDS.filter(c=>c.fit>=8.5).length;
-  const inStage=CANDS.filter(c=>!['淘汰','已入职'].includes(c.status)).length;
-  const passTwo=CANDS.filter(c=>c.status==='技术二筛').length;
+  const nPos = state.pos==='__all__' ? POSITIONS.length : 1;
+  const nInit=CANDS.length;
+  const two=CANDS.filter(c=>c.status==='技术二筛');
+  const nTwo=two.length;
+  const twoRated=two.filter(c=>c.fit!=null);
+  const avgTwo=twoRated.length?twoRated.reduce((a,c)=>a+c.fit,0)/twoRated.length:0;
+  const nHigh=CANDS.filter(c=>c.fit>=8.5).length;
   const items=[
-    [n,'','初筛总人数'],
-    [avg.toFixed(1),'','平均适配分'],
-    [high,'人','高适配 ≥8.5'],
-    [passTwo,'人','进入技术二筛'],
-    [POSITIONS.length,'个','招聘岗位'],
+    [nPos,'个','招聘岗位'],
+    [nInit,'','初筛人数'],
+    [nTwo,'人','二筛人数'],
+    [avgTwo.toFixed(1),'','二筛平均适配分'],
+    [nHigh,'人','高适配 ≥8.5'],
   ];
   document.getElementById('kpis').innerHTML=items.map(([v,u,l])=>
     `<div class="kpi"><div class="v">${v}<small>${u}</small></div><div class="l">${l}</div></div>`).join('');
