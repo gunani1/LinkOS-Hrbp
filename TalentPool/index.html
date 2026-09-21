@@ -32,8 +32,13 @@ header.masthead{display:flex;justify-content:space-between;align-items:flex-end;
 .masthead h1{font-size:26px;font-weight:800;letter-spacing:-.02em;margin-top:4px}
 .masthead .meta{font-size:11.5px;color:var(--muted);text-align:right;line-height:1.7}
 .mast-right{display:flex;flex-direction:column;align-items:flex-end;gap:10px}
-.back-btn{appearance:none;border:1px solid var(--line);background:#fff;color:var(--ink);font-size:12px;font-weight:700;padding:9px 14px;border-radius:10px;cursor:pointer;transition:background .15s}
-.back-btn:hover{background:#F4F3EE}
+.back-btn{appearance:none;border:1px solid var(--ink);background:var(--ink);color:#fff;font-size:12px;font-weight:700;padding:9px 14px;border-radius:10px;cursor:pointer;transition:background .15s}
+.back-btn:hover{background:#000}
+.panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.panel-back{appearance:none;border:none;background:#F1EFE9;color:var(--ink);font-size:10.5px;font-weight:700;padding:6px 11px;border-radius:8px;cursor:pointer;white-space:nowrap;transition:background .15s}
+.panel-back:hover{background:#E6E4DD}
+.totop{position:fixed;right:20px;bottom:22px;width:42px;height:42px;border-radius:50%;background:var(--ink);color:#fff;border:none;font-size:18px;line-height:1;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .2s;box-shadow:0 6px 18px rgba(0,0,0,.18);z-index:60;display:flex;align-items:center;justify-content:center}
+.totop.show{opacity:1;pointer-events:auto}
 /* KPI row */
 .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:26px}
 .kpi{background:#fff;border-radius:18px;padding:18px 18px 16px}
@@ -44,7 +49,7 @@ header.masthead{display:flex;justify-content:space-between;align-items:flex-end;
 .sec-title{font-size:13px;font-weight:800;letter-spacing:.02em;margin:6px 0 12px;display:flex;align-items:center;gap:8px}
 .sec-title::before{content:'';width:14px;height:2px;background:var(--ink)}
 /* charts row (pipeline + distribution) */
-.charts-row{display:grid;grid-template-columns:1.35fr 1fr;gap:14px;margin-bottom:28px}
+.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px}
 .panel{background:#fff;border-radius:18px;padding:20px}
 .panel h3{font-size:12.5px;font-weight:800;margin-bottom:2px}
 .panel .psub{font-size:10px;color:var(--muted);margin-bottom:14px}
@@ -174,8 +179,13 @@ footer.foot{margin-top:40px;text-align:center;font-size:10px;color:var(--faint);
   <!-- pipeline + distribution -->
   <div class="charts-row">
     <div class="panel">
-      <h3>招聘进度 Pipeline</h3>
-      <div class="psub">点某一环可筛选该状态候选人 · 共 <span id="pipeTotal">0</span> 人在库</div>
+      <div class="panel-head">
+        <div>
+          <h3>招聘进度 Pipeline</h3>
+          <div class="psub">点某一环可筛选该状态候选人 · 共 <span id="pipeTotal">0</span> 人在库</div>
+        </div>
+        <button class="panel-back" id="panelBack" style="display:none">← 返回总览</button>
+      </div>
       <div class="funnel" id="funnel"></div>
     </div>
     <div class="panel">
@@ -213,6 +223,9 @@ footer.foot{margin-top:40px;text-align:center;font-size:10px;color:var(--faint);
 
   <footer class="foot">FDE TALENT POOL · LINKOS HRBP · CHENKEYAO · 数据更新 2026-09-20</footer>
 </div>
+
+<!-- 返回顶部 -->
+<button class="totop" id="toTop" aria-label="返回顶部">↑</button>
 
 <!-- compare bar -->
 <div class="compare-bar" id="compareBar">
@@ -694,13 +707,24 @@ function renderHeader(){
   document.querySelector('footer.foot').textContent=
     `LINKOS TALENT POOL · ${POSITIONS.length} POSITIONS · ${ALL_CANDS.length} CANDIDATES`;
   document.getElementById('backBtn').style.display = state.pos==='__all__' ? 'none':'inline-block';
+  const pb=document.getElementById('panelBack');
+  if(pb)pb.style.display = state.pos==='__all__' ? 'none':'inline-block';
 }
-/* 返回岗位总览 */
-document.getElementById('backBtn').addEventListener('click',()=>{
+/* 返回岗位总览（顶部按钮 + 卡片内按钮共用） */
+function goBack(){
   state.pos='__all__'; state.tags.clear();state.status='';state.search='';state.picked.clear();
   document.getElementById('searchInput').value='';
   refreshScope(); hideCompare(); renderAll();
-});
+}
+document.getElementById('backBtn').addEventListener('click',goBack);
+document.getElementById('panelBack').addEventListener('click',goBack);
+
+/* 返回顶部：滚动超过一屏后显示 */
+const toTopBtn=document.getElementById('toTop');
+window.addEventListener('scroll',()=>{
+  toTopBtn.classList.toggle('show',window.scrollY>window.innerHeight*0.8);
+},{passive:true});
+toTopBtn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 
 /* ── events ── */
 document.getElementById('searchInput').addEventListener('input',e=>{state.search=e.target.value;renderGrid();});
