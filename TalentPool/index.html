@@ -31,9 +31,6 @@ header.masthead{display:flex;justify-content:space-between;align-items:flex-end;
 .masthead .kicker{font-size:10px;font-weight:700;letter-spacing:.18em;color:var(--muted);text-transform:uppercase}
 .masthead h1{font-size:26px;font-weight:800;letter-spacing:-.02em;margin-top:4px}
 .masthead .meta{font-size:11.5px;color:var(--muted);text-align:right;line-height:1.7}
-.mast-right{display:flex;flex-direction:column;align-items:flex-end;gap:10px}
-.back-btn{appearance:none;border:1px solid var(--ink);background:var(--ink);color:#fff;font-size:12px;font-weight:700;padding:9px 14px;border-radius:10px;cursor:pointer;transition:background .15s}
-.back-btn:hover{background:#000}
 .panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
 .panel-back{appearance:none;border:none;background:#F1EFE9;color:var(--ink);font-size:10.5px;font-weight:700;padding:6px 11px;border-radius:8px;cursor:pointer;white-space:nowrap;transition:background .15s}
 .panel-back:hover{background:#E6E4DD}
@@ -162,10 +159,6 @@ footer.foot{margin-top:40px;text-align:center;font-size:10px;color:var(--faint);
     <div>
       <div class="kicker">LinkOS · Talent Pipeline</div>
       <h1 id="posTitle">FDE 人才库</h1>
-    </div>
-    <div class="mast-right">
-      <button class="back-btn" id="backBtn" style="display:none">← 返回岗位总览</button>
-      <div class="meta" id="posMeta"></div>
     </div>
   </header>
 
@@ -699,24 +692,20 @@ function closeDrawer(){
 function renderHeader(){
   if(state.pos==='__all__'){
     document.getElementById('posTitle').textContent='LinkOS 人才库';
-    document.getElementById('posMeta').innerHTML=`全部岗位汇总 · ${POSITIONS.length} 个岗位<br>共 ${ALL_CANDS.length} 位候选人`;
   }else{
     document.getElementById('posTitle').textContent=POS.title+' 人才库';
-    document.getElementById('posMeta').innerHTML=`${POS.location} · ${POS.salary}<br>更新 ${POS.updated} · 共 ${CANDS.length} 位候选人`;
   }
   document.querySelector('footer.foot').textContent=
     `LINKOS TALENT POOL · ${POSITIONS.length} POSITIONS · ${ALL_CANDS.length} CANDIDATES`;
-  document.getElementById('backBtn').style.display = state.pos==='__all__' ? 'none':'inline-block';
   const pb=document.getElementById('panelBack');
   if(pb)pb.style.display = state.pos==='__all__' ? 'none':'inline-block';
 }
-/* 返回岗位总览（顶部按钮 + 卡片内按钮共用） */
+/* 返回岗位总览（卡片内按钮） */
 function goBack(){
   state.pos='__all__'; state.tags.clear();state.status='';state.search='';state.picked.clear();
   document.getElementById('searchInput').value='';
   refreshScope(); hideCompare(); renderAll();
 }
-document.getElementById('backBtn').addEventListener('click',goBack);
 document.getElementById('panelBack').addEventListener('click',goBack);
 
 /* 返回顶部：滚动超过一屏后显示 */
