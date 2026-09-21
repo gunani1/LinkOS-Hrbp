@@ -172,8 +172,8 @@ footer.foot{margin-top:40px;text-align:center;font-size:10px;color:var(--faint);
     </div>
     <div class="panel">
       <h3>人才结构分布</h3>
-      <div class="psub">上：适配分（0–10）· 下：经验年限</div>
-      <svg id="distChart" viewBox="0 0 360 250" width="100%"></svg>
+      <div class="psub">适配分（0–10）与经验年限的人数分布</div>
+      <svg id="distChart" viewBox="0 0 352 225" width="100%"></svg>
     </div>
   </div>
 
@@ -416,34 +416,31 @@ function renderFunnel(){
 /* ── distribution chart ── */
 function renderDist(){
   const s=document.getElementById('distChart'); s.innerHTML='';
-  const buckets=[['<8 分',c=>c.fit!=null&&c.fit<8,'#84837C'],
-                 ['8.0–8.4',c=>c.fit>=8&&c.fit<8.5,'#5A5953'],
-                 ['8.5–8.9',c=>c.fit>=8.5&&c.fit<9,INK],
-                 ['9 分+',c=>c.fit>=9,INK],
-                 ['无法评估',c=>c.fit==null,'#C6C5BF']];
-  const X0=34,base=118,top=26,bw=52,gap=10;
-  const counts=buckets.map(([l,f])=>CANDS.filter(f).length);
-  const fmax=Math.max(2,...counts);
-  txt(s,{x:X0,y:14,'font-size':8.5,'font-weight':800,fill:MUTED},'适配分档位（人数）');
-  counts.forEach((v,i)=>{
-    const x=X0+i*(bw+gap), hh=v/fmax*(base-top);
-    el(s,'rect',{x,y:base-hh,width:bw,height:hh,rx:5,fill:buckets[i][2]});
-    if(v)txt(s,{x:x+bw/2,y:base-hh-4,'font-size':10,'font-weight':800,fill:INK,'text-anchor':'middle'},v);
-    txt(s,{x:x+bw/2,y:base+12,'font-size':7.5,'font-weight':600,fill:MUTED,'text-anchor':'middle'},buckets[i][0]);
+  const LE=70, TX=78, TW=248, BH=11, PITCH=23, TRACK='#EDEBE5';
+  const groups=[
+    {sec:'适配分档位 · 人数', y0:27, data:[
+      ['<8 分',c=>c.fit!=null&&c.fit<8,'#8F8E88'],
+      ['8.0–8.4',c=>c.fit>=8&&c.fit<8.5,'#6A6963'],
+      ['8.5–8.9',c=>c.fit>=8.5&&c.fit<9,'#43423C'],
+      ['9 分+',c=>c.fit>=9,INK],
+      ['无法评估',c=>c.fit==null,'#CAC9C3']]},
+    {sec:'经验年限 · 人数', y0:158, data:[
+      ['1–3年',c=>c.years<=3,'#6A6963'],
+      ['4–7年',c=>c.years>=4&&c.years<=7,'#6A6963'],
+      ['8年+',c=>c.years>=8,'#6A6963']]}
+  ];
+  groups.forEach(g=>{
+    txt(s,{x:TX,y:g.y0-12,'font-size':9,'font-weight':800,fill:MUTED,'letter-spacing':'.3'},g.sec);
+    const counts=g.data.map(([,f])=>CANDS.filter(f).length);
+    const max=Math.max(1,...counts);
+    g.data.forEach(([lab,,color],i)=>{
+      const y=g.y0+i*PITCH, v=counts[i];
+      el(s,'rect',{x:TX,y,width:TW,height:BH,rx:5.5,fill:TRACK});
+      if(v) el(s,'rect',{x:TX,y,width:Math.max(8,Math.round(v/max*TW)),height:BH,rx:5.5,fill:color});
+      txt(s,{x:LE,y:y+BH-2,'font-size':9,'font-weight':700,fill:'#3D3C37','text-anchor':'end'},lab);
+      txt(s,{x:TX+TW+6,y:y+BH-2,'font-size':10,'font-weight':800,fill:INK},''+v);
+    });
   });
-  el(s,'line',{x1:X0-6,y1:base,x2:X0+5*(bw+gap),y2:base,stroke:GRID,'stroke-width':1});
-  const ybins=[['1–3年',c=>c.years<=3],['4–7年',c=>c.years>=4&&c.years<=7],['8年+',c=>c.years>=8]];
-  const yX0=44,ybase=232,ytop=150,ybw=80,ygap=18;
-  const yCounts=ybins.map(([l,f])=>CANDS.filter(f).length);
-  const ymax=Math.max(2,...yCounts);
-  txt(s,{x:yX0,y:142,'font-size':8.5,'font-weight':800,fill:MUTED},'经验年限');
-  yCounts.forEach((v,i)=>{
-    const x=yX0+i*(ybw+ygap),hh=v/ymax*(ybase-ytop);
-    el(s,'rect',{x,y:ybase-hh,width:ybw,height:hh,rx:5,fill:'#6A6963'});
-    if(v)txt(s,{x:x+ybw/2,y:ybase-hh-4,'font-size':10,'font-weight':800,fill:INK,'text-anchor':'middle'},v);
-    txt(s,{x:x+ybw/2,y:ybase+12,'font-size':8,'font-weight':600,fill:MUTED,'text-anchor':'middle'},ybins[i][0]);
-  });
-  el(s,'line',{x1:yX0-6,y1:ybase,x2:yX0+3*(ybw+ygap),y2:ybase,stroke:GRID,'stroke-width':1});
 }
 
 /* ── tag cloud ── */
