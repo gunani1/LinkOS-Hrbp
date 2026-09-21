@@ -65,6 +65,7 @@
       "interviewOrder": 2,
       "note": "建议首面",
       "tags": [
+        "FDE",
         "AI落地",
         "PoC",
         "PoC到生产",
@@ -137,6 +138,7 @@
       "interviewOrder": 3,
       "note": "",
       "tags": [
+        "FDE",
         "MCP",
         "RAG",
         "全栈"
@@ -204,6 +206,7 @@
       "interviewOrder": 6,
       "note": "建议首面",
       "tags": [
+        "FDE",
         "AI落地",
         "低代码平台",
         "政企",
@@ -270,6 +273,7 @@
       "interviewOrder": 9,
       "note": "",
       "tags": [
+        "FDE",
         "全栈",
         "客户交付"
       ],
@@ -293,27 +297,35 @@
       "yearsText": "5",
       "company": "杭州交子时代·FDE工程师",
       "education": null,
-      "highlight": "已有FDE岗位实践；售前+交付+Agent复合",
-      "fit": 8.5,
-      "risk": "售前成分重，深代码贡献需甄别",
+      "highlight": "现职FDE工程师；技术全栈+售前交付复合，两份简历已核实为同一人",
+      "fit": 8.8,
+      "risk": "同一人曾投两份不同侧重简历，已合并；售前与技术兼具",
       "status": "技术二筛",
       "interviewOrder": 5,
-      "note": "",
+      "note": "孙浩1(9.0)为同一人另一版本简历，2026-09-21去重合并",
       "tags": [
+        "FDE",
         "LangGraph",
-        "PoC"
+        "PoC",
+        "MCP",
+        "RAG",
+        "储能",
+        "全栈",
+        "多Agent",
+        "客户交付",
+        "量化"
       ],
       "scores": {
-        "tech": 8,
-        "ai": 8.5,
+        "tech": 8.5,
+        "ai": 9,
         "insight": 9,
         "client": 9,
-        "prototype": 8.5,
+        "prototype": 9,
         "value": 8.5
       },
       "resume": "孙浩_8.5分_5年.pdf",
       "source": "今日",
-      "basis": "现职FDE工程师(杭州交子时代)，售前方案+AI智能体(DeepAgents/LangGraph)，方案/POC/交付"
+      "basis": "现职FDE工程师(杭州交子时代)；Python/Go全栈+LangGraph多智能体+MCP/RAG/K8s，独立负责售前方案/POC/交付闭环，金融电力电商多行业"
     },
     {
       "id": 10,
@@ -364,6 +376,7 @@
       "interviewOrder": 11,
       "note": "",
       "tags": [
+        "FDE",
         "AI产品",
         "FDE方法论",
         "交付工具",
@@ -564,6 +577,7 @@
       "interviewOrder": 17,
       "note": "",
       "tags": [
+        "FDE",
         "RAG",
         "客户交付"
       ],
@@ -1024,6 +1038,7 @@
       "interviewOrder": 12,
       "note": "",
       "tags": [
+        "FDE",
         "RAG"
       ],
       "scores": {
@@ -1053,6 +1068,7 @@
       "interviewOrder": 26,
       "note": "",
       "tags": [
+        "FDE",
         "全栈"
       ],
       "scores": {
@@ -1082,6 +1098,7 @@
       "interviewOrder": 14,
       "note": "",
       "tags": [
+        "FDE",
         "MCP",
         "全栈"
       ],
@@ -1244,6 +1261,7 @@
       "interviewOrder": 8,
       "note": "",
       "tags": [
+        "FDE",
         "全栈"
       ],
       "scores": {

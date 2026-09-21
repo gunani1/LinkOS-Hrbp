@@ -215,7 +215,7 @@ footer.foot{margin-top:40px;text-align:center;font-size:10px;color:var(--faint);
       <button class="dl-btn" id="batchDl">⬇ 下载本页简历</button>
     </div>
     <div class="tb-row">
-      <div class="tb-label">技能</div>
+      <div class="tb-label">标签</div>
       <div class="tagcloud" id="tagCloud"></div>
       <button class="clear-btn" id="clearFilter">清除筛选</button>
     </div>
@@ -692,7 +692,7 @@ function openDrawer(id){
       <h5>JD 六维评分</h5>${c.scores?radarSVG([c.id],300):'<div class="risk">该候选人暂未完成六维评估</div>'}
     </div>
     <div class="d-block">
-      <h5>技能标签</h5><div class="d-tags">${c.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+      <h5>标签</h5><div class="d-tags">${c.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
     </div>
     <div class="d-block">
       <h5>基本信息</h5>
