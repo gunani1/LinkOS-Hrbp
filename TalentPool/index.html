@@ -131,6 +131,45 @@ svg text{font-family:'Inter','Noto Sans SC',sans-serif}
 /* drawer */
 .overlay{position:fixed;inset:0;background:rgba(28,28,26,.4);opacity:0;pointer-events:none;transition:opacity .25s;z-index:70}
 .overlay.in{opacity:1;pointer-events:auto}
+
+/* ── 通用模态弹窗 ── */
+.modal{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;
+  padding:20px;opacity:0;pointer-events:none;transition:opacity .2s}
+.modal.in{opacity:1;pointer-events:auto}
+.modal-bg{position:absolute;inset:0;background:rgba(28,28,26,.45)}
+.modal-card{position:relative;background:#fff;border-radius:18px;padding:24px;width:100%;max-width:400px;
+  box-shadow:0 24px 60px rgba(0,0,0,.22);transform:translateY(8px) scale(.98);transition:transform .22s}
+.modal.in .modal-card{transform:none}
+.modal-card h3{font-size:16px;font-weight:800;margin-bottom:8px}
+.modal-card p{font-size:12.5px;color:#55554F;line-height:1.6;margin-bottom:18px}
+.modal-card .m-info{background:#F7F6F1;border-radius:12px;padding:12px 14px;font-size:12px;color:#3A3935;
+  font-weight:700;margin-bottom:18px;line-height:1.7}
+.modal-card .m-info b{font-size:15px}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end}
+.m-btn{border:0;border-radius:99px;padding:10px 20px;font:800 12.5px 'Inter','Noto Sans SC',sans-serif;cursor:pointer}
+.m-btn.cancel{background:#EFEDE7;color:#55554F}
+.m-btn.ok{background:var(--ink);color:#fff}
+
+/* ── 二级环节标签 ── */
+.stagecloud{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px}
+.stage-tag{font-size:11px;font-weight:700;color:#6A6963;background:#fff;border:1px solid #E3E2DB;
+  border-radius:99px;padding:5px 13px;cursor:pointer;transition:all .15s}
+.stage-tag .n{color:#A5A49C;font-weight:700;margin-left:2px}
+.stage-tag.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.stage-tag.on .n{color:#C9C8C0}
+.ccard .stage-chip{display:inline-flex;font-size:9px;font-weight:800;color:#fff;background:#3A3935;
+  border-radius:5px;padding:2px 7px;margin-bottom:5px}
+.ccard .stage-chip.muted{background:#9B9A93}
+
+/* ── 面试邀约话术 ── */
+.invite-box{background:#F7F6F1;border:1px solid #ECEAE2;border-radius:12px;padding:14px;margin-top:6px}
+.invite-box textarea{width:100%;border:0;background:transparent;resize:vertical;font:400 12.5px/1.75
+  'Inter','Noto Sans SC',sans-serif;color:#3A3935;outline:none;min-height:128px}
+.invite-toolbar{display:flex;gap:8px;justify-content:flex-end;margin-top:10px;padding-top:10px;
+  border-top:1px solid #E9E7DF}
+.invite-btn{border:0;border-radius:99px;padding:8px 16px;font:800 11.5px 'Inter','Noto Sans SC',sans-serif;cursor:pointer}
+.invite-btn.copy{background:var(--ink);color:#fff}
+.invite-btn.again{background:#E7E5DE;color:#55554F}
 .drawer{position:fixed;top:0;right:0;height:100%;width:min(560px,94vw);background:#fff;z-index:80;
   transform:translateX(102%);transition:transform .32s cubic-bezier(.3,.8,.3,1);overflow-y:auto}
 .drawer.in{transform:none}
@@ -216,10 +255,16 @@ footer.foot{margin-top:40px;text-align:center;font-size:10px;color:var(--faint);
       </div>
       <button class="dl-btn" id="batchDl">⬇ 下载本页简历</button>
     </div>
-    <div class="tb-row">
-      <div class="tb-label">标签</div>
-      <div class="tagcloud" id="tagCloud"></div>
-      <button class="clear-btn" id="clearFilter">清除筛选</button>
+    <div class="tb-row" style="flex-direction:column;align-items:stretch;gap:6px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="tb-label">环节</div>
+        <div class="stagecloud" id="stageCloud"></div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:10px">
+        <div class="tb-label" style="margin-top:3px">标签</div>
+        <div class="tagcloud" id="tagCloud"></div>
+        <button class="clear-btn" id="clearFilter">清除筛选</button>
+      </div>
     </div>
   </div>
 
@@ -244,6 +289,36 @@ footer.foot{margin-top:40px;text-align:center;font-size:10px;color:var(--faint);
 
 <!-- drawer -->
 <div class="overlay" id="overlay"></div>
+
+<!-- 通用确认弹窗 -->
+<div class="modal" id="confirmModal">
+  <div class="modal-bg" data-close="1"></div>
+  <div class="modal-card">
+    <h3 id="cmTitle">确认操作</h3>
+    <p id="cmDesc"></p>
+    <div class="m-info" id="cmInfo"></div>
+    <div class="modal-actions">
+      <button class="m-btn cancel" data-close="1">取消</button>
+      <button class="m-btn ok" id="cmOk">确认下载</button>
+    </div>
+  </div>
+</div>
+
+<!-- 面试邀约话术弹窗 -->
+<div class="modal" id="inviteModal">
+  <div class="modal-bg" data-close="1"></div>
+  <div class="modal-card" style="max-width:460px">
+    <h3>面试邀约话术</h3>
+    <p style="margin-bottom:12px">已根据候选人信息生成，可直接编辑，点复制后到 BOSS / 微信发送。</p>
+    <div class="invite-box">
+      <textarea id="inviteText"></textarea>
+      <div class="invite-toolbar">
+        <button class="invite-btn again" id="inviteRegen">↻ 重新生成</button>
+        <button class="invite-btn copy" id="inviteCopy">复制话术</button>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="drawer" id="drawer"><div class="d-inner" id="dInner"></div></div>
 
 <script>
@@ -359,7 +434,32 @@ async function downloadBatch(btn){
   btn.textContent=old;btn.disabled=false;
 }
 const _b0=document.getElementById('batchDl');
-if(_b0)_b0.addEventListener('click',function(){downloadBatch(this);});
+if(_b0)_b0.addEventListener('click',function(){
+  const list=filtered().filter(c=>c.resume);
+  if(!list.length){toast('当前筛选下没有可下载的简历',2600);return;}
+  const scopeName=state.pos==='__all__'?'全部岗位':((posByKey(state.pos)||{}).title||state.pos);
+  showConfirm({
+    title:'批量下载确认',
+    desc:'将把当前筛选结果中的简历打包为一个 ZIP 文件，请确认数量：',
+    info:`岗位范围：${scopeName}<br>可下载简历：<b>${list.length}</b> 份`,
+    okText:'确认下载',
+    onOk:()=>downloadBatch(_b0)
+  });
+});
+
+/* ── 通用确认弹窗 ── */
+let _cmOnOk=null;
+function showConfirm({title,desc,info,okText,onOk}){
+  document.getElementById('cmTitle').textContent=title;
+  document.getElementById('cmDesc').textContent=desc;
+  document.getElementById('cmInfo').innerHTML=info;
+  document.getElementById('cmOk').textContent=okText||'确认';
+  _cmOnOk=onOk||null;
+  document.getElementById('confirmModal').classList.add('in');
+}
+function hideConfirm(){document.getElementById('confirmModal').classList.remove('in');_cmOnOk=null;}
+document.getElementById('cmOk').addEventListener('click',()=>{const f=_cmOnOk;hideConfirm();if(f)f();});
+document.querySelectorAll('#confirmModal [data-close]').forEach(el=>el.addEventListener('click',hideConfirm));
 
 
 
@@ -491,6 +591,35 @@ function renderDist(){
   });
 }
 
+/* ── 二级环节标签云 ── */
+const STAGE_DEFS=[
+  {key:'初筛',label:'初筛（含待补简历）'},
+  {key:'技术二筛',label:'技术二筛'},
+  {key:'邀约中',label:'邀约中'},
+  {key:'暂缓入库',label:'暂缓入库'},
+  {key:'淘汰',label:'淘汰'}
+];
+function stageCount(key){
+  // 与漏斗一致：主环节按累计口径（到达过该环节含已推进者）；旁支精确匹配
+  const depth={'初筛':0,'待补简历':0,'技术二筛':1,'邀约中':2};
+  const main=['初筛','技术二筛','邀约中'];
+  if(main.includes(key)){
+    const d=depth[key];
+    return CANDS.filter(c=>c.status in depth && depth[c.status]>=d).length;
+  }
+  return CANDS.filter(c=>c.status===key).length;
+}
+function renderStageTags(){
+  document.getElementById('stageCloud').innerHTML=STAGE_DEFS.map(s=>
+    `<div class="stage-tag ${state.status===s.key?'on':''}" data-stage="${s.key}">${s.label}<span class="n">${stageCount(s.key)}</span></div>`
+  ).join('');
+  document.querySelectorAll('.stage-tag[data-stage]').forEach(el=>el.addEventListener('click',()=>{
+    const k=el.dataset.stage;
+    state.status = state.status===k ? '' : k;
+    renderStageTags();renderFunnel();renderGrid();
+  }));
+}
+
 /* ── tag cloud ── */
 function renderTags(){
   const count={};
@@ -542,6 +671,7 @@ function renderGrid(){
       </div>
       <div class="yr">${c.yearsText}经验</div>
       ${state.pos==='__all__'?`<span class="pchip" style="margin-bottom:5px">${plabel.short||plabel.title}</span>`:''}
+      <span class="stage-chip ${['暂缓入库','淘汰','待补简历'].includes(c.status)?'muted':''}">${c.status==='待补简历'?'初筛':c.status}</span>
       <div class="co">${coLabel(c)}</div>
       <div class="mini-tags">${c.tags.slice(0,3).map(t=>`<span class="mt">${t}</span>`).join('')}</div>
     </div>`;}).join('');
@@ -688,6 +818,7 @@ function openDrawer(id){
     <div class="d-actions">
       ${c.resume?`<a class="btn primary" href="${cdnBase(c)}${encodeURIComponent(c.resume)}" target="_blank" rel="noopener">📄 打开完整简历</a><button class="btn outline" id="dDl">⬇ 下载简历</button>`:`<span class="btn" style="background:#ECEAE3;color:#8F8E88;cursor:default">📄 简历待补</span>`}
       <button class="btn outline" id="dPick" ${c.scores?'':'style="opacity:.45"'}>${state.picked.has(c.id)?'✓ 已加入对比':(c.scores?'+ 加入对比':'暂无六维评分')}</button>
+      <button class="btn outline" id="dInvite">✉ 面试邀约话术</button>
     </div>
     <div class="d-block">
       <h5>核心亮点</h5><p>${c.highlight}</p>
@@ -715,7 +846,48 @@ function openDrawer(id){
   document.getElementById('dClose').addEventListener('click',closeDrawer);
   document.getElementById('dPick').addEventListener('click',()=>{togglePick(c.id);openDrawer(c.id);});
   const _ddl=document.getElementById('dDl'); if(_ddl)_ddl.addEventListener('click',()=>downloadOne(c));
+  const _dinv=document.getElementById('dInvite'); if(_dinv)_dinv.addEventListener('click',()=>openInvite(c));
 }
+
+/* ── 面试邀约话术 ── */
+let _inviteCand=null;
+function inviteScript(c,variant){
+  const posName=pobj_fullTitle(c.positionKey);
+  // 称谓：用“先生/女士”，可由用户在文本里改
+  const honorific='先生';
+  const openers=[
+    `${c.name}${honorific}您好，我是 LinkOS 的招聘负责人。经过技术部门主管评估，您的经历与我们${posName}岗位的匹配度很高。`,
+    `${c.name}${honorific}您好，关注到您在${c.tags.includes('FDE')?'FDE前沿部署':''}方面的项目经验，和我们正在招聘的${posName}岗位非常契合，技术团队评估后希望进一步和您聊聊。`,
+    `${c.name}${honorific}您好，我这边是 LinkOS HR。您的简历经用人部门复评，综合能力在本批候选人中很突出，诚邀您参加${posName}岗位的面试。`
+  ];
+  const opener=openers[variant%openers.length];
+  return `${opener}\n\n想跟您约一次线上视频面试（可在 BOSS 直聘平台进行），大约 30 分钟，主要了解您过往「问题发现—专业判断—落地推进」的完整项目经历。请问您明天或本周哪个时段方便？期待您的回复，谢谢。`;
+}
+function pobj_fullTitle(k){const p=posByKey(k);return p?p.title:k;}
+function openInvite(c){
+  _inviteCand=c;
+  document.getElementById('inviteText').value=inviteScript(c,0);
+  document.getElementById('inviteModal').classList.add('in');
+}
+function hideInvite(){document.getElementById('inviteModal').classList.remove('in');}
+document.querySelectorAll('#inviteModal [data-close]').forEach(el=>el.addEventListener('click',hideInvite));
+let _regenV=0;
+document.getElementById('inviteRegen').addEventListener('click',()=>{
+  if(!_inviteCand)return;
+  _regenV++;
+  document.getElementById('inviteText').value=inviteScript(_inviteCand,_regenV);
+});
+document.getElementById('inviteCopy').addEventListener('click',async()=>{
+  const ta=document.getElementById('inviteText');
+  const btn=document.getElementById('inviteCopy');
+  try{
+    await navigator.clipboard.writeText(ta.value);
+  }catch(e){
+    ta.select(); document.execCommand('copy');
+  }
+  const old=btn.textContent; btn.textContent='✓ 已复制';
+  setTimeout(()=>btn.textContent=old,1600);
+});
 function closeDrawer(){
   document.getElementById('drawer').classList.remove('in');
   document.getElementById('overlay').classList.remove('in');
@@ -758,7 +930,7 @@ document.getElementById('sortSeg').addEventListener('click',e=>{
 document.getElementById('clearFilter').addEventListener('click',()=>{
   state.tags.clear();state.status='';state.search='';
   document.getElementById('searchInput').value='';
-  renderTags();renderFunnel();renderGrid();
+  renderStageTags();renderTags();renderFunnel();renderGrid();
 });
 document.getElementById('overlay').addEventListener('click',closeDrawer);
 document.getElementById('compareGo').addEventListener('click',openCompare);
@@ -777,7 +949,7 @@ function renderAll(){
     h3s[0].textContent='招聘进度 Pipeline';
     psubs[0].innerHTML='点某一环可筛选该状态候选人 · 共 <span id="pipeTotal">0</span> 人在库';
   }
-  renderFunnel(); renderDist(); renderTags(); renderGrid();
+  renderFunnel(); renderDist(); renderStageTags(); renderTags(); renderGrid();
 }
 renderAll();
 
