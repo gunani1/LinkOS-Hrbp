@@ -101,7 +101,8 @@ svg text{font-family:'Inter','Noto Sans SC',sans-serif}
 .ccard{background:#fff;border-radius:16px;padding:14px 15px;cursor:pointer;position:relative;
   transition:transform .15s ease;display:flex;flex-direction:column}
 .ccard:hover{transform:translateY(-3px)}
-.ccard .top{display:flex;justify-content:flex-end;align-items:flex-start;margin-bottom:6px}
+.ccard .top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2px}
+.ccard h4{font-size:15px;font-weight:800;color:var(--ink);line-height:1.2}
 .ccard .fit-badge{text-align:right}
 .ccard .fit-badge .num{font-size:20px;font-weight:800;letter-spacing:-.02em;line-height:1}
 .ccard .fit-badge .lb{font-size:8.5px;font-weight:700;color:var(--muted);letter-spacing:.04em;margin-top:2px}
@@ -532,6 +533,7 @@ function renderGrid(){
     <div class="ccard ${state.picked.has(c.id)?'picked':''}" data-id="${c.id}">
       <div class="pickbox">${state.picked.has(c.id)?'✓':''}</div>
       <div class="top">
+        <h4>${c.name}</h4>
         <div class="fit-badge"><div class="num" style="color:${fitLightness(c.fit)}">${c.fit==null?"—":c.fit.toFixed(1)}</div><div class="lb">适配分</div></div>
       </div>
       <div class="yr">${c.yearsText}经验</div>
