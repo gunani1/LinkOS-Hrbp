@@ -271,7 +271,7 @@ footer.foot{margin-top:40px;text-align:center;font-size:10px;color:var(--faint);
   <!-- candidate grid -->
   <div class="grid" id="grid"></div>
 
-  <footer class="foot">FDE TALENT POOL · LINKOS HRBP · CHENKEYAO · 数据更新 2026-09-20</footer>
+  <footer class="foot">LINK · HR · Talent Pool</footer>
 </div>
 
 <!-- 返回顶部 -->
@@ -900,8 +900,7 @@ function renderHeader(){
   }else{
     document.getElementById('posTitle').textContent=POS.title+' 人才库';
   }
-  document.querySelector('footer.foot').textContent=
-    `LINKOS TALENT POOL · ${POSITIONS.length} POSITIONS · ${ALL_CANDS.length} CANDIDATES`;
+  document.querySelector('footer.foot').textContent='LINK · HR · Talent Pool';
   const pb=document.getElementById('panelBack');
   if(pb)pb.style.display = state.pos==='__all__' ? 'none':'inline-block';
 }
