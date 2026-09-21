@@ -31,6 +31,9 @@ header.masthead{display:flex;justify-content:space-between;align-items:flex-end;
 .masthead .kicker{font-size:10px;font-weight:700;letter-spacing:.18em;color:var(--muted);text-transform:uppercase}
 .masthead h1{font-size:26px;font-weight:800;letter-spacing:-.02em;margin-top:4px}
 .masthead .meta{font-size:11.5px;color:var(--muted);text-align:right;line-height:1.7}
+.mast-right{display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.back-btn{appearance:none;border:1px solid var(--line);background:#fff;color:var(--ink);font-size:12px;font-weight:700;padding:9px 14px;border-radius:10px;cursor:pointer;transition:background .15s}
+.back-btn:hover{background:#F4F3EE}
 /* KPI row */
 .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:26px}
 .kpi{background:#fff;border-radius:18px;padding:18px 18px 16px}
@@ -49,11 +52,13 @@ svg{display:block}
 svg text{font-family:'Inter','Noto Sans SC',sans-serif}
 /* pipeline funnel */
 .funnel{display:flex;flex-direction:column;gap:9px}
-.frow{display:grid;grid-template-columns:78px 1fr 26px;align-items:center;gap:10px;cursor:pointer}
-.frow .fl{font-size:11px;font-weight:700;color:#55554F}
+.frow{display:grid;grid-template-columns:118px 1fr 64px;align-items:center;gap:10px;cursor:pointer}
+.frow .fl{font-size:11px;font-weight:700;color:#55554F;line-height:1.25}
 .frow .track{height:18px;background:#F4F3EE;border-radius:99px;overflow:hidden}
 .frow .fill{height:100%;background:var(--ink);border-radius:99px;min-width:3px;transition:width .5s cubic-bezier(.2,.7,.2,1)}
-.frow .fn{font-size:11px;font-weight:800;text-align:right}
+.frow .fill-muted{height:100%;background:#B7B5AE;border-radius:99px;min-width:3px;transition:width .5s cubic-bezier(.2,.7,.2,1)}
+.frow .fn{font-size:11px;font-weight:800;text-align:right;color:var(--ink)}
+.frow .fn small{font-size:9px;font-weight:700;color:#8F8E88}
 .frow.active .fl{color:var(--ink)}
 .frow.active .fill{background:#000}
 /* toolbar */
@@ -153,7 +158,10 @@ footer.foot{margin-top:40px;text-align:center;font-size:10px;color:var(--faint);
       <div class="kicker">LinkOS · Talent Pipeline</div>
       <h1 id="posTitle">FDE 人才库</h1>
     </div>
-    <div class="meta" id="posMeta"></div>
+    <div class="mast-right">
+      <button class="back-btn" id="backBtn" style="display:none">← 返回岗位总览</button>
+      <div class="meta" id="posMeta"></div>
+    </div>
   </header>
 
 
@@ -262,6 +270,8 @@ function cdnBase(c){
   return `https://cdn.jsdelivr.net/gh/${REPO}@main/TalentPool/resumes/${k}/`;
 }
 function posByKey(k){ return POSITIONS.find(p=>p.key===k); }
+/* 公司/原任兜底：无简历则简历待补，有简历仍无信息才待核实 */
+function coLabel(c){ return c.company || (c.resume?'待核实':'简历待补'); }
 /* ───────────── 简历下载 ───────────── */
 /* 轻提示 */
 let _toastT;
@@ -395,20 +405,38 @@ function renderFunnel(){
     }));
     return;
   }
-  const counts={};
-  POS.statusFlow.forEach(s=>counts[s]=0);
-  CANDS.forEach(c=>{if(counts[c.status]!=null)counts[c.status]++});
-  const max=Math.max(1,...Object.values(counts));
-  document.getElementById('funnel').innerHTML=POS.statusFlow.map(s=>{
-    const v=counts[s];
-    return `<div class="frow ${state.status===s?'active':''}" data-status="${s}">
-      <div class="fl">${s}</div>
-      <div class="track"><div class="fill" style="width:${v/max*100}%"></div></div>
-      <div class="fn">${v}</div></div>`;
+  // 岗位进度：以初筛总人数为基准的百分比进度条（漏斗式逐级收窄）
+  // 待补简历并入初筛，不单独成环
+  const total=CANDS.length; // 初筛总数（含待补简历）
+  
+  const nTwo=CANDS.filter(c=>c.status==='技术二筛').length;
+  const nInv=CANDS.filter(c=>c.status==='邀约中').length;
+  const nHold=CANDS.filter(c=>c.status==='暂缓入库').length;
+  const nOut=CANDS.filter(c=>c.status==='淘汰').length;
+  const nResume=CANDS.filter(c=>c.status==='待补简历').length;
+  const pct=v=>total?Math.round(v/total*1000)/10:0;
+  const pctS=v=>{const p=pct(v);return Number.isInteger(p)?''+p:p.toFixed(1);};
+  // 阶段：label, value, 是否主漏斗环, 对应筛选状态集合
+  const stages=[
+    {label:'初筛（含待补简历 '+nResume+'）',v:total,main:true,sel:['初筛','待补简历'],key:'初筛'},
+    {label:'技术二筛',v:nTwo,main:true,sel:['技术二筛'],key:'技术二筛'},
+    {label:'邀约中',v:nInv,main:true,sel:['邀约中'],key:'邀约中'},
+    {label:'暂缓入库',v:nHold,main:false,sel:['暂缓入库'],key:'暂缓入库'},
+    {label:'淘汰',v:nOut,main:false,sel:['淘汰'],key:'淘汰'},
+  ];
+  document.getElementById('funnel').innerHTML=stages.map(st=>{
+    const w=Math.max(st.v?2.5:0,pct(st.v));
+    const active=state.status===st.key?'active':'';
+    const fill=st.main?'fill':'fill-muted';
+    return `<div class="frow ${active}" data-status="${st.key}">
+      <div class="fl">${st.label}</div>
+      <div class="track"><div class="${fill}" style="width:${w}%"></div></div>
+      <div class="fn">${st.v}<small> · ${pctS(st.v)}%</small></div></div>`;
   }).join('');
-  const _pt=document.getElementById('pipeTotal'); if(_pt)_pt.textContent=CANDS.length;
+  const _pt=document.getElementById('pipeTotal'); if(_pt)_pt.textContent=total;
   document.querySelectorAll('.frow').forEach(r=>r.addEventListener('click',()=>{
-    state.status = state.status===r.dataset.status ? '' : r.dataset.status;
+    const st=stages.find(s=>s.key===r.dataset.status);
+    state.status = state.status===st.key ? '' : st.key;
     renderFunnel(); renderGrid();
   }));
 }
@@ -459,7 +487,17 @@ function renderTags(){
 /* ── filtering ── */
 function filtered(){
   let a=CANDS.slice();
-  if(state.status)a=a.filter(c=>c.status===state.status);
+  if(state.status){
+    // 主漏斗累计口径：到达过该环节（含已向下推进者）；暂缓/淘汰为旁支，精确匹配
+    const depth={'初筛':0,'待补简历':0,'技术二筛':1,'邀约中':2};
+    const main=['初筛','技术二筛','邀约中'];
+    if(main.includes(state.status)){
+      const d=depth[state.status];
+      a=a.filter(c=>c.status in depth && depth[c.status]>=d);
+    }else{
+      a=a.filter(c=>c.status===state.status);
+    }
+  }
   if(state.tags.size)a=a.filter(c=>[...state.tags].every(t=>c.tags.includes(t)));
   if(state.search){const q=state.search.toLowerCase();
     a=a.filter(c=>(c.name+c.company+c.highlight+c.tags.join('')).toLowerCase().includes(q));}
@@ -485,7 +523,7 @@ function renderGrid(){
       <h4>${c.name}</h4>
       <div class="yr">${c.yearsText}经验</div>
       ${state.pos==='__all__'?`<span class="pchip">${plabel.short||plabel.title}</span>`:''}
-      <div class="co">${c.company||'待核实'}</div>
+      <div class="co">${coLabel(c)}</div>
       <div class="mini-tags">${c.tags.slice(0,3).map(t=>`<span class="mt">${t}</span>`).join('')}</div>
     </div>`;}).join('');
   document.querySelectorAll('.ccard').forEach(card=>{
@@ -530,8 +568,9 @@ function radarDimsFor(cands){
 function radarSVG(candIds, size){
   const cands=candIds.map(id=>ALL_CANDS.find(x=>x.id===id));
   const dims=radarDimsFor(cands);
-  const names=dims.map(d=>d.name), keys=dims.map(d=>d.key);
-  const cx=size/2,cy=size/2,R=size/2-46;
+  const names=dims.map(d=>d.short||d.name), keys=dims.map(d=>d.key);
+  const pad=size<340?40:52;
+  const cx=size/2,cy=size/2+ (size<340?4:0),R=size/2-pad;
   const ang=i=>(-90+i*(360/dims.length))*Math.PI/180;
   const pt=(r,i)=>[cx+r*Math.cos(ang(i)),cy+r*Math.sin(ang(i))];
   let out='';
@@ -540,19 +579,24 @@ function radarSVG(candIds, size){
   });
   keys.forEach((k,i)=>{
     out+=`<line x1="${cx}" y1="${cy}" x2="${pt(R,i)[0]}" y2="${pt(R,i)[1]}" stroke="${GRID}" stroke-width=".7"/>`;
-    const lp=pt(R+22,i),anchor=Math.abs(Math.cos(ang(i)))<.3?'middle':Math.cos(ang(i))>0?'start':'end';
-    out+=`<text x="${lp[0]}" y="${lp[1]+3}" font-size="9" font-weight="700" fill="#55554F" text-anchor="${anchor}">${names[i]}</text>`;
+    const a=ang(i),cosA=Math.cos(a),sinA=Math.sin(a);
+    const anchor=Math.abs(cosA)<.35?'middle':cosA>0?'start':'end';
+    const lp=pt(R+13,i);
+    let dy=3;
+    if(sinA<-.6)dy=-2; else if(sinA>.6)dy=6;
+    out+=`<text x="${lp[0]}" y="${lp[1]+dy}" font-size="${size<340?10:12}" font-weight="800" fill="#4A4944" text-anchor="${anchor}">${names[i]}</text>`;
   });
   const palette=[INK,'#5A5953','#84837C','#B0AFA9'];
   cands.forEach((c,si)=>{
     const col=palette[si];
     const poly=keys.map((k,i)=>pt(R*c.scores[k]/10,i).join(',')).join(' ');
     out+=`<polygon points="${poly}" fill="${col}" fill-opacity="${si===0?.12:.05}" stroke="${col}" stroke-width="1.6"/>`;
-    keys.forEach((k,i)=>{out+=`<circle cx="${pt(R*c.scores[k]/10,i)[0]}" cy="${pt(R*c.scores[k]/10,i)[1]}" r="2.4" fill="${col}"/>`;});
+    keys.forEach((k,i)=>{out+=`<circle cx="${pt(R*c.scores[k]/10,i)[0]}" cy="${pt(R*c.scores[k]/10,i)[1]}" r="${size<340?2.4:3}" fill="${col}"/>`;});
   });
   cands.forEach((c,si)=>{
-    out+=`<rect x="${size-150}" y="${14+si*18}" width="10" height="10" rx="2" fill="${palette[si]}"/>`;
-    out+=`<text x="${size-134}" y="${23+si*18}" font-size="10" font-weight="700" fill="#333">${c.name}</text>`;
+    const lx=14, ly=14+si*18;
+    out+=`<rect x="${lx}" y="${ly-9}" width="10" height="10" rx="2" fill="${palette[si]}"/>`;
+    out+=`<text x="${lx+16}" y="${ly}" font-size="10" font-weight="700" fill="#333">${c.name}</text>`;
   });
   return `<svg viewBox="0 0 ${size} ${size}" width="100%">${out}</svg>`;
 }
@@ -598,7 +642,7 @@ function openDrawer(id){
     <button class="d-close" id="dClose">✕</button>
     <div class="d-head">
       <div class="avatar">${c.name[0]}</div>
-      <div><h2>${c.name}</h2><div class="yr">${c.yearsText}经验 · ${(c.company||'待核实').split('·')[0]}</div></div>
+      <div><h2>${c.name}</h2><div class="yr">${c.yearsText}经验 · ${coLabel(c).split('·')[0]}</div></div>
     </div>
     <div style="margin:2px 0 12px"><span class="pchip">${pobj.short||pobj.title}</span></div>
     <div class="d-status"><span class="st">${c.status}</span>${c.note?` · <span style="font-size:11px;color:#8F8E88;font-weight:600">${c.note}</span>`:''}</div>
@@ -618,7 +662,7 @@ function openDrawer(id){
     <div class="d-block">
       <h5>基本信息</h5>
       <div class="info-grid">
-        <div class="info"><div class="k">原任 / 方向</div><div class="val" style="font-size:12px">${c.company}</div></div>
+        <div class="info"><div class="k">原任 / 方向</div><div class="val" style="font-size:12px">${coLabel(c)}</div></div>
         <div class="info"><div class="k">教育背景</div><div class="val" style="font-size:12px">${c.education||'待核实'}</div></div>
         <div class="info"><div class="k">适配分</div><div class="val">${c.fit==null?'无法评估':c.fit.toFixed(1)+' / 10'}</div></div>
         <div class="info"><div class="k">建议面试顺序</div><div class="val">${c.interviewOrder?'第 '+c.interviewOrder+' 位':'待二筛后排序'}</div></div>
@@ -649,7 +693,14 @@ function renderHeader(){
   }
   document.querySelector('footer.foot').textContent=
     `LINKOS TALENT POOL · ${POSITIONS.length} POSITIONS · ${ALL_CANDS.length} CANDIDATES`;
+  document.getElementById('backBtn').style.display = state.pos==='__all__' ? 'none':'inline-block';
 }
+/* 返回岗位总览 */
+document.getElementById('backBtn').addEventListener('click',()=>{
+  state.pos='__all__'; state.tags.clear();state.status='';state.search='';state.picked.clear();
+  document.getElementById('searchInput').value='';
+  refreshScope(); hideCompare(); renderAll();
+});
 
 /* ── events ── */
 document.getElementById('searchInput').addEventListener('input',e=>{state.search=e.target.value;renderGrid();});
