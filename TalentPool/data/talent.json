@@ -2946,6 +2946,38 @@
       "basis": "C/C++/Python 全栈；Transformer 微调与 Multi-Agent 工作流；主导 4G/5G 基站 AI 节能与参数自适应项目",
       "interviewDate": "2026-09-22",
       "interviewTime": "18:00"
+    },
+    {
+      "id": 111,
+      "positionKey": "fde",
+      "name": "周晨",
+      "fit": 8.8,
+      "years": 7,
+      "yearsText": "7年",
+      "company": "浙江榕基信息技术（驻场）",
+      "role": "AI 落地交付工程师 · 多 Agent 研发流水线主导",
+      "tags": [
+        "多Agent",
+        "RAG",
+        "全栈",
+        "AI落地",
+        "政企"
+      ],
+      "scores": {
+        "llm": 9.0,
+        "agent": 9.5,
+        "rag": 8.5,
+        "fullstack": 8.0,
+        "ops": 8.0,
+        "business": 9.0
+      },
+      "status": "初试",
+      "interviewDate": "2026-09-22",
+      "interviewTime": "16:30",
+      "resume": "周晨_8.8分_7年.pdf",
+      "co": "浙江榕基信息技术 · 项目经理/驻场业务负责人",
+      "highlight": "自研 9 Bot × 7 阶段多 Agent 研发流水线已投入生产（前端 4 万行/后端 2.4 万行 Java），独立完成 80+ 次迭代；Ollama + MaxKB 私有化部署政务 RAG 知识库；多年政企项目交付与回款闭环。期望薪资 20-21K（性价比突出）。",
+      "risk": "简历标题与文件名均写「10年以上」，但正文明确写「7 年政务数据平台集成改造与企业 SaaS 交付经验」；建议面试时核实是否为夸大；水产养殖非科班转型，AI 深度理论可能偏弱。"
     }
   ]
 }
