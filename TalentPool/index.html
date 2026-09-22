@@ -153,7 +153,7 @@ svg text{font-family:'Inter','Noto Sans SC',sans-serif}
 .ccard .iv-chip .cal{font-size:10px}
 .ccard .iv-chip .dt{font-size:9px;font-weight:700;color:#C9C8C0}
 .iv-banner{display:flex;align-items:center;gap:10px;background:#1C1C1A;color:#fff;border-radius:12px;
-  padding:12px 15px;margin:8px 0 4px}
+  padding:13px 15px;margin:20px 0 20px}
 .iv-banner .cal{font-size:18px}
 .iv-banner .iv-main{font-size:13px;font-weight:800;line-height:1.4}
 .iv-banner .iv-sub{font-size:10.5px;font-weight:600;color:#C9C8C0;margin-top:2px}
@@ -174,7 +174,7 @@ svg text{font-family:'Inter','Noto Sans SC',sans-serif}
 .d-inner{padding:30px 30px 60px}
 .d-close{position:sticky;top:0;float:right;border:0;background:#F4F3EE;width:36px;height:36px;border-radius:50%;
   font-size:18px;cursor:pointer;color:#555;z-index:5}
-.d-head{display:flex;gap:16px;align-items:center;margin-bottom:14px}
+.d-head{display:flex;gap:16px;align-items:center;margin-bottom:20px}
 .d-head .avatar{width:60px;height:60px;border-radius:16px;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800}
 .d-head h2{font-size:23px;font-weight:800;letter-spacing:-.01em}
 .d-head .yr{font-size:12px;color:var(--muted);font-weight:700}
@@ -846,8 +846,8 @@ function openDrawer(id){
       <div class="avatar">${c.name[0]}</div>
       <div><h2>${c.name}</h2><div class="yr">${c.yearsText}经验 · ${coLabel(c).split('·')[0]}</div></div>
     </div>
-    <div style="margin:2px 0 4px"><span class="pchip">${pobj.short||pobj.title}</span></div>
-    ${stepPath(c)}
+    <div style="margin:0 0 20px"><span class="pchip">${pobj.short||pobj.title}</span></div>
+    <div style="margin-bottom:20px">${stepPath(c)}</div>
     ${c.interviewDate?`
     <div class="iv-banner">
       <span class="cal">📅</span>
@@ -857,7 +857,7 @@ function openDrawer(id){
       </div>
       <span class="iv-badge">已确认</span>
     </div>`:''}
-    ${c.note?`<div style="font-size:11px;color:#8F8E88;font-weight:600;margin:6px 0 2px">${c.note}</div>`:''}
+    ${c.note?`<div style="font-size:11px;color:#8F8E88;font-weight:600;margin:0 0 16px">${c.note}</div>`:''}
     <div class="d-actions">
       ${c.resume?`<button class="btn primary" id="dOpen">📄 打开完整简历</button><button class="btn outline" id="dDl">⬇ 下载简历</button><button class="btn outline" id="dPrint">🖨 打印简历</button>`:`<span class="btn" style="background:#ECEAE3;color:#8F8E88;cursor:default">📄 简历待补</span>`}
       <button class="btn outline" id="dInvite">✉ 初试邀约话术</button>
