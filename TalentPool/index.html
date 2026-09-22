@@ -319,7 +319,7 @@ footer.foot{margin-top:40px;text-align:center;font-size:10px;color:var(--faint);
 <div class="modal" id="inviteModal">
   <div class="modal-bg" data-close="1"></div>
   <div class="modal-card" style="max-width:460px">
-    <h3>面试邀约话术</h3>
+    <h3>初试邀约话术</h3>
     <p style="margin-bottom:12px">已根据候选人信息生成，可直接编辑，点复制后到 BOSS / 微信发送。</p>
     <div class="invite-box">
       <textarea id="inviteText"></textarea>
@@ -538,8 +538,8 @@ function fitLightness(f){ if(f==null)return '#B0AFA9'; if(f>=8.5)return INK; if(
 function renderKPI(){
   const nPos = state.pos==='__all__' ? POSITIONS.length : 1;
   const nInit=CANDS.length;
-  // 二筛口径：已通过技术二筛（含当前在二筛 + 已推进到邀约）
-  const two=CANDS.filter(c=>c.status==='技术二筛'||c.status==='邀约中');
+  // 二筛口径：已到达二筛（含二筛、初试、复试、通过）
+  const two=CANDS.filter(c=>['二筛','初试','复试','通过'].includes(c.status));
   const nTwo=two.length;
   const twoRated=two.filter(c=>c.fit!=null);
   const avgTwo=twoRated.length?twoRated.reduce((a,c)=>a+c.fit,0)/twoRated.length:0;
@@ -579,21 +579,19 @@ function renderFunnel(){
   // 岗位进度：以初筛总人数为基准的百分比进度条（漏斗式逐级收窄）
   // 待补简历并入初筛，不单独成环
   const total=CANDS.length; // 初筛总数（含待补简历）
-  
-  const nTwo=CANDS.filter(c=>c.status==='技术二筛').length;
-  const nInv=CANDS.filter(c=>c.status==='邀约中').length;
-  const nHold=CANDS.filter(c=>c.status==='暂缓入库').length;
-  const nOut=CANDS.filter(c=>c.status==='淘汰').length;
-  const nResume=CANDS.filter(c=>c.status==='待补简历').length;
+  const at=st=>CANDS.filter(c=>c.status===st).length;
+  const nTwo=at('二筛'),nFst=at('初试'),nSec=at('复试'),
+        nPass=at('通过'),nFail=at('不通过');
   const pct=v=>total?Math.round(v/total*1000)/10:0;
   const pctS=v=>{const p=pct(v);return Number.isInteger(p)?''+p:p.toFixed(1);};
-  // 阶段：label, value, 是否主漏斗环, 对应筛选状态集合
+  // 阶段：label, value, 是否主漏斗环, 对应状态
   const stages=[
-    {label:'初筛（含待补简历 '+nResume+'）',v:total,main:true,sel:['初筛','待补简历'],key:'初筛'},
-    {label:'技术二筛',v:nTwo,main:true,sel:['技术二筛'],key:'技术二筛'},
-    {label:'邀约中',v:nInv,main:true,sel:['邀约中'],key:'邀约中'},
-    {label:'暂缓入库',v:nHold,main:false,sel:['暂缓入库'],key:'暂缓入库'},
-    {label:'淘汰',v:nOut,main:false,sel:['淘汰'],key:'淘汰'},
+    {label:'初筛',v:total,main:true,key:'初筛'},
+    {label:'二筛',v:nTwo,main:true,key:'二筛'},
+    {label:'初试',v:nFst,main:true,key:'初试'},
+    {label:'复试',v:nSec,main:true,key:'复试'},
+    {label:'通过',v:nPass,main:false,key:'通过'},
+    {label:'不通过',v:nFail,main:false,key:'不通过'},
   ];
   document.getElementById('funnel').innerHTML=stages.map(st=>{
     const w=Math.max(st.v?2.5:0,pct(st.v));
@@ -644,19 +642,21 @@ function renderDist(){
 
 /* ── 二级环节标签云 ── */
 const STAGE_DEFS=[
-  {key:'初筛',label:'初筛（含待补简历）'},
-  {key:'技术二筛',label:'技术二筛'},
-  {key:'邀约中',label:'邀约中'},
-  {key:'暂缓入库',label:'暂缓入库'},
-  {key:'淘汰',label:'淘汰'}
+  {key:'初筛',label:'初筛'},
+  {key:'二筛',label:'二筛'},
+  {key:'初试',label:'初试'},
+  {key:'复试',label:'复试'},
+  {key:'通过',label:'通过'},
+  {key:'不通过',label:'不通过'}
 ];
+/* 环节深度：主链路 初筛0/二筛1/初试2/复试3/通过4；待补简历并入初筛；不通过为旁支 */
+const STAGE_DEPTH={'初筛':0,'待补简历':0,'二筛':1,'初试':2,'复试':3,'通过':4};
+const MAIN_STAGES=['初筛','二筛','初试','复试','通过'];
 function stageCount(key){
   // 与漏斗一致：主环节按累计口径（到达过该环节含已推进者）；旁支精确匹配
-  const depth={'初筛':0,'待补简历':0,'技术二筛':1,'邀约中':2};
-  const main=['初筛','技术二筛','邀约中'];
-  if(main.includes(key)){
-    const d=depth[key];
-    return CANDS.filter(c=>c.status in depth && depth[c.status]>=d).length;
+  if(MAIN_STAGES.includes(key)){
+    const d=STAGE_DEPTH[key];
+    return CANDS.filter(c=>c.status in STAGE_DEPTH && STAGE_DEPTH[c.status]>=d).length;
   }
   return CANDS.filter(c=>c.status===key).length;
 }
@@ -688,12 +688,10 @@ function renderTags(){
 function filtered(){
   let a=CANDS.slice();
   if(state.status){
-    // 主漏斗累计口径：到达过该环节（含已向下推进者）；暂缓/淘汰为旁支，精确匹配
-    const depth={'初筛':0,'待补简历':0,'技术二筛':1,'邀约中':2};
-    const main=['初筛','技术二筛','邀约中'];
-    if(main.includes(state.status)){
-      const d=depth[state.status];
-      a=a.filter(c=>c.status in depth && depth[c.status]>=d);
+    // 主链路累计口径：到达过该环节（含已向下推进者）；不通过为旁支，精确匹配
+    if(MAIN_STAGES.includes(state.status)){
+      const d=STAGE_DEPTH[state.status];
+      a=a.filter(c=>c.status in STAGE_DEPTH && STAGE_DEPTH[c.status]>=d);
     }else{
       a=a.filter(c=>c.status===state.status);
     }
@@ -703,8 +701,7 @@ function filtered(){
     a=a.filter(c=>(c.name+c.company+c.highlight+c.tags.join('')).toLowerCase().includes(q));}
   const fv=x=>x.fit==null?-1:x.fit;
   // 同分顺位：招聘环节进度越深越靠前（已安排面试优先），同进度则面试时间早者优先，最后按姓名
-  const DEPTH={'初筛':0,'待补简历':0,'技术二筛':1,'邀约中':2};
-  const prog=c=>(c.status in DEPTH?DEPTH[c.status]:-1)+(c.interviewDate?0.5:0);
+  const prog=c=>(c.status in STAGE_DEPTH?STAGE_DEPTH[c.status]:-1)+(c.interviewDate?0.5:0);
   const ivMin=c=>c.interviewTime?c.interviewTime.split(':').reduce((h,m)=>+h*60+ +m):9999;
   const nameCmp=(x,y)=>x.name.localeCompare(y.name,'zh');
   a.sort((x,y)=>{
@@ -734,8 +731,8 @@ function renderGrid(){
       <div class="yr">${c.yearsText}经验</div>
       ${state.pos==='__all__'?`<span class="pchip" style="margin-bottom:5px">${plabel.short||plabel.title}</span>`:''}
       ${c.interviewDate
-        ? `<span class="iv-chip"><span class="cal">📅</span>面试 ${c.interviewDate.slice(5).replace('-','/')} ${c.interviewTime}<span class="dt">已确认</span></span>`
-        : `<span class="stage-chip ${['暂缓入库','淘汰','待补简历'].includes(c.status)?'muted':''}">${c.status==='待补简历'?'初筛':c.status}</span>`}
+        ? `<span class="iv-chip"><span class="cal">📅</span>初试 ${c.interviewDate.slice(5).replace('-','/')} ${c.interviewTime}<span class="dt">已确认</span></span>`
+        : `<span class="stage-chip ${c.status==='不通过'?'muted':''}">${c.status==='待补简历'?'初筛':c.status}</span>`}
       <div class="co">${coLabel(c)}</div>
       <div class="mini-tags">${c.tags.slice(0,3).map(t=>`<span class="mt">${t}</span>`).join('')}</div>
     </div>`;}).join('');
@@ -860,12 +857,11 @@ function openCompare(){
 
 /* 详情抽屉：阶段路径（一条线 + 点，已到深色/未到浅灰） */
 function stepPath(c){
-  const stages=['初筛','技术二筛','邀约中'];
-  const depth={'初筛':0,'待补简历':0,'技术二筛':1,'邀约中':2};
-  if(!(c.status in depth)){
+  const stages=['初筛','二筛','初试','复试','通过'];
+  if(!(c.status in STAGE_DEPTH)){
     return `<div class="side-st">${c.status}</div>`;
   }
-  const cur=depth[c.status];
+  const cur=STAGE_DEPTH[c.status];
   let html='<div class="steps">';
   stages.forEach((s,i)=>{
     let cls=i<cur?'done':(i===cur?'cur done':'');
@@ -895,8 +891,8 @@ function openDrawer(id){
     <div class="iv-banner">
       <span class="cal">📅</span>
       <div>
-        <div class="iv-main">面试已安排 · ${c.interviewDate} ${c.interviewTime}</div>
-        <div class="iv-sub">线上视频面试（BOSS 直聘平台）· 二筛已通过</div>
+        <div class="iv-main">初试已安排 · ${c.interviewDate} ${c.interviewTime}</div>
+        <div class="iv-sub">线上视频初试（BOSS 直聘平台）· 二筛已通过</div>
       </div>
       <span class="iv-badge">已确认</span>
     </div>`:''}
@@ -904,7 +900,7 @@ function openDrawer(id){
     <div class="d-actions">
       ${c.resume?`<button class="btn primary" id="dOpen">📄 打开完整简历</button><button class="btn outline" id="dDl">⬇ 下载简历</button><button class="btn outline" id="dPrint">🖨 打印简历</button>`:`<span class="btn" style="background:#ECEAE3;color:#8F8E88;cursor:default">📄 简历待补</span>`}
       <button class="btn outline" id="dPick" ${c.scores?'':'style="opacity:.45"'}>${state.picked.has(c.id)?'✓ 已加入对比':(c.scores?'+ 加入对比':'暂无六维评分')}</button>
-      <button class="btn outline" id="dInvite">✉ 面试邀约话术</button>
+      <button class="btn outline" id="dInvite">✉ 初试邀约话术</button>
     </div>
     <div class="d-block">
       <h5>核心亮点</h5><p>${c.highlight}</p>
@@ -946,10 +942,10 @@ function inviteScript(c,variant){
   const openers=[
     `${c.name}${honorific}您好，我是 LinkOS 的招聘负责人。经过技术部门主管评估，您的经历与我们${posName}岗位的匹配度很高。`,
     `${c.name}${honorific}您好，关注到您在${c.tags.includes('FDE')?'FDE前沿部署':''}方面的项目经验，和我们正在招聘的${posName}岗位非常契合，技术团队评估后希望进一步和您聊聊。`,
-    `${c.name}${honorific}您好，我这边是 LinkOS HR。您的简历经用人部门复评，综合能力在本批候选人中很突出，诚邀您参加${posName}岗位的面试。`
+    `${c.name}${honorific}您好，我这边是 LinkOS HR。您的简历经用人部门复评，综合能力在本批候选人中很突出，诚邀您参加${posName}岗位的初试。`
   ];
   const opener=openers[variant%openers.length];
-  return `${opener}\n\n想跟您约一次线上视频面试（可在 BOSS 直聘平台进行），大约 30 分钟，主要了解您过往「问题发现—专业判断—落地推进」的完整项目经历。请问您明天或本周哪个时段方便？期待您的回复，谢谢。`;
+  return `${opener}\n\n想跟您约一次线上视频初试（可在 BOSS 直聘平台进行），大约 30 分钟，主要了解您过往「问题发现—专业判断—落地推进」的完整项目经历。请问您明天或本周哪个时段方便？期待您的回复，谢谢。`;
 }
 function pobj_fullTitle(k){const p=posByKey(k);return p?p.title:k;}
 function openInvite(c){

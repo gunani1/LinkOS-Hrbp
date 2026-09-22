@@ -61,7 +61,7 @@
       "highlight": "FDE理念完全契合、跨团队交付与运维、技术+业务+交付全能",
       "fit": 9.0,
       "risk": "无专职客户项目管理title；深度模型训练偏弱",
-      "status": "邀约中",
+      "status": "初试",
       "interviewOrder": 2,
       "note": "建议首面",
       "tags": [
@@ -100,7 +100,7 @@
       "highlight": "Agent运行时/MCP多Agent/RAG/SFT+DPO微调/转化+30%/省50万$",
       "fit": 9.0,
       "risk": "团队管理权重高；2年职级偏高需核实",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 1,
       "note": "",
       "tags": [
@@ -136,7 +136,7 @@
       "highlight": "FAE现场/全栈多端/Agent/RAG/Workflow/MCP/Dify/大量上线AI产品",
       "fit": 9.0,
       "risk": "技术栈偏PHP/传统Web出身",
-      "status": "邀约中",
+      "status": "初试",
       "interviewOrder": 3,
       "note": "",
       "tags": [
@@ -170,7 +170,7 @@
       "highlight": "技术全栈+微调+MCP、落地数据详实",
       "fit": 8.5,
       "risk": "多为内部/电商场景，客户驻场证据偏弱",
-      "status": "邀约中",
+      "status": "初试",
       "interviewOrder": 10,
       "note": "建议首面",
       "tags": [
@@ -208,7 +208,7 @@
       "highlight": "FDE理念契合、政企客户沟通极强、端到端交付",
       "fit": 8.5,
       "risk": "技术偏低代码平台，深度Python/大模型编码弱",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 6,
       "note": "建议首面",
       "tags": [
@@ -245,7 +245,7 @@
       "highlight": "RAG/Agent/NL2SQL扎实；AI Coding熟练；多智能体",
       "fit": 8.5,
       "risk": "应届毕业年限存疑；缺客户一线对接",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 35,
       "note": "",
       "tags": [
@@ -275,7 +275,7 @@
       "highlight": "客户交付/商务闭环强；小B低成本AI提效方法论；独立全栈",
       "fit": 8.5,
       "risk": "技术非顶尖(脚本级)；Agent/RAG自研深度有限",
-      "status": "邀约中",
+      "status": "初试",
       "interviewOrder": 9,
       "note": "",
       "tags": [
@@ -308,7 +308,7 @@
       "highlight": "现职FDE工程师；技术全栈+售前交付复合，两份简历已核实为同一人",
       "fit": 8.8,
       "risk": "同一人曾投两份不同侧重简历，已合并；售前与技术兼具",
-      "status": "邀约中",
+      "status": "初试",
       "interviewOrder": 5,
       "note": "孙浩1(9.0)为同一人另一版本简历，2026-09-21去重合并",
       "tags": [
@@ -348,7 +348,7 @@
       "highlight": "生产级多Agent落地、全栈、SQL安全",
       "fit": 8.0,
       "risk": "年限短，客户直接驻场经历尚浅",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 40,
       "note": "",
       "tags": [
@@ -382,7 +382,7 @@
       "highlight": "客户/方案/交付/商业闭环极强",
       "fit": 8.0,
       "risk": "非技术背景，深度开发能力需验证",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 11,
       "note": "",
       "tags": [
@@ -419,7 +419,7 @@
       "highlight": "多场景AI/Agent落地、MCP/A2A/LangChain",
       "fit": 8.0,
       "risk": "客户驻场/一线挖掘证据一般",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 28,
       "note": "",
       "tags": [
@@ -454,7 +454,7 @@
       "highlight": "多Agent落地+量化成果、AI coding提效",
       "fit": 8.0,
       "risk": "客户对接/驻场证据偏弱",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 34,
       "note": "",
       "tags": [
@@ -489,7 +489,7 @@
       "highlight": "直接AI应用工程经验；多项目从0到1；降本增效导向",
       "fit": 8.0,
       "risk": "偏应用组装层，Agent硬核深度一般",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 31,
       "note": "",
       "tags": [
@@ -519,7 +519,7 @@
       "highlight": "LLM应用与Agent工程扎实；模型微调/部署",
       "fit": 8.0,
       "risk": "多为内部工具导向，客户交付画像模糊",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 37,
       "note": "",
       "tags": [
@@ -552,7 +552,7 @@
       "highlight": "Agent编排、RAG、LoRA/vLLM、多模态工程化",
       "fit": 8.0,
       "risk": "年限短；客户交付多为内部/游戏场景",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 43,
       "note": "",
       "tags": [
@@ -583,7 +583,7 @@
       "highlight": "客户交付极强(75+项目)；Agent独立开发+部署门禁",
       "fit": 8.0,
       "risk": "年限仅1年，AI研发周期短",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 17,
       "note": "",
       "tags": [
@@ -614,7 +614,7 @@
       "highlight": "RAG/多Agent工程扎实；重A/B量化验证",
       "fit": 8.0,
       "risk": "AI经验不足1年；客户一线交付少；姓名待核",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 45,
       "note": "简历正文姓名胡相歌，待核实",
       "tags": [
@@ -646,7 +646,7 @@
       "highlight": "前后端全栈+Agent；AI编码驱动研发；客户现场对接",
       "fit": 8.0,
       "risk": "AI专项深度待挖；以Java为主、AI转型中",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 23,
       "note": "",
       "tags": [
@@ -675,7 +675,7 @@
       "highlight": "Multi-Agent/HITL/RAG扎实；全栈；有量化成果",
       "fit": 8.0,
       "risk": "年限2年；客户面对面交付较少",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 44,
       "note": "",
       "tags": [
@@ -708,7 +708,7 @@
       "highlight": "Agent/RAG工程扎实；异步/容错/成本优化",
       "fit": 8.0,
       "risk": "多为内部/政企SaaS，客户一线偏向研发",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 42,
       "note": "",
       "tags": [
@@ -738,7 +738,7 @@
       "highlight": "Python全栈、Agent架构与RAG、n8n平台；外派越南客户现场",
       "fit": 8.0,
       "risk": "意向深圳；传统后端居多；LLM/Agent相对新",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 22,
       "note": "",
       "tags": [
@@ -768,7 +768,7 @@
       "highlight": "LangGraph工作流、三层SQL校验、多路召回RAG、Coze/Dify",
       "fit": 8.0,
       "risk": "一线大客户前沿部署未见突出",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 18,
       "note": "",
       "tags": [
@@ -798,7 +798,7 @@
       "highlight": "Multi-Agent编排、RAG/GraphRAG、NL2SQL、QLoRA微调、RAGAS",
       "fit": 8.0,
       "risk": "客户现场/跨角色沟通实证稍弱",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 36,
       "note": "",
       "tags": [
@@ -829,7 +829,7 @@
       "highlight": "Vue/React+FastAPI全栈、LangGraph Agent/RAG、DevOps",
       "fit": 8.0,
       "risk": "AI/LLM研发纵向深度略浅",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 20,
       "note": "",
       "tags": [
@@ -860,7 +860,7 @@
       "highlight": "LangGraph多模态RAG、NL2SQL、舆情多agent、业务提升量化",
       "fit": 8.0,
       "risk": "现场/客户常态化部署未见突出",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 19,
       "note": "",
       "tags": [
@@ -892,7 +892,7 @@
       "highlight": "Supervisor多智能体养老平台、MCP、RAG/图谱、HITL",
       "fit": 8.0,
       "risk": "年限偏短，客户牵头履历一般",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 38,
       "note": "",
       "tags": [
@@ -923,7 +923,7 @@
       "highlight": "自研医疗/学术Agent平台、Dify类平台定制、跨境电商交付",
       "fit": 8.0,
       "risk": "项目偏平台/前沿探索、行业分散",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 21,
       "note": "",
       "tags": [
@@ -953,7 +953,7 @@
       "highlight": "排产/维修Agent落地(提升87.5%)、MCP跨系统、Langfuse评测",
       "fit": 8.0,
       "risk": "年限短；未涉长期客户驻场",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 7,
       "note": "",
       "tags": [
@@ -983,7 +983,7 @@
       "highlight": "RAG知识库与Multi-Agent研报、LoRA/SFT微调、数字人、RAGAS",
       "fit": 8.0,
       "risk": "偏算法工程，客户跨角色叙事较少",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 41,
       "note": "",
       "tags": [
@@ -1014,7 +1014,7 @@
       "highlight": "私有化RAG与多Agent平台、LLM网关成本管控、合同审查Agent",
       "fit": 8.0,
       "risk": "多为私有化驻场，未涉多客户轮转",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 16,
       "note": "",
       "tags": [
@@ -1044,7 +1044,7 @@
       "highlight": "日均5亿token、AI客服与上架Agent、RAG记忆系统、风险数据建模",
       "fit": 8.0,
       "risk": "无计算机科班背景，复杂系统工程化深度待验证",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 12,
       "note": "",
       "tags": [
@@ -1074,7 +1074,7 @@
       "highlight": "佐治亚理工CS硕士、Data FDE交付、Planner+Tool Calling、英语母语级",
       "fit": 8.0,
       "risk": "应届，专职一线交付年限少",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 26,
       "note": "",
       "tags": [
@@ -1104,7 +1104,7 @@
       "highlight": "全栈Py/Node/FastAPI/RPA/MCP/飞书集成、需求调研到上线推广闭环",
       "fit": 8.0,
       "risk": "应届偏junior，复杂定制深度待验证",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 14,
       "note": "",
       "tags": [
@@ -1135,7 +1135,7 @@
       "highlight": "多智能体排障Agent、财务Agent、企业RAG权限隔离、BERT微调",
       "fit": 8.0,
       "risk": "偏乙方交付化，产品主导性弱",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 29,
       "note": "",
       "tags": [
@@ -1168,7 +1168,7 @@
       "highlight": "LangGraph多Agent、FastAPI高并发、Docker/CI/CD、MCP",
       "fit": 8.0,
       "risk": "认知偏toB交付，品牌沉淀弱",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 33,
       "note": "",
       "tags": [
@@ -1201,7 +1201,7 @@
       "highlight": "ArgosLG/MuseFlow/SageRAG/Lumen多智能体、RAG评估闭环",
       "fit": 8.0,
       "risk": "偏算法研发，客户一线交付描述较少",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 25,
       "note": "",
       "tags": [
@@ -1235,7 +1235,7 @@
       "highlight": "通信运维Agentic诊断、混合RAG、MCP工具安全、99.9%可用性",
       "fit": 8.0,
       "risk": "行业窄(通信运维)，跨行业待验证",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 30,
       "note": "",
       "tags": [
@@ -1267,7 +1267,7 @@
       "highlight": "FDE交付/Go+Java+React全栈/AI问数+智能体+知识库/AI Coding/宣讲",
       "fit": 8.0,
       "risk": "传统产品管理背景，模型侧AI工程深度偏弱",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 8,
       "note": "",
       "tags": [
@@ -1297,7 +1297,7 @@
       "highlight": "五Agent分层架构、RAG双层知识库、HITL、违规拦截、私有化",
       "fit": 8.0,
       "risk": "偏单一行业(制药/审计/法律)",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 27,
       "note": "",
       "tags": [
@@ -1327,7 +1327,7 @@
       "highlight": "多Agent协同/NL2SQL/LangGraph可观测/混合检索精排",
       "fit": 8.0,
       "risk": "行业偏建筑施工信息化，客户向价值需加强",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 39,
       "note": "",
       "tags": [
@@ -1358,7 +1358,7 @@
       "highlight": "前端转AI全栈、三路混合检索、ReAct+TaskPlanner、MCP、RAGAS评测",
       "fit": 8.0,
       "risk": "客户一线FDE交付经历偏少",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 32,
       "note": "",
       "tags": [
@@ -1389,7 +1389,7 @@
       "highlight": "A2A多智能体/MCP/电商RAG引用溯源/垂直SFT+DPO/vLLM私有化",
       "fit": 8.0,
       "risk": "商业toB客户交付与跨角色沟通案例偏少",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 24,
       "note": "",
       "tags": [
@@ -1425,7 +1425,7 @@
       "highlight": "金融投研Agent、电商客服中台、意图+情绪识别、RAG三级路由、RAGAS",
       "fit": 8.0,
       "risk": "年限2年，行业偏金融电商，跨行业待验证",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 15,
       "note": "",
       "tags": [
@@ -1457,7 +1457,7 @@
       "highlight": "围术期Agent/智能运维Agent/评测体系/AI教育小程序独立交付/客户验收",
       "fit": 8.0,
       "risk": "偏产品经理，编码以AI Coding辅助为主",
-      "status": "技术二筛",
+      "status": "二筛",
       "interviewOrder": 13,
       "note": "",
       "tags": [
