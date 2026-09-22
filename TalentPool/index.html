@@ -193,7 +193,7 @@ svg text{font-family:'Inter','Noto Sans SC',sans-serif}
 .d-head .yr{font-size:12px;color:var(--muted);font-weight:700}
 .d-status{margin:14px 0 18px}
 .d-status .st{font-size:11px}
-.d-actions{display:flex;gap:10px;margin-bottom:22px}
+.d-actions{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px}
 .btn{border-radius:99px;padding:11px 20px;font:800 12px 'Inter','Noto Sans SC',sans-serif;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;border:0}
 .btn.primary{background:var(--ink);color:#fff}
 .btn.outline{background:#fff;color:var(--ink);border:1.5px solid var(--ink)}
@@ -412,18 +412,44 @@ async function downloadOne(c){
     toast('简历已开始下载：'+c.name,2200);
   }catch(e){toast('下载失败，请重试',2600);}
 }
+/* 取简历并转成 PDF 类型的本地地址 */
+async function resumeBlobUrl(c){
+  let blob=await fetchResume(c);
+  if(blob.type!=='application/pdf')blob=new Blob([blob],{type:'application/pdf'});
+  return URL.createObjectURL(blob);
+}
 /* 在浏览器内打开 PDF（jsdelivr 返回 octet-stream，需转成 PDF 类型再打开） */
 async function openResume(c){
   if(!c.resume){toast('该候选人暂无简历',2200);return;}
   toast('正在打开简历…');
   try{
-    let blob=await fetchResume(c);
-    if(blob.type!=='application/pdf')blob=new Blob([blob],{type:'application/pdf'});
-    const url=URL.createObjectURL(blob);
+    const url=await resumeBlobUrl(c);
     const w=window.open(url,'_blank');
     setTimeout(()=>URL.revokeObjectURL(url),60000);
     if(!w)toast('浏览器拦截了弹窗，请允许弹窗后重试',2800);
   }catch(e){toast('简历打开失败，请重试',2600);}
+}
+/* 打印简历：隐藏框架加载 PDF 后调起打印 */
+async function printResume(c){
+  if(!c.resume){toast('该候选人暂无简历',2200);return;}
+  toast('正在准备打印…');
+  try{
+    const url=await resumeBlobUrl(c);
+    let f=document.getElementById('printFrame');
+    if(!f){f=document.createElement('iframe');f.id='printFrame';
+      f.style.cssText='position:fixed;right:0;bottom:0;width:0;height:0;border:0';
+      document.body.appendChild(f);}
+    let done=false;
+    const finish=()=>{ if(done)return; done=true;
+      try{f.contentWindow.focus();f.contentWindow.print();}catch(_){
+        toast('当前浏览器不支持直接打印，已为你打开简历，请在打开页按 Ctrl+P',3200);
+        window.open(url,'_blank');}
+      toast('已调起打印',1800);
+      setTimeout(()=>URL.revokeObjectURL(url),60000);};
+    f.onload=()=>setTimeout(finish,500);
+    f.src=url;
+    setTimeout(finish,2500);
+  }catch(e){toast('打印准备失败，请重试',2600);}
 }
 /* 批量：按当前筛选（filtered），只打包有简历的人 */
 async function downloadBatch(btn){
@@ -865,7 +891,7 @@ function openDrawer(id){
     </div>`:''}
     ${c.note?`<div style="font-size:11px;color:#8F8E88;font-weight:600;margin:6px 0 2px">${c.note}</div>`:''}
     <div class="d-actions">
-      ${c.resume?`<button class="btn primary" id="dOpen">📄 打开完整简历</button><button class="btn outline" id="dDl">⬇ 下载简历</button>`:`<span class="btn" style="background:#ECEAE3;color:#8F8E88;cursor:default">📄 简历待补</span>`}
+      ${c.resume?`<button class="btn primary" id="dOpen">📄 打开完整简历</button><button class="btn outline" id="dDl">⬇ 下载简历</button><button class="btn outline" id="dPrint">🖨 打印简历</button>`:`<span class="btn" style="background:#ECEAE3;color:#8F8E88;cursor:default">📄 简历待补</span>`}
       <button class="btn outline" id="dPick" ${c.scores?'':'style="opacity:.45"'}>${state.picked.has(c.id)?'✓ 已加入对比':(c.scores?'+ 加入对比':'暂无六维评分')}</button>
       <button class="btn outline" id="dInvite">✉ 面试邀约话术</button>
     </div>
@@ -896,6 +922,7 @@ function openDrawer(id){
   document.getElementById('dPick').addEventListener('click',()=>{togglePick(c.id);openDrawer(c.id);});
   const _ddl=document.getElementById('dDl'); if(_ddl)_ddl.addEventListener('click',()=>downloadOne(c));
   const _dopen=document.getElementById('dOpen'); if(_dopen)_dopen.addEventListener('click',()=>openResume(c));
+  const _dprint=document.getElementById('dPrint'); if(_dprint)_dprint.addEventListener('click',()=>printResume(c));
   const _dinv=document.getElementById('dInvite'); if(_dinv)_dinv.addEventListener('click',()=>openInvite(c));
 }
 
