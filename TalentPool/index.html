@@ -702,7 +702,18 @@ function filtered(){
   if(state.search){const q=state.search.toLowerCase();
     a=a.filter(c=>(c.name+c.company+c.highlight+c.tags.join('')).toLowerCase().includes(q));}
   const fv=x=>x.fit==null?-1:x.fit;
-  a.sort((x,y)=>state.sort==='fit'?fv(y)-fv(x):state.sort==='years'?y.years-x.years:x.interviewOrder-y.interviewOrder);
+  // 同分顺位：招聘环节进度越深越靠前（已安排面试优先），同进度则面试时间早者优先，最后按姓名
+  const DEPTH={'初筛':0,'待补简历':0,'技术二筛':1,'邀约中':2};
+  const prog=c=>(c.status in DEPTH?DEPTH[c.status]:-1)+(c.interviewDate?0.5:0);
+  const ivMin=c=>c.interviewTime?c.interviewTime.split(':').reduce((h,m)=>+h*60+ +m):9999;
+  const nameCmp=(x,y)=>x.name.localeCompare(y.name,'zh');
+  a.sort((x,y)=>{
+    if(state.sort==='fit'){
+      return fv(y)-fv(x)||prog(y)-prog(x)||ivMin(x)-ivMin(y)||nameCmp(x,y);
+    }
+    if(state.sort==='years')return y.years-x.years||fv(y)-fv(x)||nameCmp(x,y);
+    return x.interviewOrder-y.interviewOrder;
+  });
   return a;
 }
 
