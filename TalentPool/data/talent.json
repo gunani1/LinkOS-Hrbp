@@ -2877,6 +2877,75 @@
       "resume": null,
       "source": "今日",
       "basis": "简历文本提取失败(仅含水印噪声)，无法评估"
+    },
+    {
+      "id": 109,
+      "positionKey": "fde",
+      "name": "郭勇鑫",
+      "years": 12,
+      "yearsText": "10+",
+      "company": "杭州博彦信息技术·AI应用全栈工程师",
+      "education": "待核实",
+      "highlight": "AI Agent 全栈工程化落地能力强，可独立搭建多节点 LangGraph 工作流，主导 RAG 知识库优化与团队级 AI 提效体系",
+      "fit": 7.5,
+      "risk": "未披露学历信息；项目经验以技能罗列为主，缺少个人核心产出的量化成果；缺少需求对接、客户沟通相关实战",
+      "status": "初试",
+      "interviewOrder": 6,
+      "note": "",
+      "tags": [
+        "全栈",
+        "RAG",
+        "LangGraph",
+        "AI落地"
+      ],
+      "scores": {
+        "tech": 8.5,
+        "ai": 9,
+        "insight": 7,
+        "client": 6,
+        "prototype": 7,
+        "value": 7.5
+      },
+      "resume": "郭勇鑫_7.5分_10年以上.pdf",
+      "source": "今日",
+      "basis": "Python/FastAPI/LangGraph/RAG 全栈；主导智能办公问答 Agent 平台与企业知识库优化",
+      "interviewDate": "2026-09-23",
+      "interviewTime": "10:00"
+    },
+    {
+      "id": 110,
+      "positionKey": "fde",
+      "name": "陈伟",
+      "years": 15,
+      "yearsText": "10+",
+      "company": "诺基亚通信(北京)·高级系统架构师",
+      "education": "硕士·南京邮电/南京大学",
+      "highlight": "通信系统架构与 AI-RAN 双栈深度积累，主导 Morse AI/ML 平台与大模型项目分析平台；6 项国内外发明专利",
+      "fit": 8.5,
+      "risk": "48岁，在职急寻新工作；简历侧重通信行业，需评估向 AI Agent 应用转型的适配周期",
+      "status": "初试",
+      "interviewOrder": 7,
+      "note": "",
+      "tags": [
+        "全栈",
+        "多Agent",
+        "RAG",
+        "LangGraph",
+        "运维"
+      ],
+      "scores": {
+        "tech": 9,
+        "ai": 8.5,
+        "insight": 8,
+        "client": 8,
+        "prototype": 7.5,
+        "value": 9
+      },
+      "resume": "陈伟_8.5分_10年以上.pdf",
+      "source": "今日",
+      "basis": "C/C++/Python 全栈；Transformer 微调与 Multi-Agent 工作流；主导 4G/5G 基站 AI 节能与参数自适应项目",
+      "interviewDate": "2026-09-23",
+      "interviewTime": "14:00"
     }
   ]
 }
