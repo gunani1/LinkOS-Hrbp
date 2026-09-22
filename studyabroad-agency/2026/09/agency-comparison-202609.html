@@ -3,317 +3,419 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2026 国内留学机构对比调研</title>
+<title>2026 留学机构对比调研（概述 + 来源直达）</title>
 <style>
-:root{
-  --bg:#f5f7fa;--panel:#fff;--ink:#1f2937;--muted:#6b7280;
-  --brand:#0f4c81;--brand2:#1d6fa5;--line:#e5e7eb;--tag:#eef4fb;
+:root {
+  --bg:#f6f8fb; --bg2:#ffffff; --ink:#1e293b; --muted:#64748b;
+  --rule:#e2e8f0; --accent:#2563eb; --accent2:#ea580c; --green:#059669;
 }
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);line-height:1.7;font-size:15px}
-.wrap{max-width:980px;margin:0 auto;padding:32px 24px 80px}
-header{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;padding:28px 32px;border-radius:12px;margin-bottom:28px;box-shadow:0 4px 20px rgba(15,76,129,.15)}
-header h1{margin:0 0 6px;font-size:24px;letter-spacing:.5px}
-header p{margin:0;opacity:.92;font-size:14px}
-.toc{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px 24px;margin-bottom:28px}
-.toc h3{margin:0 0 10px;font-size:15px;color:var(--brand)}
-.toc ol{margin:0;padding-left:20px}
-.toc a{color:var(--ink);text-decoration:none}
-.toc a:hover{color:var(--brand)}
-section{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:24px 28px;margin-bottom:20px}
-section h2{margin-top:0;color:var(--brand);font-size:19px;border-left:4px solid var(--brand);padding-left:12px}
-section h3{color:var(--brand2);font-size:16px;margin-top:24px}
-table{width:100%;border-collapse:collapse;margin:12px 0;background:#fff}
-th,td{padding:10px 12px;border:1px solid var(--line);text-align:left;vertical-align:top;font-size:14px}
-th{background:var(--tag);color:var(--brand);font-weight:600}
-ul,ol{padding-left:22px}
-li{margin:4px 0}
-.muted{color:var(--muted);font-size:13px}
-.tag{display:inline-block;background:var(--tag);color:var(--brand);padding:2px 10px;border-radius:12px;font-size:12px;margin:2px}
-.links{background:#fafbfc;border:1px dashed var(--line);border-radius:8px;padding:14px 18px;margin-top:14px}
-.links h4{margin:0 0 8px;font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
-.links ol{margin:0;padding-left:18px;font-size:13px}
-.links a{color:var(--brand2);text-decoration:none;word-break:break-all}
-.links a:hover{text-decoration:underline}
-.footer{color:var(--muted);font-size:12px;text-align:center;margin-top:32px}
-.brand{color:var(--brand);font-weight:600}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,'Microsoft YaHei','PingFang SC',sans-serif;font-size:16px;line-height:1.75;color:var(--ink);background:var(--bg);}
+.container{max-width:980px;margin:0 auto;padding:0 2rem;}
+header{background:var(--bg2);border-bottom:1px solid var(--rule);padding:3rem 0 2.5rem;margin-bottom:2.4rem;}
+header .kicker{font-size:.82rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.7rem;}
+header h1{font-size:1.8rem;font-weight:700;letter-spacing:-.02em;margin-bottom:.6rem;}
+header .subtitle{font-size:1rem;color:var(--muted);max-width:780px;}
+.read-guide{background:var(--bg2);border:1px dashed var(--accent);border-radius:10px;padding:1rem 1.3rem;font-size:.9rem;color:var(--ink);margin-bottom:2.4rem;}
+.read-guide b{color:var(--accent);}
+section{margin-bottom:2.8rem;}
+h2{font-size:1.3rem;font-weight:700;margin-bottom:.4rem;padding-bottom:.5rem;border-bottom:2px solid var(--accent);display:block;}
+.sec-desc{color:var(--muted);font-size:.92rem;margin:.5rem 0 1rem;}
+h3{font-size:1.05rem;font-weight:700;margin:1.4rem 0 .6rem;color:var(--ink);}
+p{margin-bottom:.85rem;}
+small{color:var(--muted);}
+.note{background:#eef2ff;border-left:4px solid var(--accent);padding:1rem 1.25rem;border-radius:0 8px 8px 0;margin:1.1rem 0;font-size:.92rem;}
+.note strong{color:var(--accent);}
+.warn{background:#fff7ed;border-left:4px solid var(--accent2);padding:1rem 1.25rem;border-radius:0 8px 8px 0;margin:1.1rem 0;font-size:.88rem;}
+.warn strong{color:var(--accent2);}
+.stat-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin:1.5rem 0;}
+.stat-card{background:var(--bg2);border:1px solid var(--rule);border-radius:10px;padding:1.1rem 1rem;text-align:center;}
+.stat-card .n{font-size:1.35rem;font-weight:800;color:var(--accent);}
+.stat-card .l{font-size:.78rem;color:var(--muted);margin-top:.2rem;}
+.table-wrap{overflow-x:auto;margin:1.1rem 0;border:1px solid var(--rule);border-radius:8px;background:var(--bg2);}
+table{width:100%;border-collapse:collapse;font-size:.875rem;min-width:760px;}
+thead th{background:var(--accent);color:#fff;font-weight:700;padding:.7rem .85rem;text-align:left;white-space:nowrap;}
+tbody td{padding:.62rem .85rem;border-bottom:1px solid var(--rule);vertical-align:top;}
+tbody tr:nth-child(even) td{background:#f8fafc;}
+tbody tr:hover td{background:#eff6ff;}
+.cell-main{font-weight:600;}
+.sm{font-size:.78rem;color:var(--muted);}
+ul.dots{margin:.4rem 0 .9rem 1.3rem;}
+ul.dots li{margin-bottom:.35rem;}
+.flow{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin:1rem 0;}
+.flow .step{background:var(--bg2);border:1px solid var(--rule);border-radius:8px;padding:.55rem .9rem;font-size:.85rem;}
+.flow .arrow{color:var(--accent);font-weight:700;}
+.chart-figure{margin:1.5rem 0;background:var(--bg2);border:1px solid var(--rule);border-radius:10px;padding:1.3rem;}
+.chart-figure figcaption{font-size:.92rem;font-weight:700;text-align:center;margin-bottom:1rem;}
+
+/* ===== 模块内嵌来源链接区 ===== */
+.srcbox{margin:1.3rem 0 .3rem;border:1px solid var(--rule);border-radius:10px;background:var(--bg2);overflow:hidden;}
+.srcbox .src-head{display:flex;align-items:center;gap:.5rem;padding:.7rem 1.1rem;background:#f1f5f9;border-bottom:1px solid var(--rule);font-weight:700;font-size:.9rem;color:var(--accent);}
+.srcbox .src-head span{font-size:1.1rem;}
+.srcbox .src-body{padding:.4rem 0;}
+.srcbox details{border-top:1px solid var(--rule);}
+.srcbox details:first-child{border-top:none;}
+.srcbox details summary{cursor:pointer;padding:.7rem 1.1rem;font-weight:600;font-size:.9rem;color:var(--accent);list-style:none;display:flex;justify-content:space-between;align-items:center;transition:background .15s;}
+.srcbox details summary:hover{background:#eff6ff;}
+.srcbox details summary::after{content:"▸";transition:transform .15s;}
+.srcbox details[open] summary::after{transform:rotate(90deg);}
+.srcbox .src-item{padding:.3rem 1.3rem .9rem;}
+.srcbox .src-link{display:block;font-size:.82rem;color:var(--muted);text-decoration:none;padding:.35rem 0;border-left:3px solid transparent;}
+.srcbox .src-link:hover{border-left-color:var(--accent);color:var(--accent);background:#f8fafc;padding-left:.5rem;}
+.srcbox .src-link .u{display:block;color:var(--accent);word-break:break-all;font-size:.78rem;}
+
+footer{background:var(--bg2);border-top:1px solid var(--rule);padding:2rem 0;margin-top:2.5rem;font-size:.82rem;color:var(--muted);}
+footer h2{color:var(--ink);font-size:1.1rem;}
+ol.fl{padding-left:1.3rem;columns:2;column-gap:2.5rem;}
+ol.fl li{margin-bottom:.5rem;overflow-wrap:break-word;break-inside:avoid;}
+ol.fl .t{color:var(--ink);word-break:normal;display:block;}
+ol.fl a{color:var(--accent);word-break:break-all;}
+@media(max-width:768px){.container{padding:0 1.1rem;}header h1{font-size:1.35rem;}body{font-size:15px;}ol.fl{columns:1;}}
 </style>
 </head>
 <body>
-<div class="wrap">
-
 <header>
-  <h1>2026 国内留学机构对比调研</h1>
-  <p>覆盖：机构速览 · 业务产品 · 申请流程 · 师资资质 · 价目 · 选择建议｜数据截至 2026 年 9 月</p>
+  <div class="container">
+    <div class="kicker">Market &amp; Competitive Research</div>
+    <h1>2026 国内留学机构对比调研</h1>
+    <p class="subtitle">覆盖机构速览、业务产品、申请流程、师资资质、价目五模块。每个模块下方均内置<b>来源链接区</b>——先读概述，点击即可跳转对应官方 / 权威页面查看详情，无需通读全文链接。</p>
+  </div>
 </header>
 
-<div class="toc">
-  <h3>目录</h3>
-  <ol>
-    <li><a href="#s1">一、主流机构速览</a></li>
-    <li><a href="#s2">二、业务产品矩阵</a></li>
-    <li><a href="#s3">三、标准申请流程</a></li>
-    <li><a href="#s4">四、师资与资质</a></li>
-    <li><a href="#s5">五、价目表与费用排名</a></li>
-    <li><a href="#s6">六、选择建议</a></li>
-    <li><a href="#s7">完整来源链接</a></li>
-  </ol>
+<main class="container">
+
+<div class="read-guide">
+  <b>阅读方式</b>：① 先看各模块的概述段落掌握要点；② 表格 / 列表查看明细；③ 翻到模块底部的 <b>「本模块来源链接」</b>，展开对应条目，点击蓝色链接可直达该机构官网、官方认证页或权威评测原文。
 </div>
 
-<section id="s1">
+<!-- ===== 一、机构速览 ===== -->
+<section>
   <h2>一、主流机构速览</h2>
-  <p>综合实力第一梯队：新东方前途、金吉列、启德、新航道、新通；另有国资背景的嘉华世达，以及艺术垂直的 SIA / ACG。</p>
+  <p class="sec-desc">综合实力第一梯队：新东方前途、金吉列、启德、新航道、新通；另有国资背景的嘉华世达，以及艺术垂直的 SIA / ACG。下表为成立背景、规模与核心资质速览。</p>
 
-  <h3>机构速览表</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>机构</th><th>成立 / 背景</th><th>规模</th><th>核心产品 &amp; 资质</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="cell-main">新航道<br><span class="sm">XHD</span></td>
+          <td>2004 年，创始人胡敏教授，IDG 资本投资</td>
+          <td>覆盖全国 47+ 核心城市，多分校及学习中心</td>
+          <td>从"语言培训"起步的<b>全生态矩阵</b>，雅思官方白金级合作伙伴、ETS 官方战略合作</td>
+        </tr>
+        <tr>
+          <td class="cell-main">新东方前途出国<br><span class="sm">New Oriental</span></td>
+          <td>1996 年，新东方旗下专职机构</td>
+          <td>全国多分公司，依托新东方语培流量</td>
+          <td>留学全流程 + 欧亚业务深入；<b>语培留学一体化套餐</b></td>
+        </tr>
+        <tr>
+          <td class="cell-main">金吉列留学<br><span class="sm">JJL</span></td>
+          <td>1999 年前后，品牌积淀深厚</td>
+          <td>28 国 + 3000+ 海外院校，38 位美国名校教授智库</td>
+          <td>19 大产品类别、90 余系列、1300+ 产品；<b>教育部/公安部/工商总局三方认证 + 连续 25 年 ICEF 认证</b></td>
+        </tr>
+        <tr>
+          <td class="cell-main">启德教育<br><span class="sm">EIC</span></td>
+          <td>26 年积淀</td>
+          <td>43 城 75 家机构 + 128 分中心 + 15 家境外直营</td>
+          <td>3000+ 院校覆盖 29 地；92% 名校录取率、97% 签证通过率；<b>"国内外全程服务闭环"</b></td>
+        </tr>
+        <tr>
+          <td class="cell-main">新通教育<br><span class="sm">Shinyway</span></td>
+          <td>1996 年，国资背景，源自杭州</td>
+          <td>3000+ 全职员工，全球 20+ 城市分支机构</td>
+          <td>留学规划、语言、研学、就业、移民；旗下新通留学/考培/移民/小麦艺术</td>
+        </tr>
+        <tr>
+          <td class="cell-main">嘉华世达<br><span class="sm">Chivast</span></td>
+          <td>2000 年，中国留学服务中心（CSCSE）下属国资</td>
+          <td>教育部直属背景</td>
+          <td>全国首家留学服务持牌（BJ2000001）、ETS 培训中心</td>
+        </tr>
+        <tr>
+          <td class="cell-main">高途 / 威久 / SIA / ACG</td>
+          <td>在线 &amp; 垂直细分</td>
+          <td>见各家</td>
+          <td>高途（在线全链条）、威久（老牌中介）、SIA/ACG（艺术留学垂直）</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-  <h3>1) 新航道 (XHD)</h3>
-  <ul>
-    <li><span class="brand">成立/背景：</span>2004 年，创始人胡敏教授，IDG 资本投资</li>
-    <li><span class="brand">规模：</span>覆盖全国 47+ 核心城市，多分校及学习中心</li>
-    <li><span class="brand">核心业务/资质：</span>从"语言培训"起家的全生态矩阵，雅思官方白金级合作伙伴、ETS 官方战略合作</li>
-  </ul>
-
-  <h3>2) 新东方前途出国 (New Oriental)</h3>
-  <ul>
-    <li><span class="brand">成立/背景：</span>1996 年，新东方旗下专职机构</li>
-    <li><span class="brand">规模：</span>全国多分公司，依托新东方语培流量</li>
-    <li><span class="brand">核心业务/资质：</span>留学全流程 + 欧亚业务深入；语培留学一体化套餐</li>
-  </ul>
-
-  <h3>3) 金吉列留学 (JJL)</h3>
-  <ul>
-    <li><span class="brand">成立/背景：</span>品牌积淀深厚</li>
-    <li><span class="brand">规模：</span>28 国 + 3000+ 海外院校，38 位美国名校教授智库</li>
-    <li><span class="brand">核心业务/资质：</span>19 大产品类别、90 余系列、1300+ 产品；教育部/公安部/工商总局三方认证 + 连续 25 年 ICEF 认证</li>
-  </ul>
-
-  <h3>4) 启德教育 (EIC)</h3>
-  <ul>
-    <li><span class="brand">成立/背景：</span>26 年积淀</li>
-    <li><span class="brand">规模：</span>43 城 75 家机构 + 128 分中心 + 15 家境外直营</li>
-    <li><span class="brand">核心业务/资质：</span>3000+ 院校覆盖 29 地；92% 名校录取率、97% 签证通过率；"国内外全程服务闭环"</li>
-  </ul>
-
-  <h3>5) 新通教育 (Shinyway)</h3>
-  <ul>
-    <li><span class="brand">成立/背景：</span>1996 年，国资背景，源自杭州</li>
-    <li><span class="brand">规模：</span>3000+ 全职员工，全球 20+ 城市分支机构</li>
-    <li><span class="brand">核心业务/资质：</span>留学规划、语言、研学、就业、移民；旗下新通留学/考培/移民/小麦艺术</li>
-  </ul>
-
-  <h3>6) 嘉华世达 (Chivast)</h3>
-  <ul>
-    <li><span class="brand">成立/背景：</span>2000 年，中国(教育部)留学服务中心 CSCSE 下属国资</li>
-    <li><span class="brand">规模：</span>教育部直属背景</li>
-    <li><span class="brand">核心业务/资质：</span>全国首家留学服务持牌（BJ2000001）、ETS 培训中心</li>
-  </ul>
-
-  <h3>7) 高途 / 威久 / SIA / ACG</h3>
-  <ul>
-    <li>高途（在线全链条）、威久（老牌中介）、SIA/ACG（艺术留学垂直）</li>
-  </ul>
-
-  <div class="links">
-    <h4>本模块来源链接</h4>
-    <ol>
-      <li><a href="https://wap.xhd.cn/aboutus/">新航道官方背景</a></li>
-      <li><a href="https://wap.xhd.cn/lxzx/201508.html">新航道21年沉淀</a></li>
-      <li><a href="https://wap.xhd.cn/exam/focusnews/207437.html">新航道国际教育21载</a></li>
-      <li><a href="https://m.maigoo.com/best/15631.html">行业榜单（买购网）</a></li>
-      <li><a href="https://m.maigoo.com/shida/list_1714.html">十大品牌名录</a></li>
-      <li><a href="https://m.maigoo.com/news/746890.html">十大品牌新闻</a></li>
-      <li><a href="https://www.igo.cn/newigo/index.shtml">新通</a></li>
-      <li><a href="https://m.jjl.cn/about">金吉列企业</a></li>
-      <li><a href="https://global.jjl.cn/cs">金吉列资质产品</a></li>
-      <li><a href="https://www.eic.org.cn/blog/detail?AdviserId=52600&Id=229193">启德解析</a></li>
-      <li><a href="https://www.eic.org.cn/news/detail/b336152cb6fc49bd8eebe839910f9fa0">启德优势</a></li>
-      <li><a href="http://www.chivast.com/chivast/ast_chivast_education_international/introduction_to_company/index.html">嘉华世达</a></li>
-    </ol>
+  <div class="srcbox">
+    <div class="src-head"><span>🔗</span>本模块来源链接（机构速览）</div>
+    <div class="src-body">
+      <details><summary>新航道 · 机构概况与背景</summary><div class="src-item">
+        <a class="src-link" href="https://wap.xhd.cn/aboutus/" target="_blank" rel="noopener">新航道官网"关于我们"——47城布局 / 分支机构 / 业务矩阵<span class="u">https://wap.xhd.cn/aboutus/</span></a>
+        <a class="src-link" href="https://wap.xhd.cn/lxzx/201508.html" target="_blank" rel="noopener">新航道 · 21 年教学沉淀 + 五大核心优势（口碑评分9.7）<span class="u">https://wap.xhd.cn/lxzx/201508.html</span></a>
+        <a class="src-link" href="https://wap.xhd.cn/exam/focusnews/207437.html" target="_blank" rel="noopener">新航道 · 胡敏教授创办、IDG 投资、全生态矩阵<span class="u">https://wap.xhd.cn/exam/focusnews/207437.html</span></a>
+      </div></details>
+      <details><summary>行业榜单 · 十大品牌名录</summary><div class="src-item">
+        <a class="src-link" href="https://m.maigoo.com/best/15631.html" target="_blank" rel="noopener">买购网 · 2026 留学中介机构 10 大名牌<span class="u">https://m.maigoo.com/best/15631.html</span></a>
+        <a class="src-link" href="https://m.maigoo.com/shida/list_1714.html" target="_blank" rel="noopener">买购网 · 留学机构十大品牌名录（含各家简介）<span class="u">https://m.maigoo.com/shida/list_1714.html</span></a>
+        <a class="src-link" href="https://m.maigoo.com/news/746890.html" target="_blank" rel="noopener">买购网 · 留学机构排行榜报告<span class="u">https://m.maigoo.com/news/746890.html</span></a>
+      </div></details>
+      <details><summary>各机构官网 · 规模与资质</summary><div class="src-item">
+        <a class="src-link" href="https://www.igo.cn/newigo/index.shtml" target="_blank" rel="noopener">新通教育 · 关于我们（国资 / 3000+员工 / 20+城市）<span class="u">https://www.igo.cn/newigo/index.shtml</span></a>
+        <a class="src-link" href="https://m.jjl.cn/about" target="_blank" rel="noopener">金吉列 · 集团企业介绍（荣誉与资质）<span class="u">https://m.jjl.cn/about</span></a>
+        <a class="src-link" href="https://global.jjl.cn/cs" target="_blank" rel="noopener">金吉列 · 资质认证与产品体系（ICEF/三方认证/1300+产品）<span class="u">https://global.jjl.cn/cs</span></a>
+        <a class="src-link" href="https://www.eic.org.cn/blog/detail?AdviserId=52600&Id=229193" target="_blank" rel="noopener">启德 · 2026 留学机构前三实力解析<span class="u">https://www.eic.org.cn/blog/detail?AdviserId=52600&Id=229193</span></a>
+        <a class="src-link" href="https://www.eic.org.cn/news/detail/b336152cb6fc49bd8eebe839910f9fa0" target="_blank" rel="noopener">启德 · 核心优势总览（43城/92%录取率/97%签证）<span class="u">https://www.eic.org.cn/news/...</span></a>
+        <a class="src-link" href="http://www.chivast.com/chivast/ast_chivast_education_international/introduction_to_company/index.html" target="_blank" rel="noopener">嘉华世达 · 公司介绍（CSCSE 直属 / BJ2000001）<span class="u">http://www.chivast.com/...</span></a>
+      </div></details>
+    </div>
   </div>
 </section>
 
-<section id="s2">
+<!-- ===== 二、业务产品 ===== -->
+<section>
   <h2>二、业务产品矩阵</h2>
-  <p>头部机构已从"单点中介费"升级为：<strong>语培 + 申请 + 背景提升 + 海外服务 + 增值板块</strong> 的五层全链条产品。</p>
+  <p class="sec-desc">头部机构已从"单点中介费"升级为<strong>语培 + 申请 + 背景提升 + 海外服务 + 增值板块</strong>的五层全链条产品。以下为共性与各家特色。</p>
 
-  <h3>五层产品矩阵</h3>
-  <ol>
-    <li><span class="brand">语言培训：</span>雅思/托福/GRE/GMAT/SAT/ACT/AP/SSAT/留学英语能力预备/外教口语<br>代表亮点：新航道课程全景，雅思官方白金级</li>
-    <li><span class="brand">留学申请：</span>选校定位、文书(SOP/PS/CV)、网申、套磁、面试、Offer与签证<br>代表亮点：多数机构全流程套餐覆盖</li>
-    <li><span class="brand">背景提升：</span>科研/实习/竞赛/国际研学，单项约 5000–2 万不等</li>
-    <li><span class="brand">海外服务：</span>行前指导、境外院校资源、落地方案；启德 15 家境外直营</li>
-    <li><span class="brand">增值板块：</span>国际课程(A-Level/AP)、艺术留学、考研、移民</li>
-  </ol>
+  <h3>2.1 五层产品矩阵</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>层级</th><th>具体产品</th><th>代表机构亮点</th></tr></thead>
+      <tbody>
+        <tr><td class="cell-main">① 语言培训</td><td>雅思 / 托福 / GRE / GMAT / SAT / ACT / AP / SSAT / 留学英语能力预备 / 外教口语</td><td>新航道课程全景，雅思官方白金级 [cite:5]</td></tr>
+        <tr><td class="cell-main">② 留学申请</td><td>选校定位、文书（SOP/PS/CV）、网申、套磁、面试、Offer 与签证指导</td><td>多数机构全流程套餐覆盖 [cite:10][cite:11]</td></tr>
+        <tr><td class="cell-main">③ 背景提升</td><td>科研 / 实习 / 竞赛 / 国际研学</td><td>单项约 5000–2 万不等 [cite:11]</td></tr>
+        <tr><td class="cell-main">④ 海外服务</td><td>行前指导、境外院校资源、落地方案</td><td>启德 15 家境外直营机构 [cite:15]</td></tr>
+        <tr><td class="cell-main">⑤ 增值板块</td><td>国际课程（A-Level/AP）、艺术留学、考研、移民</td><td>新航道（锦秋A-Level/AP）、新通（移民）、SIA/ACG（艺术）</td></tr>
+      </tbody>
+    </table>
+  </div>
 
-  <h3>各家特色产品</h3>
-  <ul>
-    <li><span class="brand">新航道：</span>下设前程留学、国际研学、好轻松考研、中国故事研究院、美国AP课程中心、锦秋A-Level、AF国际艺术教育、美行思远音乐、清美A佳画室</li>
-    <li><span class="brand">金吉列：</span>全产业链生态，19 大产品类别、1300+ 产品；参编《留学服务术语》《留学中介服务规范》</li>
-    <li><span class="brand">新通：</span>留学 + 考培 + 移民 + 艺术四板块</li>
-    <li><span class="brand">嘉华世达：</span>留学服务部 + 项目开发部 + ETS 培训中心</li>
+  <h3>2.2 各家特色产品</h3>
+  <ul class="dots">
+    <li><b>新航道</b>：除语言/留学外，下设前程留学、国际研学、好轻松考研、中国故事研究院、美国AP课程中心、锦秋A-Level、AF国际艺术教育、美行思远音乐、清美A佳画室等子板块 [cite:1][cite:5]</li>
+    <li><b>金吉列</b>：全产业链生态，19 大产品类别、90 余系列、1300+ 产品，参编《留学服务术语》《留学中介服务规范》[cite:14]</li>
+    <li><b>新通</b>：留学 + 考培 + 移民 + 艺术四板块，30 年从杭州走向全球 [cite:13]</li>
+    <li><b>嘉华世达</b>：留学服务部 + 项目开发部 + ETS 培训中心（含政府交流项目资源）[cite:16]</li>
   </ul>
 
-  <div class="links">
-    <h4>本模块来源链接</h4>
-    <ol>
-      <li><a href="https://wap.xhd.cn/aboutus/">新航道产品体系</a></li>
-      <li><a href="http://www.xhd.cn/">新航道官网</a></li>
-      <li><a href="https://global.jjl.cn/cs">金吉列产品线</a></li>
-      <li><a href="https://www.igo.cn/newigo/index.shtml">新通产品线</a></li>
-      <li><a href="http://www.chivast.com/chivast/ast_chivast_education_international/introduction_to_company/index.html">嘉华世达产品线</a></li>
-    </ol>
+  <div class="srcbox">
+    <div class="src-head"><span>🔗</span>本模块来源链接（业务产品）</div>
+    <div class="src-body">
+      <details><summary>新航道 · 产品体系全景</summary><div class="src-item">
+        <a class="src-link" href="https://wap.xhd.cn/aboutus/" target="_blank" rel="noopener">新航道官网 About——各分支业务罗列<span class="u">https://wap.xhd.cn/aboutus/</span></a>
+        <a class="src-link" href="http://www.xhd.cn/" target="_blank" rel="noopener">新航道官网课程页（雅思/托福/SAT等多种班型）<span class="u">http://www.xhd.cn/</span></a>
+      </div></details>
+      <details><summary>金吉列 / 新通 / 嘉华世达 · 产品线</summary><div class="src-item">
+        <a class="src-link" href="https://global.jjl.cn/cs" target="_blank" rel="noopener">金吉列 · 全产业链生态与产品分类<span class="u">https://global.jjl.cn/cs</span></a>
+        <a class="src-link" href="https://www.igo.cn/newigo/index.shtml" target="_blank" rel="noopener">新通 · 业务板块（留学/语培/研学/就业/移民）<span class="u">https://www.igo.cn/newigo/index.shtml</span></a>
+        <a class="src-link" href="http://www.chivast.com/chivast/ast_chivast_education_international/introduction_to_company/index.html" target="_blank" rel="noopener">嘉华世达 · 部门与项目<span class="u">http://www.chivast.com/...</span></a>
+      </div></details>
+    </div>
   </div>
 </section>
 
-<section id="s3">
+<!-- ===== 三、申请流程 ===== -->
+<section>
   <h2>三、标准申请流程</h2>
-  <p>机构普遍提供"<strong>模块化自选 + 全流程套餐</strong>"两种计价，第三方费用实报实销。</p>
-  <p><span class="brand">流程链：</span>免费评估 → 签约定方案 → 材料/文书 → 网申套磁 → 面试辅导 → Offer/签证 → 行前落地</p>
+  <p class="sec-desc">机构普遍提供"模块化自选 + 全流程套餐"两种计价。标准链路如下，第三方费用通常实报实销。</p>
 
-  <h3>各阶段明细</h3>
-  <ul>
-    <li><span class="brand">评估 &amp; 签约：</span>免费留学评估、个性化方案、选校列表；部分机构签约前免费定制</li>
-    <li><span class="brand">文书 &amp; 材料：</span>SOP/PS 起草与润色、CV、推荐信、成绩与材料；文书单约 8000元/项起</li>
-    <li><span class="brand">申请 &amp; 套磁：</span>网申提交、套磁邮件、部分专业作品集/面试辅导</li>
-    <li><span class="brand">Offer &amp; 签证：</span>Offer 选择、押金汇款、签证材料与指导；签证服务 200+ 元</li>
-    <li><span class="brand">落地：</span>行前指导、境外公寓/接机（部分机构含）</li>
-  </ul>
+  <div class="flow">
+    <div class="step">免费评估<br><span class="sm">0元咨询</span></div><span class="arrow">→</span>
+    <div class="step">签约定方案<br><span class="sm">选校列表</span></div><span class="arrow">→</span>
+    <div class="step">材料&nbsp;/&nbsp;文书<br><span class="sm">SOP/CV/推荐信</span></div><span class="arrow">→</span>
+    <div class="step">网申套磁<br><span class="sm">提交申请</span></div><span class="arrow">→</span>
+    <div class="step">面试辅导<br><span class="sm">optional</span></div><span class="arrow">→</span>
+    <div class="step">Offer&nbsp;/&nbsp;签证<br><span class="sm">押金/签证指导</span></div><span class="arrow">→</span>
+    <div class="step">行前落地<br><span class="sm">境外服务</span></div>
+  </div>
 
-  <div class="links">
-    <h4>本模块来源链接</h4>
-    <ol>
-      <li><a href="https://qiantum.xdf.cn/news/zhengzhou_8054763.shtml">流程与收费模式详解</a></li>
-      <li><a href="https://qiantum.xdf.cn/news/tianjin_8039744.shtml">新东方前途·天津</a></li>
-      <li><a href="https://qiantum.xdf.cn/news/nanchang_7946653.shtml">新东方前途·南昌</a></li>
-      <li><a href="https://qiantum.xdf.cn/news/7975604.shtml">新东方前途·四大硬核数据</a></li>
-      <li><a href="https://gaokao.eol.cn/gzxy/yxdt/202605/t20260526_2737905.shtml">五家机构评测</a></li>
-    </ol>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>阶段</th><th>服务明细</th><th>收费要点</th></tr></thead>
+      <tbody>
+        <tr><td class="cell-main">评估 &amp; 签约</td><td>免费留学评估、个性化方案、选校列表确定</td><td>部分机构签约前免费定制方案 [cite:12]</td></tr>
+        <tr><td class="cell-main">文书 &amp; 材料</td><td>SOP/PS 起草与多稿润色、CV、推荐信、成绩与材料准备</td><td>文书单项约 8000 元/项起 [cite:11]</td></tr>
+        <tr><td class="cell-main">申请 &amp; 套磁</td><td>网申提交、套磁邮件、部分专业作品集/面试辅导</td><td>含在套餐或另购 [cite:10]</td></tr>
+        <tr><td class="cell-main">Offer &amp; 签证</td><td>Offer 选择、押金汇款、签证材料与指导</td><td>签证服务 200+ 元，第三方签证费另计 [cite:11]</td></tr>
+        <tr><td class="cell-main">落地</td><td>行前指导、境外公寓/接机（部分含）</td><td>启德等含境外直营落地 [cite:15]</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="srcbox">
+    <div class="src-head"><span>🔗</span>本模块来源链接（申请流程)</div>
+    <div class="src-body">
+      <details><summary>流程与收费模式详解</summary><div class="src-item">
+        <a class="src-link" href="https://qiantum.xdf.cn/news/zhengzhou_8054763.shtml" target="_blank" rel="noopener">郑州新东方前途 · 中介收费模式（套餐/全流程/美国档次）<span class="u">https://qiantum.xdf.cn/news/zhengzhou_8054763.shtml</span></a>
+        <a class="src-link" href="https://qiantum.xdf.cn/news/tianjin_8039744.shtml" target="_blank" rel="noopener">天津新东方前途 · 各项服务费用明细（文书/背景提升/签证）<span class="u">https://qiantum.xdf.cn/news/tianjin_8039744.shtml</span></a>
+        <a class="src-link" href="https://qiantum.xdf.cn/news/7975604.shtml" target="_blank" rel="noopener">新东方前途 · 四大硬核数据判断机构实力<span class="u">https://qiantum.xdf.cn/news/7975604.shtml</span></a>
+        <a class="src-link" href="https://gaokao.eol.cn/gzxy/yxdt/202605/t20260526_2737905.shtml" target="_blank" rel="noopener">教育在线 · 2026 五家机构性价比评测（模块化自选）<span class="u">https://gaokao.eol.cn/...</span></a>
+      </div></details>
+    </div>
   </div>
 </section>
 
-<section id="s4">
+<!-- ===== 四、师资资质 ===== -->
+<section>
   <h2>四、师资与资质</h2>
-  <p>资质看"<strong>官方认证 + 行业持牌</strong>"，师资看"<strong>可查的实际背景</strong>"。</p>
+  <p class="sec-desc">资质看"官方认证 + 行业持牌"，师资看"可查的实际背景"。以下为公开可核验的信息。</p>
 
-  <h3>资质认证表</h3>
-  <table>
-    <thead><tr><th>机构</th><th>认证亮点</th></tr></thead>
-    <tbody>
-      <tr><td>新航道</td><td>雅思官方白金级合作伙伴、ETS 官方战略合作伙伴；IDG 资本投资背景</td></tr>
-      <tr><td>金吉列</td><td>教育部/公安部/工商总局三方认证、连续 25 年 ICEF、参编行业标准</td></tr>
-      <tr><td>嘉华世达</td><td>ETS 培训中心；教育部留学服务中心下属国资、全国首家持牌</td></tr>
-      <tr><td>新东方前途</td><td>依托新东方语培认证体系；1996 年老牌全流程</td></tr>
-    </tbody>
-  </table>
+  <h3>4.1 资质认证</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>机构</th><th>语言类官方认证</th><th>行业 / 政府认证</th></tr></thead>
+      <tbody>
+        <tr><td class="cell-main">新航道</td><td>雅思官方<b>白金级</b>合作伙伴、ETS 官方战略合作伙伴</td><td>IDG 资本投资背景，21 年办学</td></tr>
+        <tr><td class="cell-main">金吉列</td><td>—</td><td>教育部/公安部/工商总局三方认证、连续 25 年 ICEF、参编行业标准</td></tr>
+        <tr><td class="cell-main">嘉华世达</td><td>ETS 培训中心</td><td>教育部留学服务中心下属国资、全国首家持牌（BJ2000001）</td></tr>
+        <tr><td class="cell-main">新东方前途</td><td>依托新东方语培认证体系</td><td>1996 年老牌，全流程资质</td></tr>
+      </tbody>
+    </table>
+  </div>
 
-  <h3>师资样例（公开可查）</h3>
-  <ul>
-    <li><span class="brand">新航道：</span>斯明诚（牛津古典学本硕 + 复旦中哲硕 + 中国故事研究院副院长）、熊川雪（法国 SKEMA 金融硕，A-Level 经济）、陈采霞（家庭教育研究院院长）</li>
-    <li><span class="brand">金吉列：</span>38 位美国名校教授"智库级"专家阵容</li>
-    <li><span class="brand">启德：</span>3000+ 合作院校资源 + 双轨升学规划</li>
-    <li><span class="brand">新通：</span>国资背景 3000+ 员工，覆盖语言 + 留学 + 就业全链路</li>
-  </ul>
+  <h3>4.2 师资样例（公开可查）</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>机构</th><th>师资 / 顾问背景样例</th></tr></thead>
+      <tbody>
+        <tr><td class="cell-main">新航道</td><td>斯明诚（牛津古典学本硕+复旦中哲硕+中国故事研究院副院长）、熊川雪（法国SKEMA金融硕，A-Level经济）、陈采霞（家庭教育研究院院长）等</td></tr>
+        <tr><td class="cell-main">金吉列</td><td>38 位美国名校教授"智库级"专家阵容</td></tr>
+        <tr><td class="cell-main">启德</td><td>3000+ 合作院校资源 + 顾问团队，双轨升学规划</td></tr>
+        <tr><td class="cell-main">新通</td><td>国资背景 3000+ 员工，覆盖语言+留学+就业全链路</td></tr>
+      </tbody>
+    </table>
+  </div>
 
-  <div class="links">
-    <h4>本模块来源链接</h4>
-    <ol>
-      <li><a href="http://www.xhd.cn/">新航道师资团队</a></li>
-      <li><a href="https://global.jjl.cn/cs">金吉列产品线</a></li>
-      <li><a href="http://www.xhd.cn/group/topic/m/2025qjb/">资质认证页</a></li>
-      <li><a href="https://m.jjl.cn/about">金吉列企业</a></li>
-      <li><a href="http://www.chivast.com/chivast/ast_chivast_education_international/introduction_to_company/index.html">嘉华世达</a></li>
-      <li><a href="https://m.eic.org.cn/news/detail/b336152cb6fc49bd8eebe839910f9fa0">启德核心优势</a></li>
-    </ol>
+  <div class="srcbox">
+    <div class="src-head"><span>🔗</span>本模块来源链接（师资资质）</div>
+    <div class="src-body">
+      <details><summary>师资团队页</summary><div class="src-item">
+        <a class="src-link" href="http://www.xhd.cn/" target="_blank" rel="noopener">新航道官网师资团队（斯明诚/熊川雪等个人履历）<span class="u">http://www.xhd.cn/</span></a>
+        <a class="src-link" href="https://global.jjl.cn/cs" target="_blank" rel="noopener">金吉列 · 38 位美国名校教授智库阵容<span class="u">https://global.jjl.cn/cs</span></a>
+      </div></details>
+      <details><summary>资质与认证页</summary><div class="src-item">
+        <a class="src-link" href="http://www.xhd.cn/group/topic/m/2025qjb/" target="_blank" rel="noopener">新航道 · 雅思官方白金级伙伴 / ETS 战略合作声明<span class="u">http://www.xhd.cn/group/topic/m/2025qjb/</span></a>
+        <a class="src-link" href="https://m.jjl.cn/about" target="_blank" rel="noopener">金吉列 · 资质与荣誉（ICEF/三方认证/荣誉奖项）<span class="u">https://m.jjl.cn/about</span></a>
+        <a class="src-link" href="http://www.chivast.com/chivast/ast_chivast_education_international/introduction_to_company/index.html" target="_blank" rel="noopener">嘉华世达 · 教育部直属 / 全国首家持牌<span class="u">http://www.chivast.com/...</span></a>
+        <a class="src-link" href="https://m.eic.org.cn/news/detail/b336152cb6fc49bd8eebe839910f9fa0" target="_blank" rel="noopener">启德 · 名校录取率 / 签证通过率 / 海外直营<span class="u">https://m.eic.org.cn/news/...</span></a>
+      </div></details>
+    </div>
   </div>
 </section>
 
-<section id="s5">
+<!-- ===== 五、价目排名 ===== -->
+<section>
   <h2>五、价目表与费用排名</h2>
-  <p>各渠道公开整理的费用区间（元人民币），因城市/套餐/院校层次差异较大，<strong>仅作横向参考</strong>；价格详情可点下方链接回溯原文。</p>
+  <p class="sec-desc">各渠道公开整理的费用区间（元人民币），因城市 / 套餐 / 院校层次差异较大，仅作横向参考。价格详情可点下方链接回溯原文。</p>
 
-  <table>
-    <thead>
-      <tr><th>套餐 / 目的地</th><th>中介服务费区间</th><th>备注</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>澳洲（含免费模式）</td><td>0–2 万</td><td>第三方硬性约 2.5–3.5 万；高端可超 3 万</td></tr>
-      <tr><td>前途 · 加拿大</td><td>2–3.8 万</td><td>流程标准化、性价比高</td></tr>
-      <tr><td>前途 · 港新日韩欧亚</td><td>2.9–4.98 万</td><td>预算有限家庭优选</td></tr>
-      <tr><td>新航道 · 英澳新加</td><td>常规 1.5–3 万；全套 2–5 万</td><td>—</td></tr>
-      <tr><td>新航道 / 前途 · 美国</td><td>常规 2.5–5 万；高端定制 8–15 万</td><td>—</td></tr>
-      <tr><td>前途 · 美国全套</td><td>6.8–16.8 万</td><td>基础 6.8 万起，冲 Top30 上浮</td></tr>
-      <tr><td>前途 · 总体分级</td><td>0.5–10 万</td><td>分级透明定价，明码标价</td></tr>
-      <tr><td>单项增值</td><td>文书 8000 元/项起、背景提升 5000–2 万、签证 200+</td><td>—</td></tr>
-    </tbody>
-  </table>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>机构 / 国家去向</th><th>常规申请</th><th>美国</th><th>高端 / 定制</th><th>备注</th></tr></thead>
+      <tbody>
+        <tr><td class="cell-main">澳洲（含免费模式）</td><td>0–2万</td><td>—</td><td>可超 3万</td><td>中介费 0–2万 并存，第三方硬性约 2.5–3.5万</td></tr>
+        <tr><td class="cell-main">前途 · 加拿大</td><td>2–3.8万</td><td>—</td><td>—</td><td>流程标准化、性价比高</td></tr>
+        <tr><td class="cell-main">前途 · 港新日韩欧亚</td><td>2.9–4.98万</td><td>—</td><td>—</td><td>预算有限家庭优选</td></tr>
+        <tr><td class="cell-main">新航道 · 英澳新加</td><td>1.5–3万</td><td>—</td><td>全套 2–5万</td><td>常规 1.5–3万、全套打包 2–5万</td></tr>
+        <tr><td class="cell-main">新航道/前途 · 美国</td><td>—</td><td>2.5–5万</td><td>高端定制 8–15万</td><td>美国申请复杂度高</td></tr>
+        <tr><td class="cell-main">前途 · 美国全套</td><td>—</td><td>6.8–16.8万</td><td>冲 Top30 上浮</td><td>基础 6.8万 起</td></tr>
+        <tr><td class="cell-main">前途 · 总体分级</td><td colspan="2">0.5–10万</td><td>—</td><td>分级透明定价，明码标价</td></tr>
+        <tr><td class="cell-main">单项增值</td><td colspan="3">文书 8000元/项起、背景提升 5000–2万、签证 200+（部分）</td><td>按模块自选</td></tr>
+      </tbody>
+    </table>
+  </div>
 
-  <p class="muted">注：以上为 2026 年 9 月公开渠道中介服务费口径，<strong>不含第三方硬性费用</strong>；同机构不同城市/院校层次价差明显，签约前务必以当地书面合同为准。谨防"低价引流 + 隐性增值"。</p>
+  <figure class="chart-figure">
+    <figcaption>各方向基础申请费用区间对比（万元）</figcaption>
+    <div id="chart-price" style="width:100%;min-height:380px"></div>
+  </figure>
 
-  <div class="links">
-    <h4>本模块来源链接</h4>
-    <ol>
-      <li><a href="https://hz.xhd.cn/ncyc/1068043.html">新航道·留学花费拆解</a></li>
-      <li><a href="https://qiantum.xdf.cn/news/zhengzhou_8054763.shtml">新东方前途·郑州收费模式</a></li>
-      <li><a href="https://qiantum.xdf.cn/news/tianjin_8039744.shtml">新东方前途·天津费用明细</a></li>
-      <li><a href="https://qiantum.xdf.cn/news/nanchang_7946653.shtml">新东方前途·南昌收费表</a></li>
-      <li><a href="https://qiantum.xdf.cn/news/7975604.shtml">新东方前途·四大硬核数据</a></li>
-      <li><a href="https://unilink.co/posts/2026-geo-7a82a5/">澳洲中介费透明化参考</a></li>
-      <li><a href="http://m.aoji.cn/news/2804507.html">澳际·澳洲费用</a></li>
-    </ol>
+  <div class="warn"><strong>价格提醒</strong>：以上为 2026 年 9 月公开渠道中介服务费口径，不含第三方硬性费用；同机构不同城市 / 院校层次价差明显，签约前务必以当地机构书面合同为准，谨防"低价引流 + 隐性增值"。</div>
+
+  <div class="srcbox">
+    <div class="src-head"><span>🔗</span>本模块来源链接（价目与费用原文）</div>
+    <div class="src-body">
+      <details><summary>新航道 · 留学花费拆解</summary><div class="src-item">
+        <a class="src-link" href="https://hz.xhd.cn/ncyc/1068043.html" target="_blank" rel="noopener">新航道杭州 · 出国留学申请各阶段费用（英澳新加1.5-3万/美国2.5-5万/全套2-5万）<span class="u">https://hz.xhd.cn/ncyc/1068043.html</span></a>
+      </div></details>
+      <details><summary>新东方前途 · 价格明细</summary><div class="src-item">
+        <a class="src-link" href="https://qiantum.xdf.cn/news/zhengzhou_8054763.shtml" target="_blank" rel="noopener">郑州前途 · 收费模式（主流1.5-3万 / 美国2-5万 / 高端8-15万）<span class="u">https://qiantum.xdf.cn/news/zhengzhou_8054763.shtml</span></a>
+        <a class="src-link" href="https://qiantum.xdf.cn/news/tianjin_8039744.shtml" target="_blank" rel="noopener">天津前途 · 各项费用明细（文书/背景提升/签证）<span class="u">https://qiantum.xdf.cn/news/tianjin_8039744.shtml</span></a>
+        <a class="src-link" href="https://qiantum.xdf.cn/news/nanchang_7946653.shtml" target="_blank" rel="noopener">南昌前途 · 美国全套6.8-16.8万 / 加拿大2-3.8万 / 欧亚2.9-4.98万<span class="u">https://qiantum.xdf.cn/news/nanchang_7946653.shtml</span></a>
+        <a class="src-link" href="https://gaokao.eol.cn/gzxy/yxdt/202605/t20260526_2737905.shtml" target="_blank" rel="noopener">教育在线 · 总体分级0.5-10万 / 一体化省1-1.5万<span class="u">https://gaokao.eol.cn/...</span></a>
+      </div></details>
+      <details><summary>澳洲 · 中介费透明化参考</summary><div class="src-item">
+        <a class="src-link" href="https://unilink.co/posts/2026-geo-7a82a5/" target="_blank" rel="noopener">UNILINK · 2026 澳洲三类收费模式（0/8000-20000/高端3万+）<span class="u">https://unilink.co/posts/2026-geo-7a82a5/</span></a>
+        <a class="src-link" href="http://m.aoji.cn/news/2804507.html" target="_blank" rel="noopener">澳际 · 澳洲中介费一览（0-2万 + 第三方2.5-3.5万）<span class="u">http://m.aoji.cn/news/2804507.html</span></a>
+      </div></details>
+    </div>
   </div>
 </section>
 
-<section id="s6">
+<!-- ===== 六、选择建议 ===== -->
+<section>
   <h2>六、选择建议</h2>
-  <ul>
-    <li><span class="brand">语言 + 留学一体化、预算敏感</span> → 新东方前途出国（一体化套餐可省 1–1.5 万）</li>
-    <li><span class="brand">雅思 / 语培起步、教学底蕴</span> → 新航道（雅思官方白金级、21 年课程体系）</li>
-    <li><span class="brand">海外直营、全程闭环</span> → 启德（43 城 + 15 境外直营，名校录取率口碑）</li>
-    <li><span class="brand">公立 / 国资背景、权威背书</span> → 嘉华世达、新通</li>
-    <li><span class="brand">艺术留学垂直</span> → SIA / ACG</li>
-  </ul>
-
-  <h3>综合建议</h3>
-  <p>选机构看"<strong>三证一例</strong>"——官方语言认证 / 行业资质 / 收费透明（白纸黑字合同）/ 真实案例与录取率。</p>
-  <ul>
-    <li>语言基础薄弱 → 选语培强的新航道或新东方</li>
-    <li>目标美国 Top 名校 → 对比前途/启德高端线</li>
-    <li>追求权威与安全 → 选国资条线</li>
-  </ul>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>需求</th><th>优先考虑</th><th>理由</th></tr></thead>
+      <tbody>
+        <tr><td class="cell-main">语言 + 留学一体化，预算敏感</td><td>新东方前途出国</td><td>依托新东方语培，一体化套餐可省 1–1.5 万</td></tr>
+        <tr><td class="cell-main">雅思 / 语培起步、教学底蕴</td><td>新航道</td><td>雅思官方白金级合作、21 年课程体系 + 留学全流程</td></tr>
+        <tr><td class="cell-main">海外直营、全程闭环</td><td>启德</td><td>43 城 + 15 境外直营，"国内外闭环"，名校录取率口碑</td></tr>
+        <tr><td class="cell-main">公立 / 国资背景、权威背书</td><td>嘉华世达、新通</td><td>教育部直属（嘉华世达）、国资集团（新通）</td></tr>
+        <tr><td class="cell-main">艺术留学垂直</td><td>SIA / ACG</td><td>艺术方向专业垂直机构</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note"><strong>综合建议</strong>：选机构看"三证一例"——<b>官方语言认证 / 行业资质 / 收费透明（白纸黑字合同）/ 真实案例与录取率</b>。语言基础薄弱选语培强的新航道或新东方；目标美国 Top 名校可对比前途/启德高端线；追求权威与安全选国资条线。</div>
 </section>
 
-<section id="s7">
-  <h2>完整来源链接（快速翻阅）</h2>
-  <ol>
-    <li><a href="https://wap.xhd.cn/aboutus/">新航道 · 关于我们</a></li>
-    <li><a href="http://www.xhd.cn/">新航道 · 官网</a></li>
-    <li><a href="https://wap.xhd.cn/lxzx/201508.html">新航道 · 21 年沉淀 5 大优势</a></li>
-    <li><a href="https://wap.xhd.cn/exam/focusnews/207437.html">新航道 · 深耕国际教育 21 载</a></li>
-    <li><a href="http://www.xhd.cn/group/topic/m/2025qjb/">新航道 · 雅思白金级 / ETS</a></li>
-    <li><a href="https://www.eic.org.cn/blog/detail?AdviserId=52600&Id=229193">启德 · 2026 前三解析</a></li>
-    <li><a href="https://m.maigoo.com/best/15631.html">买购网 · 10 大名牌</a></li>
-    <li><a href="https://m.maigoo.com/shida/list_1714.html">买购网 · 十大品牌名录</a></li>
-    <li><a href="https://unilink.co/posts/2026-geo-7a82a5/">UNILINK · 澳洲收费拆解</a></li>
-    <li><a href="https://gaokao.eol.cn/gzxy/yxdt/202605/t20260526_2737905.shtml">教育在线 · 五家机构评测</a></li>
-    <li><a href="https://hz.xhd.cn/ncyc/1068043.html">新航道杭州 · 花费</a></li>
-    <li><a href="http://m.aoji.cn/news/2804507.html">澳际 · 澳洲费用</a></li>
-    <li><a href="https://qiantum.xdf.cn/news/zhengzhou_8054763.shtml">郑州前途 · 收费模式</a></li>
-    <li><a href="https://qiantum.xdf.cn/news/tianjin_8039744.shtml">天津前途 · 费用明细</a></li>
-    <li><a href="https://qiantum.xdf.cn/news/nanchang_7946653.shtml">南昌前途 · 收费表</a></li>
-    <li><a href="https://qiantum.xdf.cn/news/7975604.shtml">前途 · 四大硬核数据</a></li>
-    <li><a href="https://www.igo.cn/newigo/index.shtml">新通教育 · 关于我们</a></li>
-    <li><a href="https://m.jjl.cn/about">金吉列 · 企业介绍</a></li>
-    <li><a href="https://global.jjl.cn/cs">金吉列 · 资质产品</a></li>
-    <li><a href="https://m.eic.org.cn/news/detail/b336152cb6fc49bd8eebe839910f9fa0">启德 · 核心优势</a></li>
-    <li><a href="http://www.chivast.com/chivast/ast_chivast_education_international/introduction_to_company/index.html">嘉华世达 · 公司介绍</a></li>
-  </ol>
-  <p class="muted" style="margin-top:24px">说明：价格与服务数据来自各机构官网/分支校区/行业评测，机构规模为官方口径，费用口径不统一且随城市、院校层次波动，仅供横向参考。MAIGOO 等榜单为第三方品牌参考，实际资质以官方为准。</p>
-</section>
+</main>
 
-<div class="footer">
-  LinkOS-Hrbp · 行业调研 · 2026.09 · 由瑞瑞协助整理并发布
-</div>
+<footer>
+  <div class="container">
+    <h2>完整来源列表（供快速翻阅）</h2>
+    <ol class="fl" start="1">
+      <li><span class="t">新航道 · 关于我们</span><a href="https://wap.xhd.cn/aboutus/" target="_blank" rel="noopener">wap.xhd.cn/aboutus</a></li>
+      <li><span class="t">新航道 · 官网</span><a href="http://www.xhd.cn/" target="_blank" rel="noopener">xhd.cn</a></li>
+      <li><span class="t">新航道 · 21年沉淀5大优势</span><a href="https://wap.xhd.cn/lxzx/201508.html" target="_blank" rel="noopener">wap.xhd.cn/lxzx/201508</a></li>
+      <li><span class="t">新航道 · 深耕国际教育21载</span><a href="https://wap.xhd.cn/exam/focusnews/207437.html" target="_blank" rel="noopener">wap.xhd.cn/exam/focusnews/207437</a></li>
+      <li><span class="t">新航道 · 雅思白金级/ETS</span><a href="http://www.xhd.cn/group/topic/m/2025qjb/" target="_blank" rel="noopener">xhd.cn/group/topic</a></li>
+      <li><span class="t">启德 · 2026前三解析</span><a href="https://www.eic.org.cn/blog/detail?AdviserId=52600&Id=229193" target="_blank" rel="noopener">eic.org.cn</a></li>
+      <li><span class="t">买购网 · 10大名牌</span><a href="https://m.maigoo.com/best/15631.html" target="_blank" rel="noopener">m.maigoo.com/best/15631</a></li>
+      <li><span class="t">买购网 · 十大品牌名录</span><a href="https://m.maigoo.com/shida/list_1714.html" target="_blank" rel="noopener">m.maigoo.com/shida/list_1714</a></li>
+      <li><span class="t">UNILINK · 澳洲收费拆解</span><a href="https://unilink.co/posts/2026-geo-7a82a5/" target="_blank" rel="noopener">unilink.co/posts</a></li>
+      <li><span class="t">教育在线 · 五家机构评测</span><a href="https://gaokao.eol.cn/gzxy/yxdt/202605/t20260526_2737905.shtml" target="_blank" rel="noopener">gaokao.eol.cn</a></li>
+      <li><span class="t">新航道杭州 · 花费</span><a href="https://hz.xhd.cn/ncyc/1068043.html" target="_blank" rel="noopener">hz.xhd.cn/ncyc/1068043</a></li>
+      <li><span class="t">澳际 · 澳洲费用</span><a href="http://m.aoji.cn/news/2804507.html" target="_blank" rel="noopener">m.aoji.cn/news/2804507</a></li>
+      <li><span class="t">郑州前途 · 收费模式</span><a href="https://qiantum.xdf.cn/news/zhengzhou_8054763.shtml" target="_blank" rel="noopener">qiantum.xdf.cn</a></li>
+      <li><span class="t">天津前途 · 费用明细</span><a href="https://qiantum.xdf.cn/news/tianjin_8039744.shtml" target="_blank" rel="noopener">qiantum.xdf.cn/news/tianjin</a></li>
+      <li><span class="t">南昌前途 · 收费表</span><a href="https://qiantum.xdf.cn/news/nanchang_7946653.shtml" target="_blank" rel="noopener">qiantum.xdf.cn/news/nanchang</a></li>
+      <li><span class="t">前途 · 四大硬核数据</span><a href="https://qiantum.xdf.cn/news/7975604.shtml" target="_blank" rel="noopener">qiantum.xdf.cn/news/7975604</a></li>
+      <li><span class="t">新通教育 · 关于我们</span><a href="https://www.igo.cn/newigo/index.shtml" target="_blank" rel="noopener">igo.cn/newigo</a></li>
+      <li><span class="t">金吉列 · 企业介绍</span><a href="https://m.jjl.cn/about" target="_blank" rel="noopener">m.jjl.cn/about</a></li>
+      <li><span class="t">金吉列 · 资质产品</span><a href="https://global.jjl.cn/cs" target="_blank" rel="noopener">global.jjl.cn/cs</a></li>
+      <li><span class="t">启德 · 核心优势</span><a href="https://m.eic.org.cn/news/detail/b336152cb6fc49bd8eebe839910f9fa0" target="_blank" rel="noopener">m.eic.org.cn/news</a></li>
+      <li><span class="t">嘉华世达 · 公司介绍</span><a href="http://www.chivast.com/chivast/ast_chivast_education_international/introduction_to_company/index.html" target="_blank" rel="noopener">chivast.com</a></li>
+    </ol>
+    <p style="margin-top:1.1rem;">说明：价格与服务数据来自各机构官网 / 分支校区 / 行业评测，机构规模为官方口径，费用口径不统一且随城市、院校层次波动，仅供横向参考。MAIGOO 等榜单为第三方品牌参考，实际资质以官方为准。</p>
+  </div>
+</footer>
 
-</div>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<script>
+window.addEventListener('load',function(){
+  var dom=document.getElementById('chart-price'); if(!dom||!window.echarts) return;
+  var c=echarts.init(dom);
+  c.setOption({
+    tooltip:{trigger:'axis',valueFormatter:function(v){return v+'万';}},
+    legend:{bottom:0,data:['常规申请下限','常规申请上限'],textStyle:{color:'#1e293b'}},
+    grid:{left:50,right:20,top:20,bottom:50},
+    xAxis:{type:'category',data:['澳洲(免费在列)','前途·加拿大','前途·港新日韩','新航道·英澳新加','前途·美国全套'],axisLabel:{fontSize:12,color:'#1e293b'}},
+    yAxis:{type:'value',name:'万元',nameTextStyle:{color:'#64748b'},axisLabel:{color:'#64748b'},splitLine:{lineStyle:{color:'#eef0f4'}}},
+    series:[
+      {name:'常规申请下限',type:'bar',data:[0,2,2.9,1.5,6.8],itemStyle:{color:'#93c5fd'},barWidth:30},
+      {name:'常规申请上限',type:'bar',data:[2,3.8,4.98,3,16.8],itemStyle:{color:'#2563eb'},barWidth:30}
+    ]
+  });
+  window.addEventListener('resize',function(){c.resize();});
+});
+</script>
 </body>
 </html>
