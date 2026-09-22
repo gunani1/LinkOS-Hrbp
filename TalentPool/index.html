@@ -405,12 +405,25 @@ function saveBlob(blob,filename){
 /* 单份下载 */
 async function downloadOne(c){
   if(!c.resume){toast('该候选人暂无简历',2200);return;}
-  toast('正在准备简历…');
+  toast('正在下载简历…');
   try{
     const blob=await fetchResume(c);
     saveBlob(blob,c.resume);
-    toast('已开始下载：'+c.name,2200);
-  }catch(e){toast('下载失败，请改用「打开简历」',2600);}
+    toast('简历已开始下载：'+c.name,2200);
+  }catch(e){toast('下载失败，请重试',2600);}
+}
+/* 在浏览器内打开 PDF（jsdelivr 返回 octet-stream，需转成 PDF 类型再打开） */
+async function openResume(c){
+  if(!c.resume){toast('该候选人暂无简历',2200);return;}
+  toast('正在打开简历…');
+  try{
+    let blob=await fetchResume(c);
+    if(blob.type!=='application/pdf')blob=new Blob([blob],{type:'application/pdf'});
+    const url=URL.createObjectURL(blob);
+    const w=window.open(url,'_blank');
+    setTimeout(()=>URL.revokeObjectURL(url),60000);
+    if(!w)toast('浏览器拦截了弹窗，请允许弹窗后重试',2800);
+  }catch(e){toast('简历打开失败，请重试',2600);}
 }
 /* 批量：按当前筛选（filtered），只打包有简历的人 */
 async function downloadBatch(btn){
@@ -852,7 +865,7 @@ function openDrawer(id){
     </div>`:''}
     ${c.note?`<div style="font-size:11px;color:#8F8E88;font-weight:600;margin:6px 0 2px">${c.note}</div>`:''}
     <div class="d-actions">
-      ${c.resume?`<a class="btn primary" href="${cdnBase(c)}${encodeURIComponent(c.resume)}" target="_blank" rel="noopener">📄 打开完整简历</a><button class="btn outline" id="dDl">⬇ 下载简历</button>`:`<span class="btn" style="background:#ECEAE3;color:#8F8E88;cursor:default">📄 简历待补</span>`}
+      ${c.resume?`<button class="btn primary" id="dOpen">📄 打开完整简历</button><button class="btn outline" id="dDl">⬇ 下载简历</button>`:`<span class="btn" style="background:#ECEAE3;color:#8F8E88;cursor:default">📄 简历待补</span>`}
       <button class="btn outline" id="dPick" ${c.scores?'':'style="opacity:.45"'}>${state.picked.has(c.id)?'✓ 已加入对比':(c.scores?'+ 加入对比':'暂无六维评分')}</button>
       <button class="btn outline" id="dInvite">✉ 面试邀约话术</button>
     </div>
@@ -882,6 +895,7 @@ function openDrawer(id){
   document.getElementById('dClose').addEventListener('click',closeDrawer);
   document.getElementById('dPick').addEventListener('click',()=>{togglePick(c.id);openDrawer(c.id);});
   const _ddl=document.getElementById('dDl'); if(_ddl)_ddl.addEventListener('click',()=>downloadOne(c));
+  const _dopen=document.getElementById('dOpen'); if(_dopen)_dopen.addEventListener('click',()=>openResume(c));
   const _dinv=document.getElementById('dInvite'); if(_dinv)_dinv.addEventListener('click',()=>openInvite(c));
 }
 
