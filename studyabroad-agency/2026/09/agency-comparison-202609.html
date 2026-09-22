@@ -70,7 +70,20 @@ ol.fl{padding-left:1.3rem;columns:2;column-gap:2.5rem;}
 ol.fl li{margin-bottom:.5rem;overflow-wrap:break-word;break-inside:avoid;}
 ol.fl .t{color:var(--ink);word-break:normal;display:block;}
 ol.fl a{color:var(--accent);word-break:break-all;}
-@media(max-width:768px){.container{padding:0 1.1rem;}header h1{font-size:1.35rem;}body{font-size:15px;}ol.fl{columns:1;}}
+@media(max-width:768px){.container{padding:0 1.1rem;}header h1{font-size:1.35rem;}body{font-size:15px;}ol.fl{columns:1;}
+/* ===== 手机端：表格转卡片式布局 ===== */
+.table-wrap{overflow:visible;border:none;background:transparent;}
+.table-wrap table,.table-wrap thead,.table-wrap tbody,.table-wrap tr,.table-wrap th,.table-wrap td{display:block;width:100%;min-width:0;}
+.table-wrap table{border:none;}
+.table-wrap thead{display:none;}
+.table-wrap tbody{display:block;}
+.table-wrap tr{background:var(--bg2);border:1px solid var(--rule);border-radius:12px;padding:.25rem .95rem;margin-bottom:.8rem;}
+.table-wrap td{display:flex;align-items:flex-start;gap:.55rem;padding:.6rem 0;border:none;border-bottom:1px dashed var(--rule);font-size:.86rem;line-height:1.6;}
+.table-wrap tr td:last-child{border-bottom:none;}
+.table-wrap td::before{content:attr(data-label);flex:0 0 4.6rem;min-width:0;font-weight:700;color:var(--accent);font-size:.72rem;letter-spacing:.02em;padding-top:.16rem;text-transform:none;}
+.table-wrap td.cell-main{font-size:.95rem;font-weight:600;}
+.table-wrap td.cell-main::before{color:var(--accent);}
+}
 </style>
 </head>
 <body>
@@ -98,46 +111,46 @@ ol.fl a{color:var(--accent);word-break:break-all;}
       <thead><tr><th>机构</th><th>成立 / 背景</th><th>规模</th><th>核心产品 &amp; 资质</th></tr></thead>
       <tbody>
         <tr>
-          <td class="cell-main">新航道<br><span class="sm">XHD</span></td>
-          <td>2004 年，创始人胡敏教授，IDG 资本投资</td>
-          <td>覆盖全国 47+ 核心城市，多分校及学习中心</td>
-          <td>从"语言培训"起步的<b>全生态矩阵</b>，雅思官方白金级合作伙伴、ETS 官方战略合作</td>
+          <td class="cell-main" data-label="机构">新航道<br><span class="sm">XHD</span></td>
+          <td data-label="成立 / 背景">2004 年，创始人胡敏教授，IDG 资本投资</td>
+          <td data-label="规模">覆盖全国 47+ 核心城市，多分校及学习中心</td>
+          <td data-label="核心产品 & 资质">从"语言培训"起步的<b>全生态矩阵</b>，雅思官方白金级合作伙伴、ETS 官方战略合作</td>
         </tr>
         <tr>
-          <td class="cell-main">新东方前途出国<br><span class="sm">New Oriental</span></td>
-          <td>1996 年，新东方旗下专职机构</td>
-          <td>全国多分公司，依托新东方语培流量</td>
-          <td>留学全流程 + 欧亚业务深入；<b>语培留学一体化套餐</b></td>
+          <td class="cell-main" data-label="机构">新东方前途出国<br><span class="sm">New Oriental</span></td>
+          <td data-label="成立 / 背景">1996 年，新东方旗下专职机构</td>
+          <td data-label="规模">全国多分公司，依托新东方语培流量</td>
+          <td data-label="核心产品 & 资质">留学全流程 + 欧亚业务深入；<b>语培留学一体化套餐</b></td>
         </tr>
         <tr>
-          <td class="cell-main">金吉列留学<br><span class="sm">JJL</span></td>
-          <td>1999 年前后，品牌积淀深厚</td>
-          <td>28 国 + 3000+ 海外院校，38 位美国名校教授智库</td>
-          <td>19 大产品类别、90 余系列、1300+ 产品；<b>教育部/公安部/工商总局三方认证 + 连续 25 年 ICEF 认证</b></td>
+          <td class="cell-main" data-label="机构">金吉列留学<br><span class="sm">JJL</span></td>
+          <td data-label="成立 / 背景">1999 年前后，品牌积淀深厚</td>
+          <td data-label="规模">28 国 + 3000+ 海外院校，38 位美国名校教授智库</td>
+          <td data-label="核心产品 & 资质">19 大产品类别、90 余系列、1300+ 产品；<b>教育部/公安部/工商总局三方认证 + 连续 25 年 ICEF 认证</b></td>
         </tr>
         <tr>
-          <td class="cell-main">启德教育<br><span class="sm">EIC</span></td>
-          <td>26 年积淀</td>
-          <td>43 城 75 家机构 + 128 分中心 + 15 家境外直营</td>
-          <td>3000+ 院校覆盖 29 地；92% 名校录取率、97% 签证通过率；<b>"国内外全程服务闭环"</b></td>
+          <td class="cell-main" data-label="机构">启德教育<br><span class="sm">EIC</span></td>
+          <td data-label="成立 / 背景">26 年积淀</td>
+          <td data-label="规模">43 城 75 家机构 + 128 分中心 + 15 家境外直营</td>
+          <td data-label="核心产品 & 资质">3000+ 院校覆盖 29 地；92% 名校录取率、97% 签证通过率；<b>"国内外全程服务闭环"</b></td>
         </tr>
         <tr>
-          <td class="cell-main">新通教育<br><span class="sm">Shinyway</span></td>
-          <td>1996 年，国资背景，源自杭州</td>
-          <td>3000+ 全职员工，全球 20+ 城市分支机构</td>
-          <td>留学规划、语言、研学、就业、移民；旗下新通留学/考培/移民/小麦艺术</td>
+          <td class="cell-main" data-label="机构">新通教育<br><span class="sm">Shinyway</span></td>
+          <td data-label="成立 / 背景">1996 年，国资背景，源自杭州</td>
+          <td data-label="规模">3000+ 全职员工，全球 20+ 城市分支机构</td>
+          <td data-label="核心产品 & 资质">留学规划、语言、研学、就业、移民；旗下新通留学/考培/移民/小麦艺术</td>
         </tr>
         <tr>
-          <td class="cell-main">嘉华世达<br><span class="sm">Chivast</span></td>
-          <td>2000 年，中国留学服务中心（CSCSE）下属国资</td>
-          <td>教育部直属背景</td>
-          <td>全国首家留学服务持牌（BJ2000001）、ETS 培训中心</td>
+          <td class="cell-main" data-label="机构">嘉华世达<br><span class="sm">Chivast</span></td>
+          <td data-label="成立 / 背景">2000 年，中国留学服务中心（CSCSE）下属国资</td>
+          <td data-label="规模">教育部直属背景</td>
+          <td data-label="核心产品 & 资质">全国首家留学服务持牌（BJ2000001）、ETS 培训中心</td>
         </tr>
         <tr>
-          <td class="cell-main">高途 / 威久 / SIA / ACG</td>
-          <td>在线 &amp; 垂直细分</td>
-          <td>见各家</td>
-          <td>高途（在线全链条）、威久（老牌中介）、SIA/ACG（艺术留学垂直）</td>
+          <td class="cell-main" data-label="机构">高途 / 威久 / SIA / ACG</td>
+          <td data-label="成立 / 背景">在线 &amp; 垂直细分</td>
+          <td data-label="规模">见各家</td>
+          <td data-label="核心产品 & 资质">高途（在线全链条）、威久（老牌中介）、SIA/ACG（艺术留学垂直）</td>
         </tr>
       </tbody>
     </table>
@@ -178,11 +191,11 @@ ol.fl a{color:var(--accent);word-break:break-all;}
     <table>
       <thead><tr><th>层级</th><th>具体产品</th><th>代表机构亮点</th></tr></thead>
       <tbody>
-        <tr><td class="cell-main">① 语言培训</td><td>雅思 / 托福 / GRE / GMAT / SAT / ACT / AP / SSAT / 留学英语能力预备 / 外教口语</td><td>新航道课程全景，雅思官方白金级 [cite:5]</td></tr>
-        <tr><td class="cell-main">② 留学申请</td><td>选校定位、文书（SOP/PS/CV）、网申、套磁、面试、Offer 与签证指导</td><td>多数机构全流程套餐覆盖 [cite:10][cite:11]</td></tr>
-        <tr><td class="cell-main">③ 背景提升</td><td>科研 / 实习 / 竞赛 / 国际研学</td><td>单项约 5000–2 万不等 [cite:11]</td></tr>
-        <tr><td class="cell-main">④ 海外服务</td><td>行前指导、境外院校资源、落地方案</td><td>启德 15 家境外直营机构 [cite:15]</td></tr>
-        <tr><td class="cell-main">⑤ 增值板块</td><td>国际课程（A-Level/AP）、艺术留学、考研、移民</td><td>新航道（锦秋A-Level/AP）、新通（移民）、SIA/ACG（艺术）</td></tr>
+        <tr><td class="cell-main" data-label="层级">① 语言培训</td><td data-label="具体产品">雅思 / 托福 / GRE / GMAT / SAT / ACT / AP / SSAT / 留学英语能力预备 / 外教口语</td><td data-label="代表机构亮点">新航道课程全景，雅思官方白金级 [cite:5]</td></tr>
+        <tr><td class="cell-main" data-label="层级">② 留学申请</td><td data-label="具体产品">选校定位、文书（SOP/PS/CV）、网申、套磁、面试、Offer 与签证指导</td><td data-label="代表机构亮点">多数机构全流程套餐覆盖 [cite:10][cite:11]</td></tr>
+        <tr><td class="cell-main" data-label="层级">③ 背景提升</td><td data-label="具体产品">科研 / 实习 / 竞赛 / 国际研学</td><td data-label="代表机构亮点">单项约 5000–2 万不等 [cite:11]</td></tr>
+        <tr><td class="cell-main" data-label="层级">④ 海外服务</td><td data-label="具体产品">行前指导、境外院校资源、落地方案</td><td data-label="代表机构亮点">启德 15 家境外直营机构 [cite:15]</td></tr>
+        <tr><td class="cell-main" data-label="层级">⑤ 增值板块</td><td data-label="具体产品">国际课程（A-Level/AP）、艺术留学、考研、移民</td><td data-label="代表机构亮点">新航道（锦秋A-Level/AP）、新通（移民）、SIA/ACG（艺术）</td></tr>
       </tbody>
     </table>
   </div>
@@ -230,11 +243,11 @@ ol.fl a{color:var(--accent);word-break:break-all;}
     <table>
       <thead><tr><th>阶段</th><th>服务明细</th><th>收费要点</th></tr></thead>
       <tbody>
-        <tr><td class="cell-main">评估 &amp; 签约</td><td>免费留学评估、个性化方案、选校列表确定</td><td>部分机构签约前免费定制方案 [cite:12]</td></tr>
-        <tr><td class="cell-main">文书 &amp; 材料</td><td>SOP/PS 起草与多稿润色、CV、推荐信、成绩与材料准备</td><td>文书单项约 8000 元/项起 [cite:11]</td></tr>
-        <tr><td class="cell-main">申请 &amp; 套磁</td><td>网申提交、套磁邮件、部分专业作品集/面试辅导</td><td>含在套餐或另购 [cite:10]</td></tr>
-        <tr><td class="cell-main">Offer &amp; 签证</td><td>Offer 选择、押金汇款、签证材料与指导</td><td>签证服务 200+ 元，第三方签证费另计 [cite:11]</td></tr>
-        <tr><td class="cell-main">落地</td><td>行前指导、境外公寓/接机（部分含）</td><td>启德等含境外直营落地 [cite:15]</td></tr>
+        <tr><td class="cell-main" data-label="阶段">评估 &amp; 签约</td><td data-label="服务明细">免费留学评估、个性化方案、选校列表确定</td><td data-label="收费要点">部分机构签约前免费定制方案 [cite:12]</td></tr>
+        <tr><td class="cell-main" data-label="阶段">文书 &amp; 材料</td><td data-label="服务明细">SOP/PS 起草与多稿润色、CV、推荐信、成绩与材料准备</td><td data-label="收费要点">文书单项约 8000 元/项起 [cite:11]</td></tr>
+        <tr><td class="cell-main" data-label="阶段">申请 &amp; 套磁</td><td data-label="服务明细">网申提交、套磁邮件、部分专业作品集/面试辅导</td><td data-label="收费要点">含在套餐或另购 [cite:10]</td></tr>
+        <tr><td class="cell-main" data-label="阶段">Offer &amp; 签证</td><td data-label="服务明细">Offer 选择、押金汇款、签证材料与指导</td><td data-label="收费要点">签证服务 200+ 元，第三方签证费另计 [cite:11]</td></tr>
+        <tr><td class="cell-main" data-label="阶段">落地</td><td data-label="服务明细">行前指导、境外公寓/接机（部分含）</td><td data-label="收费要点">启德等含境外直营落地 [cite:15]</td></tr>
       </tbody>
     </table>
   </div>
@@ -262,10 +275,10 @@ ol.fl a{color:var(--accent);word-break:break-all;}
     <table>
       <thead><tr><th>机构</th><th>语言类官方认证</th><th>行业 / 政府认证</th></tr></thead>
       <tbody>
-        <tr><td class="cell-main">新航道</td><td>雅思官方<b>白金级</b>合作伙伴、ETS 官方战略合作伙伴</td><td>IDG 资本投资背景，21 年办学</td></tr>
-        <tr><td class="cell-main">金吉列</td><td>—</td><td>教育部/公安部/工商总局三方认证、连续 25 年 ICEF、参编行业标准</td></tr>
-        <tr><td class="cell-main">嘉华世达</td><td>ETS 培训中心</td><td>教育部留学服务中心下属国资、全国首家持牌（BJ2000001）</td></tr>
-        <tr><td class="cell-main">新东方前途</td><td>依托新东方语培认证体系</td><td>1996 年老牌，全流程资质</td></tr>
+        <tr><td class="cell-main" data-label="机构">新航道</td><td data-label="语言类官方认证">雅思官方<b>白金级</b>合作伙伴、ETS 官方战略合作伙伴</td><td data-label="行业 / 政府认证">IDG 资本投资背景，21 年办学</td></tr>
+        <tr><td class="cell-main" data-label="机构">金吉列</td><td data-label="语言类官方认证">—</td><td data-label="行业 / 政府认证">教育部/公安部/工商总局三方认证、连续 25 年 ICEF、参编行业标准</td></tr>
+        <tr><td class="cell-main" data-label="机构">嘉华世达</td><td data-label="语言类官方认证">ETS 培训中心</td><td data-label="行业 / 政府认证">教育部留学服务中心下属国资、全国首家持牌（BJ2000001）</td></tr>
+        <tr><td class="cell-main" data-label="机构">新东方前途</td><td data-label="语言类官方认证">依托新东方语培认证体系</td><td data-label="行业 / 政府认证">1996 年老牌，全流程资质</td></tr>
       </tbody>
     </table>
   </div>
@@ -275,10 +288,10 @@ ol.fl a{color:var(--accent);word-break:break-all;}
     <table>
       <thead><tr><th>机构</th><th>师资 / 顾问背景样例</th></tr></thead>
       <tbody>
-        <tr><td class="cell-main">新航道</td><td>斯明诚（牛津古典学本硕+复旦中哲硕+中国故事研究院副院长）、熊川雪（法国SKEMA金融硕，A-Level经济）、陈采霞（家庭教育研究院院长）等</td></tr>
-        <tr><td class="cell-main">金吉列</td><td>38 位美国名校教授"智库级"专家阵容</td></tr>
-        <tr><td class="cell-main">启德</td><td>3000+ 合作院校资源 + 顾问团队，双轨升学规划</td></tr>
-        <tr><td class="cell-main">新通</td><td>国资背景 3000+ 员工，覆盖语言+留学+就业全链路</td></tr>
+        <tr><td class="cell-main" data-label="机构">新航道</td><td data-label="师资 / 顾问背景样例">斯明诚（牛津古典学本硕+复旦中哲硕+中国故事研究院副院长）、熊川雪（法国SKEMA金融硕，A-Level经济）、陈采霞（家庭教育研究院院长）等</td></tr>
+        <tr><td class="cell-main" data-label="机构">金吉列</td><td data-label="师资 / 顾问背景样例">38 位美国名校教授"智库级"专家阵容</td></tr>
+        <tr><td class="cell-main" data-label="机构">启德</td><td data-label="师资 / 顾问背景样例">3000+ 合作院校资源 + 顾问团队，双轨升学规划</td></tr>
+        <tr><td class="cell-main" data-label="机构">新通</td><td data-label="师资 / 顾问背景样例">国资背景 3000+ 员工，覆盖语言+留学+就业全链路</td></tr>
       </tbody>
     </table>
   </div>
@@ -309,14 +322,14 @@ ol.fl a{color:var(--accent);word-break:break-all;}
     <table>
       <thead><tr><th>机构 / 国家去向</th><th>常规申请</th><th>美国</th><th>高端 / 定制</th><th>备注</th></tr></thead>
       <tbody>
-        <tr><td class="cell-main">澳洲（含免费模式）</td><td>0–2万</td><td>—</td><td>可超 3万</td><td>中介费 0–2万 并存，第三方硬性约 2.5–3.5万</td></tr>
-        <tr><td class="cell-main">前途 · 加拿大</td><td>2–3.8万</td><td>—</td><td>—</td><td>流程标准化、性价比高</td></tr>
-        <tr><td class="cell-main">前途 · 港新日韩欧亚</td><td>2.9–4.98万</td><td>—</td><td>—</td><td>预算有限家庭优选</td></tr>
-        <tr><td class="cell-main">新航道 · 英澳新加</td><td>1.5–3万</td><td>—</td><td>全套 2–5万</td><td>常规 1.5–3万、全套打包 2–5万</td></tr>
-        <tr><td class="cell-main">新航道/前途 · 美国</td><td>—</td><td>2.5–5万</td><td>高端定制 8–15万</td><td>美国申请复杂度高</td></tr>
-        <tr><td class="cell-main">前途 · 美国全套</td><td>—</td><td>6.8–16.8万</td><td>冲 Top30 上浮</td><td>基础 6.8万 起</td></tr>
-        <tr><td class="cell-main">前途 · 总体分级</td><td colspan="2">0.5–10万</td><td>—</td><td>分级透明定价，明码标价</td></tr>
-        <tr><td class="cell-main">单项增值</td><td colspan="3">文书 8000元/项起、背景提升 5000–2万、签证 200+（部分）</td><td>按模块自选</td></tr>
+        <tr><td class="cell-main" data-label="机构 / 国家去向">澳洲（含免费模式）</td><td data-label="常规申请">0–2万</td><td data-label="美国">—</td><td data-label="高端 / 定制">可超 3万</td><td data-label="备注">中介费 0–2万 并存，第三方硬性约 2.5–3.5万</td></tr>
+        <tr><td class="cell-main" data-label="机构 / 国家去向">前途 · 加拿大</td><td data-label="常规申请">2–3.8万</td><td data-label="美国">—</td><td data-label="高端 / 定制">—</td><td data-label="备注">流程标准化、性价比高</td></tr>
+        <tr><td class="cell-main" data-label="机构 / 国家去向">前途 · 港新日韩欧亚</td><td data-label="常规申请">2.9–4.98万</td><td data-label="美国">—</td><td data-label="高端 / 定制">—</td><td data-label="备注">预算有限家庭优选</td></tr>
+        <tr><td class="cell-main" data-label="机构 / 国家去向">新航道 · 英澳新加</td><td data-label="常规申请">1.5–3万</td><td data-label="美国">—</td><td data-label="高端 / 定制">全套 2–5万</td><td data-label="备注">常规 1.5–3万、全套打包 2–5万</td></tr>
+        <tr><td class="cell-main" data-label="机构 / 国家去向">新航道/前途 · 美国</td><td data-label="常规申请">—</td><td data-label="美国">2.5–5万</td><td data-label="高端 / 定制">高端定制 8–15万</td><td data-label="备注">美国申请复杂度高</td></tr>
+        <tr><td class="cell-main" data-label="机构 / 国家去向">前途 · 美国全套</td><td data-label="常规申请">—</td><td data-label="美国">6.8–16.8万</td><td data-label="高端 / 定制">冲 Top30 上浮</td><td data-label="备注">基础 6.8万 起</td></tr>
+        <tr><td class="cell-main" data-label="机构 / 国家去向">前途 · 总体分级</td><td colspan="2" data-label="常规申请 / 美国">0.5–10万</td><td data-label="高端 / 定制">—</td><td data-label="备注">分级透明定价，明码标价</td></tr>
+        <tr><td class="cell-main" data-label="机构 / 国家去向">单项增值</td><td colspan="3" data-label="常规申请 / 美国 / 高端 / 定制">文书 8000元/项起、背景提升 5000–2万、签证 200+（部分）</td><td data-label="备注">按模块自选</td></tr>
       </tbody>
     </table>
   </div>
@@ -355,11 +368,11 @@ ol.fl a{color:var(--accent);word-break:break-all;}
     <table>
       <thead><tr><th>需求</th><th>优先考虑</th><th>理由</th></tr></thead>
       <tbody>
-        <tr><td class="cell-main">语言 + 留学一体化，预算敏感</td><td>新东方前途出国</td><td>依托新东方语培，一体化套餐可省 1–1.5 万</td></tr>
-        <tr><td class="cell-main">雅思 / 语培起步、教学底蕴</td><td>新航道</td><td>雅思官方白金级合作、21 年课程体系 + 留学全流程</td></tr>
-        <tr><td class="cell-main">海外直营、全程闭环</td><td>启德</td><td>43 城 + 15 境外直营，"国内外闭环"，名校录取率口碑</td></tr>
-        <tr><td class="cell-main">公立 / 国资背景、权威背书</td><td>嘉华世达、新通</td><td>教育部直属（嘉华世达）、国资集团（新通）</td></tr>
-        <tr><td class="cell-main">艺术留学垂直</td><td>SIA / ACG</td><td>艺术方向专业垂直机构</td></tr>
+        <tr><td class="cell-main" data-label="需求">语言 + 留学一体化，预算敏感</td><td data-label="优先考虑">新东方前途出国</td><td data-label="理由">依托新东方语培，一体化套餐可省 1–1.5 万</td></tr>
+        <tr><td class="cell-main" data-label="需求">雅思 / 语培起步、教学底蕴</td><td data-label="优先考虑">新航道</td><td data-label="理由">雅思官方白金级合作、21 年课程体系 + 留学全流程</td></tr>
+        <tr><td class="cell-main" data-label="需求">海外直营、全程闭环</td><td data-label="优先考虑">启德</td><td data-label="理由">43 城 + 15 境外直营，"国内外闭环"，名校录取率口碑</td></tr>
+        <tr><td class="cell-main" data-label="需求">公立 / 国资背景、权威背书</td><td data-label="优先考虑">嘉华世达、新通</td><td data-label="理由">教育部直属（嘉华世达）、国资集团（新通）</td></tr>
+        <tr><td class="cell-main" data-label="需求">艺术留学垂直</td><td data-label="优先考虑">SIA / ACG</td><td data-label="理由">艺术方向专业垂直机构</td></tr>
       </tbody>
     </table>
   </div>
