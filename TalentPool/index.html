@@ -65,14 +65,14 @@ svg{display:block}
 svg text{font-family:'Inter','Noto Sans SC',sans-serif}
 /* pipeline funnel */
 .funnel{display:flex;flex-direction:column;gap:9px}
-.frow{display:grid;grid-template-columns:118px 1fr 64px;align-items:center;gap:10px;cursor:pointer}
+.frow{display:grid;grid-template-columns:118px 1fr 86px;align-items:center;gap:10px;cursor:pointer}
 .frow-pos{grid-template-columns:152px 1fr 56px}
 .frow-pos .fl{font-size:11.5px;color:#3A3935;font-weight:800;white-space:nowrap}
 .frow .fl{font-size:11px;font-weight:700;color:#55554F;line-height:1.25}
 .frow .track{height:18px;background:#F4F3EE;border-radius:99px;overflow:hidden}
 .frow .fill{height:100%;background:var(--ink);border-radius:99px;min-width:3px;transition:width .5s cubic-bezier(.2,.7,.2,1)}
 .frow .fill-muted{height:100%;background:#B7B5AE;border-radius:99px;min-width:3px;transition:width .5s cubic-bezier(.2,.7,.2,1)}
-.frow .fn{font-size:11px;font-weight:800;text-align:right;color:var(--ink)}
+.frow .fn{font-size:11px;font-weight:800;text-align:left;color:var(--ink);white-space:nowrap}
 .frow .fn small{font-size:9px;font-weight:700;color:#8F8E88}
 .frow.active .fl{color:var(--ink)}
 .frow.active .fill{background:#000}
