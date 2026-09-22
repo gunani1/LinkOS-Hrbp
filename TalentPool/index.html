@@ -756,6 +756,19 @@ function radarSVG(candIds, size){
     out+=`<polygon points="${poly}" fill="${col}" fill-opacity="${si===0?.12:.05}" stroke="${col}" stroke-width="1.6"/>`;
     keys.forEach((k,i)=>{out+=`<circle cx="${pt(R*c.scores[k]/10,i)[0]}" cy="${pt(R*c.scores[k]/10,i)[1]}" r="${size<340?2.4:3}" fill="${col}"/>`;});
   });
+  if(cands.length===1){
+    const c=cands[0];
+    keys.forEach((k,i)=>{
+      const v=c.scores[k];
+      const a=ang(i);
+      const off=(size<340?13:16);
+      const rr=R*v/10+(v>=8.5?-off:off);
+      const [x,y]=pt(rr,i);
+      const anchor=Math.abs(Math.cos(a))<.4?'middle':Math.cos(a)>0?'start':'end';
+      let dy=3; if(Math.sin(a)<-.6)dy=-3; else if(Math.sin(a)>.6)dy=7;
+      out+=`<text x="${x}" y="${y+dy}" font-size="${size<340?10:12}" font-weight="800" fill="${INK}" text-anchor="${anchor}" stroke="#fff" stroke-width="3" paint-order="stroke">${v.toFixed(1)}</text>`;
+    });
+  }
   cands.forEach((c,si)=>{
     const lx=14, ly=14+si*18;
     out+=`<rect x="${lx}" y="${ly-9}" width="10" height="10" rx="2" fill="${palette[si]}"/>`;
