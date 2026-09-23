@@ -204,11 +204,11 @@ svg text{font-family:'Inter','Noto Sans SC',sans-serif}
 .iv-editor{background:#F7F6F1;border-radius:14px;padding:14px 16px;margin-bottom:20px}
 .iv-empty{display:flex;align-items:center;gap:10px;font-size:12px;color:#8F8E88;font-weight:600;padding:2px 0}
 .iv-editor h5{font-size:10px;font-weight:800;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin-bottom:10px}
-.iv-edit-row{display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap}
+.iv-edit-row{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap}
 .iv-edit-row label{display:flex;flex-direction:column;gap:4px;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase}
-.iv-edit-row input[type=date],.iv-edit-row input[type=time]{font:700 12px 'Inter',sans-serif;color:var(--ink);background:#fff;border:1.5px solid #D5D3CB;border-radius:8px;padding:7px 10px;min-width:130px}
+.iv-edit-row input[type=date],.iv-edit-row input[type=time]{font:700 14px 'Inter',sans-serif;color:var(--ink);background:#fff;border:1.5px solid #D5D3CB;border-radius:8px;padding:10px 12px;min-width:150px}.iv-edit-row .btn{flex:0 0 auto}
+@media(max-width:480px){.iv-edit-row label{flex:1 1 100%}.iv-edit-row input[type=date],.iv-edit-row input[type=time]{min-width:0;width:100%}.iv-edit-row .btn{flex:1 1 100%}}
 .iv-edit-row input:focus{outline:none;border-color:var(--ink)}
-.iv-edit-row .btn{flex:0 0 auto}
 .d-note{width:100%;box-sizing:border-box;background:#FAF7EE;border:1.5px solid #E5E1D2;border-radius:10px;padding:11px 13px;font:600 12px 'Inter','Noto Sans SC',sans-serif;color:var(--ink);resize:vertical;min-height:60px;line-height:1.55}
 .d-note:focus{outline:none;border-color:#8F8E88;background:#FFFDF5}
 .note-meta{font-size:10px;color:var(--muted);margin-top:6px;text-align:right}
@@ -924,7 +924,6 @@ function openDrawer(id){
         <button class="btn primary small" id="dIvSave">保存</button>
         <button class="btn ghost small" id="dIvClear">清空</button>
       </div>
-      <div class="note-meta" id="dIvMeta">${ivOvr[c.id]?'已自定义 · 用最新值':'当前使用 talent.json 中的初始值'}</div>
       `:`
       <div class="iv-empty" id="dIvEmpty">尚未安排面试时间 <button class="btn outline small" id="dIvAdd">＋ 去安排</button></div>
       <div class="iv-edit-row" id="dIvRow" style="display:none">
@@ -1023,7 +1022,6 @@ function openDrawer(id){
   // 面试时间编辑
   const _ivDate=document.getElementById('dIvDate');
   const _ivTime=document.getElementById('dIvTime');
-  const _ivMeta=document.getElementById('dIvMeta');
   const _ivSave=document.getElementById('dIvSave');
   const _ivClear=document.getElementById('dIvClear');
   const _saveIv=(clear)=>{
@@ -1033,7 +1031,6 @@ function openDrawer(id){
     else { ivOvr[c.id]={date:d,time:t}; c.interviewDate=d||undefined; c.interviewTime=t||undefined; }
     saveIv();
     refreshScope(); renderAll();
-    if(_ivMeta)_ivMeta.textContent=clear?'已清空自定义 · 回退 talent.json':(d?'已保存 '+d+(t?' '+t:''):'已保存');
     toast(clear?'已清空面试时间':'时间已保存',1800);
     if(d){ openDrawer(c.id); } // 重新渲染头部 banner
   };
